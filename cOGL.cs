@@ -107,7 +107,7 @@ namespace OpenGL
         {
 
     int j,jj,ii;
-	int CONTROL_POINTS_CURVE_NUMBER=30;
+	int CONTROL_POINTS_CURVE_NUMBER=32; // 30
     double []ctrl_pts_curve_coordinates=new double[CONTROL_POINTS_CURVE_NUMBER*3];
 	const int CONTROL_POINTS_SURF_NUMBER=16;
     double[,,] ctrl_pts_surf_coordinates = new double[4,4,3];
