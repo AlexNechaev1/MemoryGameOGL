@@ -204,9 +204,13 @@ namespace OpenGL
             DrawAxes();
             GL.glColor3f(1.0f, 1.0f, 1.0f);
 
-            SecretBox secretBox = new SecretBox(new Point3D(0, 0, 0));
+            //test
+            SecretBox secretBox = new SecretBox(new Point3D(0.0f, 0.0f, 0.5f));
             secretBox.DrawSecretBox();
-            //drawCubeAndPasteTexture(0.5f);
+
+            SecretBox secretBox1 = new SecretBox(new Point3D(1.0f, 2.0f, 1.0f));
+            secretBox1.DrawSecretBox();
+            //test
 
             GL.glFlush();
             WGL.wglSwapBuffers(m_uint_DC);
