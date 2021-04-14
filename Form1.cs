@@ -1,12 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using OpenGL;
-using System.Runtime.InteropServices;
 
 namespace myOpenGL
 {
@@ -145,27 +139,6 @@ namespace myOpenGL
             cGL.Draw();
             oldPos[i - 1] = pos;
 
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            cGL.bChkTexture = checkBox1.Checked;
-            cGL.Draw();
-        }
-
-
-        private void radioButton2_MouseClick(object sender, MouseEventArgs e)
-        {
-            checkBox1.Enabled = true;
-            cGL.intRadioOption = 2;// radioButton2.Checked ? 2 : 1;
-            cGL.Draw();
-        }
-
-        private void radioButton1_MouseClick(object sender, MouseEventArgs e)
-        {
-            checkBox1.Enabled = false;
-            cGL.intRadioOption = 1;// radioButton2.Checked ? 2 : 1;
-            cGL.Draw();
         }
 
         private void hScrollBar10_Scroll(object sender, ScrollEventArgs e)

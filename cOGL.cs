@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-
-//2
 using System.Drawing;
-using System.Security.Cryptography.X509Certificates;
+using myOpenGL.Properties;
 
 namespace OpenGL
 {
@@ -14,7 +11,6 @@ namespace OpenGL
         Control p;
         int Width;
         int Height;
-
         GLUquadric obj;
 
         public cOGL(Control pb)
@@ -102,183 +98,6 @@ namespace OpenGL
         public bool bChkTexture = false;
         public int intRadioOption = 1;
 
-
-        void DrawFigures()
-        {
-
-            int j, jj, ii;
-            int CONTROL_POINTS_CURVE_NUMBER = 32; // 30
-            double[] ctrl_pts_curve_coordinates = new double[CONTROL_POINTS_CURVE_NUMBER * 3];
-            const int CONTROL_POINTS_SURF_NUMBER = 16;
-            double[,,] ctrl_pts_surf_coordinates = new double[4, 4, 3];
-            double[] ctrl_pts_surf_coordinatesOneDimension = new double[4 * 4 * 3];
-            double pi = 4.0f * (double)Math.Atan(1.0);
-            int how_much_internal_curve_pts = 100;
-            int how_much_internal_ptsU = 50;
-            int how_much_internal_ptsV = 50;
-            double uStep = 1.0f / how_much_internal_ptsU;
-            double vStep = 1.0f / how_much_internal_ptsV;
-            double u = 0.0;
-            double v = 0.0;
-            int[] iii = new int[1];
-
-
-            switch (intRadioOption)
-            {
-                case 1:
-                    GL.glGetIntegerv(GL.GL_MAX_EVAL_ORDER, iii); //neccessary. I check here the MAX ctrl point number: ii=30
-                    CONTROL_POINTS_CURVE_NUMBER = iii[0];
-                    for (j = 0; j < CONTROL_POINTS_CURVE_NUMBER; j++)
-                    {
-                        // one full circle with
-                        // CONTROL_POINTS_CURVE_NUMBER
-                        // points on it
-                        ctrl_pts_curve_coordinates[3 * j] = (2 * Math.Cos(j * (2 * pi / CONTROL_POINTS_CURVE_NUMBER)));
-                        ctrl_pts_curve_coordinates[3 * j + 1] = (2 * Math.Sin(j * (2 * pi / CONTROL_POINTS_CURVE_NUMBER)));
-                        ctrl_pts_curve_coordinates[3 * j + 2] = (8.0 * (((double)j) / CONTROL_POINTS_CURVE_NUMBER - 0.5));
-                    }
-
-                    GL.glDisable(GL.GL_TEXTURE_2D);
-                    GL.glDisable(GL.GL_LIGHTING);
-                    GL.glColor3f(1.0f, 1.0f, 1.0f);
-
-                    //double x,y,z vertex coord
-                    //domain of u param in glEvalCoord1f()
-                    //0.0--1.0
-                    //3 coord for each point-we are in GL_MAP1_VERTEX_3 mode
-
-                    GL.glMap1d(GL.GL_MAP1_VERTEX_3, 0.0, 1.0, 3, CONTROL_POINTS_CURVE_NUMBER, ctrl_pts_curve_coordinates);
-                    GL.glEnable(GL.GL_MAP1_VERTEX_3);
-
-                    u = 0.0;
-                    GL.glBegin(GL.GL_LINE_STRIP);
-                    while (u <= 1.0)
-                    {                    //evaluate enabled one-dimensional map 
-                        GL.glEvalCoord1d(u);//for u value from (0,1)
-                                            //domain
-
-                        u += 1.0 / (how_much_internal_curve_pts * CONTROL_POINTS_CURVE_NUMBER);
-                    }
-                    GL.glEnd();
-
-                    GL.glEnable(GL.GL_COLOR_MATERIAL);
-                    GL.glEnable(GL.GL_LIGHT0);
-                    GL.glEnable(GL.GL_LIGHTING);
-
-                    GL.glColor3f(1.0f, 0.0f, 0.0f);
-                    for (j = 0; j < CONTROL_POINTS_CURVE_NUMBER; j++)
-                    {
-                        GL.glTranslated(ctrl_pts_curve_coordinates[3 * j],
-                                     ctrl_pts_curve_coordinates[3 * j + 1],
-                                     ctrl_pts_curve_coordinates[3 * j + 2]);
-                        GLU.gluSphere(obj, 0.1, 16, 16);
-                        GL.glTranslated(-ctrl_pts_curve_coordinates[3 * j],
-                                     -ctrl_pts_curve_coordinates[3 * j + 1],
-                                     -ctrl_pts_curve_coordinates[3 * j + 2]);
-                    }
-                    break;
-
-                case 2:
-                    GL.glGetIntegerv(GL.GL_MAX_EVAL_ORDER, iii); //not neccessary. I check here the MAX ctrl point number: ii=30
-                    ii = iii[0];
-                    int ijk = 0;
-                    for (j = 0; j < 4; j++)
-                        for (jj = 0; jj < 4; jj++)
-                        {
-                            ctrl_pts_surf_coordinates[j, jj, 0] = (double)(2.0f * (j - 1.5f));
-                            ctrl_pts_surf_coordinates[j, jj, 1] = (double)(2.0f * (jj - 1.5f));
-                            ctrl_pts_surf_coordinates[j, jj, 2] = (double)((j - 1.5f) * (jj - 1.5f));
-                            if (j == 2 && jj == 2)
-                                ctrl_pts_surf_coordinates[j, jj, 2] = (double)((j - 1.5f) * (jj - 1.5f) + hh);
-                            ctrl_pts_surf_coordinatesOneDimension[ijk++] = ctrl_pts_surf_coordinates[j, jj, 0];
-                            ctrl_pts_surf_coordinatesOneDimension[ijk++] = ctrl_pts_surf_coordinates[j, jj, 1];
-                            ctrl_pts_surf_coordinatesOneDimension[ijk++] = ctrl_pts_surf_coordinates[j, jj, 2];
-                        }
-
-                    GL.glEnable(GL.GL_COLOR_MATERIAL);
-                    GL.glEnable(GL.GL_LIGHT0);
-                    GL.glEnable(GL.GL_LIGHTING);
-                    GL.glColor3f(0.5f, 1.0f, 1.0f);
-
-                    //double x,y,z vertex coord
-                    //domain of u param in glEvalCoord2f()
-                    //0.0--1.0 u parameter
-                    //3 coord for each point-we are in GL_MAP2_VERTEX_3 mode
-                    //4 ctrl pnts by u param
-                    //domain of u param in glEvalCoord1f()
-                    //0.0--1.0 v parameter
-                    //12=3 coord for each of 4 pts by v param
-                    //4 ctrl pts for v param
-                    GL.glMap2d(GL.GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 4, 0.0, 1.0, 3 * 4, 4, ctrl_pts_surf_coordinatesOneDimension);
-                    GL.glEnable(GL.GL_MAP2_VERTEX_3);
-
-                    GL.glDisable(GL.GL_AUTO_NORMAL);
-                    GL.glDisable(GL.GL_NORMALIZE);
-                    GL.glMap2d(GL.GL_MAP2_NORMAL, 0.0, 1.0, 3, 4, 0.0, 1.0, 3 * 4, 4, ctrl_pts_surf_coordinatesOneDimension);
-                    GL.glEnable(GL.GL_MAP2_NORMAL);
-
-                    if (bChkTexture)
-                    {
-                        GL.glEnable(GL.GL_TEXTURE_2D);
-                        GL.glColor3f(1.0f, 1.0f, 1.0f); // try other combinations
-                        GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[0]);
-                        GL.glMap2d(GL.GL_MAP2_TEXTURE_COORD_2, 0.0, 1.0, 3, 4, 0.0, 1.0, 3 * 4, 4, ctrl_pts_surf_coordinatesOneDimension);
-                        GL.glEnable(GL.GL_MAP2_TEXTURE_COORD_2);
-                    }
-                    else
-                        GL.glDisable(GL.GL_TEXTURE_2D);
-
-
-                    //must be refore glBegin(GL_QUADS); else no influence
-                    GL.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);//GL_POINT, GL_LINE, GL_FILL
-                    GL.glBegin(GL.GL_QUADS);
-                    while (v <= 1.0f)
-                    {
-                        u = 0.0f;
-                        while (u <= 1.0f)
-                        {
-                            //evaluate enabled two-dimensional map 
-                            GL.glEvalCoord2d(u, v);
-                            GL.glEvalCoord2d(u, v + vStep);
-                            GL.glEvalCoord2d(u + uStep, v + vStep);
-                            GL.glEvalCoord2d(u + uStep, v);
-                            u += uStep;
-                        }
-                        v += vStep;
-                    }
-                    GL.glEnd();
-                    GL.glEvalCoord2d(0.1, 0.2);
-                    double[] coord = new double[4];
-                    double[] norm = new double[4];
-                    //GL.glVertex3d
-                    //GL.glGetDoublev(GL.GL_VE, norm);
-                    GL.glGetDoublev(GL.GL_CURRENT_NORMAL, norm);
-
-
-                    GL.glColor3f(1.0f, 0.0f, 0.0f);
-                    for (j = 0; j < 4; j++)
-                        for (jj = 0; jj < 4; jj++)
-                        {
-                            GL.glTranslated(ctrl_pts_surf_coordinates[j, jj, 0],
-                                         ctrl_pts_surf_coordinates[j, jj, 1],
-                                         ctrl_pts_surf_coordinates[j, jj, 2]);
-                            GLU.gluSphere(obj, 0.1, 16, 16);
-                            GL.glTranslated(-ctrl_pts_surf_coordinates[j, jj, 0],
-                                         -ctrl_pts_surf_coordinates[j, jj, 1],
-                                         -ctrl_pts_surf_coordinates[j, jj, 2]);
-                        }
-                    //anyway
-                    GL.glDisable(GL.GL_TEXTURE_2D);
-                    break;
-            }
-
-
-
-
-
-
-        }
-
         public float[] ScrollValue = new float[10];
         public float zShift = 0.0f;
         public float yShift = 0.0f;
@@ -288,6 +107,7 @@ namespace OpenGL
         public float xAngle = 0.0f;
         public int intOptionC = 0;
         double[] AccumulatedRotationsTraslations = new double[16];
+
         public void Draw()
         {
             if (m_uint_DC == 0 || m_uint_RC == 0)
@@ -376,17 +196,100 @@ namespace OpenGL
             //multiply it by KeyCode defined AccumulatedRotationsTraslations matrix
             GL.glMultMatrixd(AccumulatedRotationsTraslations);
 
+            GL.glEnable(GL.GL_TEXTURE_2D);
+            GL.glBindTexture(GL.GL_TEXTURE_2D, m_Texture[0]);
+           
             DrawAxes();
-
-            DrawFigures();
-
-
-
-
+            GL.glColor3f(1.0f, 1.0f, 1.0f);
+            drawCubeAndPasteTexture(0.5f);
             GL.glFlush();
-
             WGL.wglSwapBuffers(m_uint_DC);
+            GL.glDisable(GL.GL_TEXTURE_2D);
+        }
 
+        private void drawCubeAndPasteTexture(float i_Height)
+        {
+            GL.glBegin(GL.GL_QUADS);
+
+            //Back side
+            GL.glTexCoord2f(0.5f, 0.0f);
+            GL.glVertex3f(0.0f, 0.0f + i_Height, 0.0f);
+
+            GL.glTexCoord2f(0.0f, 0.0f);
+            GL.glVertex3f(1.0f, 0.0f + i_Height, 0.0f);
+
+            GL.glTexCoord2f(0.0f, 1.0f);
+            GL.glVertex3f(1.0f, 1.0f + i_Height, 0.0f);
+
+            GL.glTexCoord2f(0.5f, 1.0f);
+            GL.glVertex3f(0.0f, 1.0f + i_Height, 0.0f);
+
+            //Left side
+            GL.glTexCoord2f(0.0f, 0.0f);
+            GL.glVertex3f(0.0f, 0.0f + i_Height, 0.0f);
+
+            GL.glTexCoord2f(0.5f, 0.0f);
+            GL.glVertex3f(0.0f, 0.0f + i_Height, 1.0f);
+
+            GL.glTexCoord2f(0.5f, 1.0f);
+            GL.glVertex3f(0.0f, 1.0f + i_Height, 1.0f);
+
+            GL.glTexCoord2f(0.0f, 1.0f);
+            GL.glVertex3f(0.0f, 1.0f + i_Height, 0.0f);
+
+            //Right side
+            GL.glTexCoord2f(0.5f, 0.0f);
+            GL.glVertex3f(1.0f, 0.0f + i_Height, 0.0f);
+
+            GL.glTexCoord2f(0.0f, 0.0f);
+            GL.glVertex3f(1.0f, 0.0f + i_Height, 1.0f);
+
+            GL.glTexCoord2f(0.0f, 1.0f);
+            GL.glVertex3f(1.0f, 1.0f + i_Height, 1.0f);
+
+            GL.glTexCoord2f(0.5f, 1.0f);
+            GL.glVertex3f(1.0f, 1.0f + i_Height, 0.0f);
+
+            //FrontSide
+            GL.glTexCoord2f(0.0f, 0.0f);
+            GL.glVertex3f(0.0f, 0.0f + i_Height, 1.0f);
+
+            GL.glTexCoord2f(0.5f, 0.0f);
+            GL.glVertex3f(1.0f, 0.0f + i_Height, 1.0f);
+
+            GL.glTexCoord2f(0.5f, 1.0f);
+            GL.glVertex3f(1.0f, 1.0f + i_Height, 1.0f);
+
+            GL.glTexCoord2f(0.0f, 1.0f);
+            GL.glVertex3f(0.0f, 1.0f + i_Height, 1.0f);
+
+            //upper case
+            GL.glTexCoord2f(0.5f, 0.0f);
+            GL.glVertex3f(0.0f, 1.0f + i_Height, 0.0f);
+
+            GL.glTexCoord2f(0.5f, 1.0f);
+            GL.glVertex3f(1.0f, 1.0f + i_Height, 0.0f);
+
+            GL.glTexCoord2f(1.0f, 1.0f);
+            GL.glVertex3f(1.0f, 1.0f + i_Height, 1.0f);
+
+            GL.glTexCoord2f(1.0f, 0.0f);
+            GL.glVertex3f(0.0f, 1.0f + i_Height, 1.0f);
+
+            //bottom case
+            GL.glTexCoord2f(0.5f, 0.0f);
+            GL.glVertex3f(0.0f, 0.0f + i_Height, 0.0f);
+
+            GL.glTexCoord2f(0.5f, 1.0f);
+            GL.glVertex3f(1.0f, 0.0f + i_Height, 0.0f);
+
+            GL.glTexCoord2f(1.0f, 1.0f);
+            GL.glVertex3f(1.0f, 0.0f + i_Height, 1.0f);
+
+            GL.glTexCoord2f(1.0f, 0.0f);
+            GL.glVertex3f(0.0f, 0.0f + i_Height, 1.0f);
+
+            GL.glEnd();
         }
 
         protected virtual void InitializeGL()
@@ -476,34 +379,36 @@ namespace OpenGL
 
 
         //! TEXTURE b
-        public uint[] Textures = new uint[2];
+        private uint[] m_Texture;
 
         void GenerateTextures()
         {
-            GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-            GL.glGenTextures(6, Textures);
-            string[] imagesName = { "Flower.bmp", "image.bmp", };
-            for (int i = 0; i < 2; i++)
-            {
-                Bitmap image = new Bitmap(imagesName[i]);
-                image.RotateFlip(RotateFlipType.RotateNoneFlipY); //Y axis in Windows is directed downwards, while in OpenGL-upwards
-                System.Drawing.Imaging.BitmapData bitmapdata;
-                Rectangle rect = new Rectangle(0, 0, image.Width, image.Height);
+            GL.glEnable(GL.GL_TEXTURE_2D);
 
-                bitmapdata = image.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            m_Texture = new uint[1];		// storage for texture
 
-                GL.glBindTexture(GL.GL_TEXTURE_2D, Textures[i]);
-                //2D for XYZ
-                GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, (int)GL.GL_RGB8, image.Width, image.Height,
-                                                              0, GL.GL_BGR_EXT, GL.GL_UNSIGNED_byte, bitmapdata.Scan0);
-                GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, (int)GL.GL_LINEAR);
-                GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, (int)GL.GL_LINEAR);
+            Bitmap image = new Bitmap(Resources.cubeTexture);
+            image.RotateFlip(RotateFlipType.RotateNoneFlipY); //Y axis in Windows is directed downwards, while in OpenGL-upwards
+            System.Drawing.Imaging.BitmapData bitmapdata;
+            Rectangle rect = new Rectangle(0, 0, image.Width, image.Height);
 
-                image.UnlockBits(bitmapdata);
-                image.Dispose();
-            }
+            bitmapdata = image.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadOnly,
+                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            GL.glGenTextures(1, m_Texture);
+            GL.glBindTexture(GL.GL_TEXTURE_2D, m_Texture[0]);
+            //  VN-in order to use System.Drawing.Imaging.BitmapData Scan0 I've added overloaded version to
+            //  OpenGL.cs
+            //  [DllImport(GL_DLL, EntryPoint = "glTexImage2D")]
+            //  public static extern void glTexImage2D(uint target, int level, int internalformat, int width, int height, int border, uint format, uint type, IntPtr pixels);
+            GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, (int)GL.GL_RGB8, image.Width, image.Height,
+                0, GL.GL_BGR_EXT, GL.GL_UNSIGNED_byte, bitmapdata.Scan0);
+
+            GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, (int)GL.GL_LINEAR);		// Linear Filtering
+            GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, (int)GL.GL_LINEAR);		// Linear Filtering
+
+            image.UnlockBits(bitmapdata);
+            image.Dispose();
         }
-
     }
-
 }
