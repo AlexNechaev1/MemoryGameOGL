@@ -2,6 +2,8 @@
 using System.Windows.Forms;
 using System.Drawing;
 using myOpenGL.Properties;
+using myOpenGL.Classes;
+using myOpenGL.Structs;
 
 namespace OpenGL
 {
@@ -202,7 +204,9 @@ namespace OpenGL
             DrawAxes();
             GL.glColor3f(1.0f, 1.0f, 1.0f);
 
-            drawCubeAndPasteTexture(0.5f);
+            SecretBox secretBox = new SecretBox(new Point3D(0, 0, 0));
+            secretBox.DrawSecretBox();
+            //drawCubeAndPasteTexture(0.5f);
 
             GL.glFlush();
             WGL.wglSwapBuffers(m_uint_DC);
