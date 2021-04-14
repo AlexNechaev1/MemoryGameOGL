@@ -201,7 +201,9 @@ namespace OpenGL
            
             DrawAxes();
             GL.glColor3f(1.0f, 1.0f, 1.0f);
+
             drawCubeAndPasteTexture(0.5f);
+
             GL.glFlush();
             WGL.wglSwapBuffers(m_uint_DC);
             GL.glDisable(GL.GL_TEXTURE_2D);
