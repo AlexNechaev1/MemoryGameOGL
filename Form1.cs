@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using OpenGL;
-using System.Runtime.InteropServices; 
+using System.Runtime.InteropServices;
 
 namespace myOpenGL
 {
@@ -20,7 +20,7 @@ namespace myOpenGL
             InitializeComponent();
             cGL = new cOGL(panel1);
             //apply the bars values as cGL.ScrollValue[..] properties 
-                                         //!!!
+            //!!!
             hScrollBarScroll(hScrollBar1, null);
             hScrollBarScroll(hScrollBar2, null);
             hScrollBarScroll(hScrollBar3, null);
@@ -66,8 +66,8 @@ namespace myOpenGL
         {
             NumericUpDown nUD = (NumericUpDown)sender;
             int i = int.Parse(nUD.Name.Substring(nUD.Name.Length - 1));
-            int pos = (int)nUD.Value; 
-            switch(i)
+            int pos = (int)nUD.Value;
+            switch (i)
             {
                 case 1:
                     if (pos > oldPos[i - 1])
@@ -129,14 +129,14 @@ namespace myOpenGL
                         cGL.intOptionC = -2;
                     }
                     break;
-                case 6: 
-	                if (pos>oldPos[i-1]) 
-	                {
-		                cGL.zAngle+=5;
-		                cGL.intOptionC=3;
-	                }
-	                else
-	                {
+                case 6:
+                    if (pos > oldPos[i - 1])
+                    {
+                        cGL.zAngle += 5;
+                        cGL.intOptionC = 3;
+                    }
+                    else
+                    {
                         cGL.zAngle -= 5;
                         cGL.intOptionC = -3;
                     }
@@ -163,7 +163,7 @@ namespace myOpenGL
 
         private void radioButton1_MouseClick(object sender, MouseEventArgs e)
         {
-            checkBox1.Enabled = false; 
+            checkBox1.Enabled = false;
             cGL.intRadioOption = 1;// radioButton2.Checked ? 2 : 1;
             cGL.Draw();
         }
@@ -171,7 +171,7 @@ namespace myOpenGL
         private void hScrollBar10_Scroll(object sender, ScrollEventArgs e)
         {
             HScrollBar hb = (HScrollBar)sender;
-            cGL.hh = hb.Value/5.0;
+            cGL.hh = hb.Value / 5.0;
             cGL.Draw();
         }
     }

@@ -474,4 +474,3 @@ namespace myOpenGL
         private System.Windows.Forms.HScrollBar hScrollBar10;
     }
 }
-
