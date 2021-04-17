@@ -7,9 +7,9 @@ namespace myOpenGL.Classes
     {
         private Point3D m_BottomLeftPoint;
 
-        public SecretBox(Point3D i_MiddlePoint)
+        public SecretBox(Point3D i_BottomLeftPoint)
         {
-            this.m_BottomLeftPoint = i_MiddlePoint;
+            this.m_BottomLeftPoint = i_BottomLeftPoint;
         }
 
         public void DrawSecretBox()
