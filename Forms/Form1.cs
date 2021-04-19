@@ -12,7 +12,7 @@ namespace myOpenGL
         {
 
             InitializeComponent();
-            cGL = new cOGL(panel1);
+            cGL = new cOGL(panel1, this);
             //apply the bars values as cGL.ScrollValue[..] properties 
             //!!!
             hScrollBarScroll(hScrollBar1, null);
@@ -26,7 +26,6 @@ namespace myOpenGL
             hScrollBarScroll(hScrollBar9, null);
         }
 
-
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             cGL.Draw();
@@ -35,11 +34,6 @@ namespace myOpenGL
         private void panel1_Resize(object sender, EventArgs e)
         {
             cGL.OnResize();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void hScrollBarScroll(object sender, ScrollEventArgs e)
@@ -56,8 +50,11 @@ namespace myOpenGL
 
         public float[] oldPos = new float[7];
 
+        public bool NumericUpDownValueChanged { get; set; }
+
         private void numericUpDownValueChanged(object sender, EventArgs e)
         {
+            NumericUpDownValueChanged = true;
             NumericUpDown nUD = (NumericUpDown)sender;
             int i = int.Parse(nUD.Name.Substring(nUD.Name.Length - 1));
             int pos = (int)nUD.Value;
@@ -145,6 +142,11 @@ namespace myOpenGL
         {
             HScrollBar hb = (HScrollBar)sender;
             cGL.hh = hb.Value / 5.0;
+            cGL.Draw();
+        }
+
+        private void secretBoxElevationTimer_Tick(object sender, EventArgs e)
+        {
             cGL.Draw();
         }
     }

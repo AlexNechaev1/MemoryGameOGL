@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Axis3D.cs" />
     <Compile Include="Classes\SecretBox.cs" />
     <Compile Include="GL_Classes\cOGL.cs" />
     <Compile Include="Forms\Form1.cs">
