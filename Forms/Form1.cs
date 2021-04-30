@@ -10,7 +10,6 @@ namespace myOpenGL
 
         public Form1()
         {
-
             InitializeComponent();
             cGL = new cOGL(panel1, this);
             //apply the bars values as cGL.ScrollValue[..] properties 
