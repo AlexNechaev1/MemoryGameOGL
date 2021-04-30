@@ -10,7 +10,7 @@
         {
             this.X = i_X;
             this.Y = i_Y;
-            this.Z = i_Y;
+            this.Z = i_Z;
         }
     }
 }
