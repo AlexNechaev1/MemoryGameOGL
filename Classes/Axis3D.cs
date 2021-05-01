@@ -6,11 +6,13 @@ namespace myOpenGL.Classes
     {
         // CLASS MEMBERS
         private float[] m_FloatArr;
+        private int m_AxisLength = 10;
 
         // CTOR
-        public Axis3D(float[] i_FloatArr = null)
+        public Axis3D(float[] i_FloatArr = null, int i_AxisLength = 10)
         {
             this.m_FloatArr = i_FloatArr;
+            this.m_AxisLength = i_AxisLength;
         }
 
         // PUBLIC METHODS
@@ -37,16 +39,16 @@ namespace myOpenGL.Classes
             GL.glBegin(GL.GL_LINES);
             //x  RED
             GL.glColor3f(1.0f, 0.0f, 0.0f);
-            GL.glVertex3f(-3.0f, 0.0f, 0.0f);
-            GL.glVertex3f(3.0f, 0.0f, 0.0f);
+            GL.glVertex3f(-1*m_AxisLength, 0.0f, 0.0f);
+            GL.glVertex3f(m_AxisLength, 0.0f, 0.0f);
             //y  GREEN 
             GL.glColor3f(0.0f, 1.0f, 0.0f);
-            GL.glVertex3f(0.0f, -3.0f, 0.0f);
-            GL.glVertex3f(0.0f, 3.0f, 0.0f);
+            GL.glVertex3f(0.0f, -1 * m_AxisLength, 0.0f);
+            GL.glVertex3f(0.0f, m_AxisLength, 0.0f);
             //z  BLUE
             GL.glColor3f(0.0f, 0.0f, 1.0f);
-            GL.glVertex3f(0.0f, 0.0f, -3.0f);
-            GL.glVertex3f(0.0f, 0.0f, 3.0f);
+            GL.glVertex3f(0.0f, 0.0f, -1 * m_AxisLength);
+            GL.glVertex3f(0.0f, 0.0f, m_AxisLength);
             GL.glEnd();
         }
     }

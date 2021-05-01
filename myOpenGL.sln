@@ -1,7 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myOpenGL", "myOpenGL.csproj", "{D118B639-8BF0-4AB3-B64D-254EE7731890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryGameLogic", "MemoryGameLogic\MemoryGameLogic.csproj", "{E80189BA-733C-4C86-990F-D4ACAAEBA1C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +17,15 @@ Global
 		{D118B639-8BF0-4AB3-B64D-254EE7731890}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D118B639-8BF0-4AB3-B64D-254EE7731890}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D118B639-8BF0-4AB3-B64D-254EE7731890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E80189BA-733C-4C86-990F-D4ACAAEBA1C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E80189BA-733C-4C86-990F-D4ACAAEBA1C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E80189BA-733C-4C86-990F-D4ACAAEBA1C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E80189BA-733C-4C86-990F-D4ACAAEBA1C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C579E28-D2ED-461A-AB8B-0068BD4C48E9}
 	EndGlobalSection
 EndGlobal
