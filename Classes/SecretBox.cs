@@ -26,7 +26,7 @@ namespace myOpenGL.Classes
 
             GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
             preformSecretBoxDrawing();
-            GL.glTranslatef(0.0f, -1*this.m_CurrentElevationValue, 0);
+            GL.glTranslatef(0.0f, -1 * this.m_CurrentElevationValue, 0);
         }
 
         // PRIVATE METHODS

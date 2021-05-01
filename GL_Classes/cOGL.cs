@@ -166,8 +166,6 @@ namespace OpenGL
         }
         #endregion
 
-        //private List<SecretBox> m_SecretBoxesList = new List<SecretBox>();
-
         private List<List<SecretBox>> m_SecretBoxesMatrix;
 
         private Form1 m_Form1Instance;
@@ -185,7 +183,6 @@ namespace OpenGL
             InitializeGL();
 
             fillSecretBoxesMatrix(4);
-
 
             this.m_StaticAxis3D = new Axis3D(new float[] { 10, 10, 10, 1 });
             this.m_DynamicAxis3D = new Axis3D();
@@ -316,15 +313,15 @@ namespace OpenGL
         // PRIVATE METHODS
         private void fillSecretBoxesMatrix(int i_NumberOfRowsAndColumns)
         {
-            float heightVlaue = 0;
+            float heightValue = 0;
             checkIfNumberOfRowsAndColumnsIsValid(i_NumberOfRowsAndColumns);
             this.m_SecretBoxesMatrix = new List<List<SecretBox>>(i_NumberOfRowsAndColumns);
 
             for (int i = 0; i < i_NumberOfRowsAndColumns; i++)
             {
                 this.m_SecretBoxesMatrix.Add(new List<SecretBox>(i_NumberOfRowsAndColumns));
-                fillCurrentSecretBoxesList(this.m_SecretBoxesMatrix[i], heightVlaue, i_NumberOfRowsAndColumns);
-                heightVlaue += 2.0f;
+                fillCurrentSecretBoxesList(this.m_SecretBoxesMatrix[i], heightValue, i_NumberOfRowsAndColumns);
+                heightValue += 2.0f;
             }
         }
 
@@ -348,7 +345,7 @@ namespace OpenGL
         {
             foreach (List<SecretBox> secretBoxList in this.m_SecretBoxesMatrix)
             {
-                foreach(SecretBox secretBox in secretBoxList)
+                foreach (SecretBox secretBox in secretBoxList)
                 {
                     secretBox.DrawSecretBox();
                 }
