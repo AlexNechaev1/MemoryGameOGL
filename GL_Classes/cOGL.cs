@@ -182,7 +182,7 @@ namespace OpenGL
             m_HeightValue = m_ControlInstance.Height;
             InitializeGL();
 
-            fillSecretBoxesMatrix(4);
+            fillSecretBoxesMatrix(2);
 
             this.m_StaticAxis3D = new Axis3D(new float[] { 10, 10, 10, 1 });
             this.m_DynamicAxis3D = new Axis3D();
@@ -300,9 +300,9 @@ namespace OpenGL
             GL.glColor3f(1.0f, 1.0f, 1.0f);
 
             //changing the angle for cube matrix
-            GL.glRotatef(45, 1, 0, 0);
-            GL.glRotatef(40, 0, 1, 0);
-            GL.glRotatef(5, 0, 0, 1);
+            //GL.glRotatef(45, 1, 0, 0);
+            //GL.glRotatef(40, 0, 1, 0);
+            //GL.glRotatef(5, 0, 0, 1);
             drawSecretBoxesMatrix();
 
             GL.glFlush();
@@ -335,9 +335,12 @@ namespace OpenGL
 
         private void fillCurrentSecretBoxesList(List<SecretBox> i_SecretBoxListToFill, float i_HeightOffsetValue, int i_NumberOfSecretBoxesToAdd)
         {
+
             for (int i = 0; i < i_NumberOfSecretBoxesToAdd; i++)
             {
+
                 i_SecretBoxListToFill.Add(new SecretBox(new Point3D(0.0f + i * 2, 0.0f, 0.0f + i_HeightOffsetValue)));
+        
             }
         }
 
