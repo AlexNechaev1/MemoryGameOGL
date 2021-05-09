@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using myOpenGL.Enums;
 using OpenGL;
 
 namespace myOpenGL
@@ -147,6 +148,34 @@ namespace myOpenGL
         private void secretBoxElevationTimer_Tick(object sender, EventArgs e)
         {
             cGL.Draw();
+        }
+
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ePossibleMoveInSecretBoxMatrix? possibleMoveInSecretBoxMatrix = null;
+            char pressedKey = e.KeyChar;
+
+            switch(pressedKey)
+            {
+                case 'w':
+                case 'W':
+                    possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveUpInSecretBoxMatrix;
+                    break;
+                case 'a':
+                case 'A':
+                    possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveLeftInSecretBoxMatrix;
+                    break;
+                case 's':
+                case 'S':
+                    possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveDownInSecretBoxMatrix;
+                    break;
+                case 'd':
+                case 'D':
+                    possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveRightInSecretBoxMatrix;
+                    break;
+            }
+
+            cGL.SecretBoxMatrixInstance.PerformAMoveInSecretBoxMatrix(possibleMoveInSecretBoxMatrix);
         }
     }
 }

@@ -3,8 +3,6 @@ using System.Windows.Forms;
 using System.Drawing;
 using myOpenGL.Properties;
 using myOpenGL.Classes;
-using myOpenGL.Structs;
-using System.Collections.Generic;
 using myOpenGL;
 
 namespace OpenGL
@@ -166,8 +164,7 @@ namespace OpenGL
         }
         #endregion
 
-        private List<List<SecretBox>> m_SecretBoxesMatrix;
-
+        public SecretBoxMatrix SecretBoxMatrixInstance { get; }
         private Form1 m_Form1Instance;
         private uint[] m_TextureUIntArray;
         private Axis3D m_StaticAxis3D;
@@ -180,9 +177,8 @@ namespace OpenGL
             m_ControlInstance = i_ControlInstance;
             m_WidthValue = m_ControlInstance.Width;
             m_HeightValue = m_ControlInstance.Height;
+            this.SecretBoxMatrixInstance = new SecretBoxMatrix(4);
             InitializeGL();
-
-            fillSecretBoxesMatrix(2);
 
             this.m_StaticAxis3D = new Axis3D(new float[] { 10, 10, 10, 1 });
             this.m_DynamicAxis3D = new Axis3D();
@@ -240,27 +236,21 @@ namespace OpenGL
                 {
                     case 1:
                         GL.glRotatef(delta, 1, 0, 0);
-                        Console.WriteLine("1");
                         break;
                     case 2:
                         GL.glRotatef(delta, 0, 1, 0);
-                        Console.WriteLine("2");
                         break;
                     case 3:
                         GL.glRotatef(delta, 0, 0, 1);
-                        Console.WriteLine("3");
                         break;
                     case 4:
                         GL.glTranslatef(delta / 20, 0, 0);
-                        Console.WriteLine("4");
                         break;
                     case 5:
                         GL.glTranslatef(0, delta / 20, 0);
-                        Console.WriteLine("5");
                         break;
                     case 6:
                         GL.glTranslatef(0, 0, delta / 20);
-                        Console.WriteLine("6");
                         break;
                 }
             }
@@ -303,56 +293,11 @@ namespace OpenGL
             //GL.glRotatef(45, 1, 0, 0);
             //GL.glRotatef(40, 0, 1, 0);
             //GL.glRotatef(5, 0, 0, 1);
-            drawSecretBoxesMatrix();
+            this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
 
             GL.glFlush();
             WGL.wglSwapBuffers(m_uint_DC);
             GL.glDisable(GL.GL_TEXTURE_2D);
-        }
-
-        // PRIVATE METHODS
-        private void fillSecretBoxesMatrix(int i_NumberOfRowsAndColumns)
-        {
-            float heightValue = 0;
-            checkIfNumberOfRowsAndColumnsIsValid(i_NumberOfRowsAndColumns);
-            this.m_SecretBoxesMatrix = new List<List<SecretBox>>(i_NumberOfRowsAndColumns);
-
-            for (int i = 0; i < i_NumberOfRowsAndColumns; i++)
-            {
-                this.m_SecretBoxesMatrix.Add(new List<SecretBox>(i_NumberOfRowsAndColumns));
-                fillCurrentSecretBoxesList(this.m_SecretBoxesMatrix[i], heightValue, i_NumberOfRowsAndColumns);
-                heightValue += 2.0f;
-            }
-        }
-
-        private void checkIfNumberOfRowsAndColumnsIsValid(int i_NumberOfRowsAndColumnsToCheck)
-        {
-            if (i_NumberOfRowsAndColumnsToCheck % 2 != 0)
-            {
-                throw new Exception("You cant create a game board with odd number of cards!");
-            }
-        }
-
-        private void fillCurrentSecretBoxesList(List<SecretBox> i_SecretBoxListToFill, float i_HeightOffsetValue, int i_NumberOfSecretBoxesToAdd)
-        {
-
-            for (int i = 0; i < i_NumberOfSecretBoxesToAdd; i++)
-            {
-
-                i_SecretBoxListToFill.Add(new SecretBox(new Point3D(0.0f + i * 2, 0.0f, 0.0f + i_HeightOffsetValue)));
-        
-            }
-        }
-
-        private void drawSecretBoxesMatrix()
-        {
-            foreach (List<SecretBox> secretBoxList in this.m_SecretBoxesMatrix)
-            {
-                foreach (SecretBox secretBox in secretBoxList)
-                {
-                    secretBox.DrawSecretBox();
-                }
-            }
         }
     }
 }

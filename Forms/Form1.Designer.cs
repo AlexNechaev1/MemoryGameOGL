@@ -378,8 +378,10 @@ namespace myOpenGL
             this.Controls.Add(this.hScrollBar2);
             this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.panel1);
+            this.KeyPreview = true;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
