@@ -1,5 +1,6 @@
 ﻿using myOpenGL.Enums;
 using myOpenGL.Structs;
+using myOpenGL;
 using System;
 using System.Collections.Generic;
 
@@ -84,11 +85,13 @@ namespace myOpenGL.Classes
 
         private void drawSecretBoxesMatrix()
         {
-            // test
+            OpenGL.GL.glColor3f(1, 1, 1);
+            // test           
             for (int i = 0; i < this.m_NumberOfRowsAndColumns; i++)
             {
                 for (int n = 0; n < this.m_NumberOfRowsAndColumns; n++)
                 {
+
                     m_SecretBoxesMatrix[i][n].DrawSecretBox();
                     if (i == m_CurrentSecretBoxXCoordinate && n == m_CurrentSecretBoxYCoordinate)
                     {

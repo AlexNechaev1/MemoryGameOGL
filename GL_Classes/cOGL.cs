@@ -66,6 +66,9 @@ namespace OpenGL
             pfd.cDepthBits = 32;
             pfd.iLayerType = (byte)(WGL.PFD_MAIN_PLANE);
 
+            //for Stencil support 
+            pfd.cStencilBits = 32;
+
             int pixelFormatIndex = 0;
             pixelFormatIndex = WGL.ChoosePixelFormat(m_uint_DC, ref pfd);
             if (pixelFormatIndex == 0)
@@ -131,6 +134,8 @@ namespace OpenGL
             //! TEXTURE 1a 
             generateTextures();
             //! TEXTURE 1b 
+
+            GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
         }
 
         private void generateTextures()
@@ -195,8 +200,9 @@ namespace OpenGL
         {
             if (m_uint_DC == 0 || m_uint_RC == 0)
                 return;
-
-            GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+               
+            //Color, Depth and Stencil buffers have been added
+            GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
 
             //FULL and COMPLICATED
             // GL.glViewport(0,Height/2,Width,Height/2);						
@@ -216,7 +222,10 @@ namespace OpenGL
             //z - קרוב/רחוק
             GL.glTranslatef(-5.0f, 0.0f, -10.0f);
 
+
             this.m_StaticAxis3D.DrawAxis3D();
+
+
 
             //save current ModelView Matrix values
             //in ModelVievMatrixBeforeSpecificTransforms array
@@ -283,21 +292,82 @@ namespace OpenGL
             //multiply it by KeyCode defined AccumulatedRotationsTraslations matrix
             GL.glMultMatrixd(AccumulatedRotationsTraslations);
 
+
             GL.glEnable(GL.GL_TEXTURE_2D);
             GL.glBindTexture(GL.GL_TEXTURE_2D, m_TextureUIntArray[0]);
 
+
             this.m_DynamicAxis3D.DrawAxis3D();
-            GL.glColor3f(1.0f, 1.0f, 1.0f);
+
+
+            this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
+            //REFLECTION//
+            GL.glEnable(GL.GL_BLEND);
+
+            GL.glEnable(GL.GL_STENCIL_TEST);
+            GL.glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_REPLACE);
+            GL.glStencilFunc(GL.GL_ALWAYS, 1, 0xFFFFFFFF); // draw floor always
+            GL.glColorMask((byte)GL.GL_FALSE, (byte)GL.GL_FALSE, (byte)GL.GL_FALSE, (byte)GL.GL_FALSE);
+            GL.glDisable(GL.GL_DEPTH_TEST);
+
+            DrawFloor();
+
+            // restore regular settings
+            GL.glColorMask((byte)GL.GL_TRUE, (byte)GL.GL_TRUE, (byte)GL.GL_TRUE, (byte)GL.GL_TRUE);
+            GL.glEnable(GL.GL_DEPTH_TEST);
+
+            // reflection is drawn only where STENCIL buffer value equal to 1
+            GL.glStencilFunc(GL.GL_EQUAL, 1, 0xFFFFFFFF);
+            GL.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+
+            // draw reflected scene
+            GL.glPushMatrix();
+            GL.glScalef(1, -1, 1); //swap on Y axis
+            //GL.glEnable(GL.GL_CULL_FACE);
+            //GL.glCullFace(GL.GL_BACK);
+            //this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
+            //GL.glCullFace(GL.GL_FRONT);
+            this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
+            //GL.glDisable(GL.GL_CULL_FACE);
+            GL.glPopMatrix();
+
+            //END REFLECTION//
+
 
             //changing the angle for cube matrix
             //GL.glRotatef(45, 1, 0, 0);
             //GL.glRotatef(40, 0, 1, 0);
             //GL.glRotatef(5, 0, 0, 1);
-            this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
+          
+
+            GL.glDisable(GL.GL_TEXTURE_2D);
+
+            GL.glDisable(GL.GL_STENCIL_TEST);
+
+            GL.glDepthMask((byte)GL.GL_FALSE);
+            DrawFloor();
+            GL.glDepthMask((byte)GL.GL_TRUE);
+
+            GL.glColor3f(1.0f, 1.0f, 1.0f);
+
+            GL.glDisable(GL.GL_BLEND);
 
             GL.glFlush();
             WGL.wglSwapBuffers(m_uint_DC);
-            GL.glDisable(GL.GL_TEXTURE_2D);
+            
+        }
+
+        void DrawFloor()
+        {
+            GL.glBegin(GL.GL_QUADS);
+
+            //!!! for blended REFLECTION 
+            GL.glColor4d(0, 0, 1, 0.5);
+            GL.glVertex3d(-1, 0, -1);
+            GL.glVertex3d(8, 0, -1);
+            GL.glVertex3d(8, 0, 8);
+            GL.glVertex3d(-1, 0, 8);
+            GL.glEnd();
         }
     }
 }
