@@ -11,6 +11,7 @@ namespace myOpenGL
 
         public Form1()
         {
+            #region Original CTOR code
             InitializeComponent();
             cGL = new cOGL(panel1, this);
             //apply the bars values as cGL.ScrollValue[..] properties 
@@ -24,8 +25,10 @@ namespace myOpenGL
             hScrollBarScroll(hScrollBar7, null);
             hScrollBarScroll(hScrollBar8, null);
             hScrollBarScroll(hScrollBar9, null);
+            #endregion
         }
 
+        #region Original methods
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             cGL.Draw();
@@ -149,11 +152,13 @@ namespace myOpenGL
         {
             cGL.Draw();
         }
+        #endregion
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
             ePossibleMoveInSecretBoxMatrix? possibleMoveInSecretBoxMatrix = null;
             char pressedKey = e.KeyChar;
+            e.Handled = true;
 
             switch(pressedKey)
             {

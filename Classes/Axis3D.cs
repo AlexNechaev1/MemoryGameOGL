@@ -21,7 +21,6 @@ namespace myOpenGL.Classes
             if (this.m_FloatArr != null)
             {
                 GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, this.m_FloatArr);
-                GL.glDisable(GL.GL_LIGHTING);
                 GL.glEnable(GL.GL_LINE_STIPPLE);
                 GL.glLineStipple(1, 0xFF00); // dotted
             }
