@@ -180,7 +180,7 @@ namespace myOpenGL
                     break;
             }
 
-            cGL.SecretBoxMatrixInstance.PerformAMoveInSecretBoxMatrix(possibleMoveInSecretBoxMatrix);
+            cGL.SecretBoxMatrixInstance.MoveSelectedSecretBoxArrow(possibleMoveInSecretBoxMatrix);
         }
     }
 }

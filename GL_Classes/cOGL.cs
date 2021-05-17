@@ -295,9 +295,15 @@ namespace OpenGL
             GL.glBindTexture(GL.GL_TEXTURE_2D, m_TextureUIntArray[0]);
 
             this.m_DynamicAxis3D.DrawAxis3D();
+
             this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
+            this.SecretBoxMatrixInstance.DrawSelectedSecretBoxArrow();
+
             this.m_Reflector.ReflectBeforeSecretBoxMatrixDrawing();
+
             this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
+            this.SecretBoxMatrixInstance.DrawSelectedSecretBoxArrow();
+
             this.m_Reflector.ReflectAfterSecretBoxMatrixDrawing();
             
             GL.glFlush();
