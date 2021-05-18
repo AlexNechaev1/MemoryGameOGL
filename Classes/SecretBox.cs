@@ -12,7 +12,7 @@ namespace myOpenGL.Classes
         private float m_CurrentElevationValue = 0;
         private bool m_AddToCurrentElevationValueFlag = true;
         private bool m_HasReachedMaxHeight = false;
-        public bool IsSecretBoxVisible { get; set; }
+        public bool IsSecretBoxVisible { get; private set; }
         public bool IsSelectedSecretBox { get; private set; }
         public Point3D TranslatePoint { get; private set; }
 
