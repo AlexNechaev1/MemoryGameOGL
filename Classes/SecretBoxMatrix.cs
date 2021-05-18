@@ -3,6 +3,7 @@ using myOpenGL.Structs;
 using myOpenGL;
 using System;
 using System.Collections.Generic;
+using OpenGL;
 
 namespace myOpenGL.Classes
 {
@@ -13,24 +14,45 @@ namespace myOpenGL.Classes
         private List<List<SecretBox>> m_SecretBoxesMatrix;
         private int m_CurrentSecretBoxXCoordinate = 0;
         private int m_CurrentSecretBoxYCoordinate = 0;
+        private GLUquadric m_GLUquadricObject;
 
         // CTOR
         public SecretBoxMatrix(int i_NumberOfRowsAndColumns)
         {
             this.m_NumberOfRowsAndColumns = i_NumberOfRowsAndColumns;
             this.fillSecretBoxesMatrix();
+            this.m_GLUquadricObject = GLU.gluNewQuadric();
+        }
+
+        // DTOR
+        ~SecretBoxMatrix()
+        {
+            GLU.gluDeleteQuadric(this.m_GLUquadricObject);
         }
 
         // PUBLIC METHODS
+        public void DrawSelectedSecretBoxArrow()
+        {
+            Point3D currentPoint = this.m_SecretBoxesMatrix[this.m_CurrentSecretBoxXCoordinate][this.m_CurrentSecretBoxYCoordinate].TranslatePoint;
+
+            GL.glPushMatrix();
+
+            GL.glColor3f(1.0f, 0.0f, 0.0f);
+            GL.glTranslatef(currentPoint.X + 0.5f, currentPoint.Y + 2, currentPoint.Z + 0.5f);
+            GL.glRotatef(-90, 1, 0, 0);
+            GLU.gluCylinder(this.m_GLUquadricObject, 0.0, 0.5, 1.5, 16, 16);
+            GL.glTranslatef(-1 * (currentPoint.X + 0.5f), -1 * (currentPoint.Y + 3), -1 * (currentPoint.Z + 0.5f));
+
+            GL.glPopMatrix();
+        }
+
         public void DrawSecretBoxMatrix()
         {
             this.drawSecretBoxesMatrix();
         }
 
-        public void PerformAMoveInSecretBoxMatrix(ePossibleMoveInSecretBoxMatrix? i_PossibleMoveInSecretBoxMatrix)
+        public void MoveSelectedSecretBoxArrow(ePossibleMoveInSecretBoxMatrix? i_PossibleMoveInSecretBoxMatrix)
         {
-            this.m_SecretBoxesMatrix[this.m_CurrentSecretBoxXCoordinate][this.m_CurrentSecretBoxYCoordinate].ForgetThisSecretBox();
-
             switch (i_PossibleMoveInSecretBoxMatrix)
             {
                 case ePossibleMoveInSecretBoxMatrix.MoveUpInSecretBoxMatrix:
@@ -46,8 +68,6 @@ namespace myOpenGL.Classes
                     this.moveLeftInSecretBoxMatrix();
                     break;
             }
-
-            this.m_SecretBoxesMatrix[this.m_CurrentSecretBoxXCoordinate][this.m_CurrentSecretBoxYCoordinate].SelectThisSecretBox();
         }
 
         // PRIVATE METHODS

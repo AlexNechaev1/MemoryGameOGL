@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Axis3D.cs" />
+    <Compile Include="Classes\Reflector.cs" />
     <Compile Include="Classes\SecretBox.cs" />
     <Compile Include="Classes\SecretBoxMatrix.cs" />
     <Compile Include="Enums\ePossibleMoveInSecretBoxMatrix.cs" />
