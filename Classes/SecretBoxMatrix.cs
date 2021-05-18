@@ -1,6 +1,5 @@
 ﻿using myOpenGL.Enums;
 using myOpenGL.Structs;
-using myOpenGL;
 using System;
 using System.Collections.Generic;
 using OpenGL;
