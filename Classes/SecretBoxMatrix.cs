@@ -85,7 +85,7 @@ namespace myOpenGL.Classes
 
         private void drawSecretBoxesMatrix()
         {
-            OpenGL.GL.glColor3f(1, 1, 1);
+            
             // test           
             for (int i = 0; i < this.m_NumberOfRowsAndColumns; i++)
             {

@@ -24,6 +24,8 @@ namespace myOpenGL.Classes
         // PUBLIC METHODS
         public void DrawSecretBox()
         {
+            OpenGL.GL.glColor3f(1, 1, 1);
+
             GL.glPushMatrix();
             calculateAddValue();
     
