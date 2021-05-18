@@ -13,12 +13,12 @@ namespace myOpenGL.Classes
         private bool m_AddToCurrentElevationValueFlag = true;
         private bool m_IsSelectedSecretBox = false;
         private bool m_HasReachedMaxHeight = false;
-        private Point3D m_TranslatePoint;
+        public Point3D TranslatePoint { get; private set; }
 
         // CTOR
         public SecretBox(Point3D i_TranslatePoint)
         {
-            this.m_TranslatePoint = i_TranslatePoint;
+            this.TranslatePoint = i_TranslatePoint;
         }
 
         // PUBLIC METHODS
@@ -27,15 +27,9 @@ namespace myOpenGL.Classes
             GL.glPushMatrix();
             calculateAddValue();
     
-            GL.glTranslatef(this.m_TranslatePoint.X, this.m_TranslatePoint.Y, this.m_TranslatePoint.Z);
+            GL.glTranslatef(this.TranslatePoint.X, this.TranslatePoint.Y, this.TranslatePoint.Z);
             GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
             preformSecretBoxDrawing();
-        
-            GL.glTranslatef(0.0f, 1, 0);
-            GL.glRotatef(-180f, 1, 0, 0);
-            GL.glTranslatef(0.0f, -1, 0);
-
-            drawUpperCase();
 
             GL.glPopMatrix();
         }
@@ -152,15 +146,6 @@ namespace myOpenGL.Classes
             GL.glVertex3f(0, 0, 1);
 
             //upper case
-            //drawUpperCase();
-
-            GL.glEnd();
-        }
-
-        private void drawUpperCase()
-        {
-            GL.glBegin(GL.GL_QUADS);
-
             GL.glTexCoord2f(0.5f, 0.0f);
             GL.glVertex3f(0, 1, 0);
 
