@@ -182,5 +182,13 @@ namespace myOpenGL
 
             cGL.SecretBoxMatrixInstance.MoveSelectedSecretBoxArrow(possibleMoveInSecretBoxMatrix);
         }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                cGL.SecretBoxMatrixInstance.PerformEnterKeyPress();
+            }
+        }
     }
 }
