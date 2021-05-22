@@ -42,7 +42,7 @@ namespace myOpenGL.Classes
             GL.glColor3f(1, 1, 1);
 
             GL.glPushMatrix();
-            //calculateAddValue();
+            calculateAddValue();
             //openBox();
 
             GL.glTranslatef(this.TranslatePoint.X, this.TranslatePoint.Y, this.TranslatePoint.Z);

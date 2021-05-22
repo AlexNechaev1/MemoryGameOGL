@@ -15,8 +15,8 @@ namespace myOpenGL.Classes
         private int m_CurrentSecretBoxYCoordinate = 0;
         private GLUquadric m_GLUquadricObject;
         private SecretBox m_CurrentSecretBoxPointer;
-        private bool m_EnterKeyWasPressed = false;
         private bool m_DrawSelectedSecretBoxArrow = true;
+        private int m_CurrentPlayerStepsCounter = 0;
 
         // CTOR
         public SecretBoxMatrix(int i_NumberOfRowsAndColumns)
@@ -39,10 +39,9 @@ namespace myOpenGL.Classes
             if (this.m_DrawSelectedSecretBoxArrow)
             {
                 Point3D currentPoint = this.m_CurrentSecretBoxPointer.TranslatePoint;
-
                 GL.glPushMatrix();
 
-                GL.glColor3f(1.0f, 0.0f, 0.0f);
+                GL.glColor3f(1, 0, 0);
                 GL.glTranslatef(currentPoint.X + 0.5f, currentPoint.Y + 2, currentPoint.Z + 0.5f);
                 GL.glRotatef(-90, 1, 0, 0);
                 GLU.gluCylinder(this.m_GLUquadricObject, 0.0, 0.5, 1.5, 16, 16);
@@ -59,12 +58,12 @@ namespace myOpenGL.Classes
 
         public void PerformEnterKeyPress()
         {
-            this.m_EnterKeyWasPressed = true;
+            this.performActionsAfterEnterWasPressed();
         }
 
         public void MoveSelectedSecretBoxArrow(ePossibleMoveInSecretBoxMatrix? i_PossibleMoveInSecretBoxMatrix)
         {
-            this.m_CurrentSecretBoxPointer.ForgetThisSecretBox();
+            //this.m_CurrentSecretBoxPointer.ForgetThisSecretBox();
 
             switch (i_PossibleMoveInSecretBoxMatrix)
             {
@@ -83,17 +82,26 @@ namespace myOpenGL.Classes
             }
 
             this.m_CurrentSecretBoxPointer = this.m_SecretBoxesMatrix[m_CurrentSecretBoxXCoordinate][m_CurrentSecretBoxYCoordinate];
-            if (this.m_EnterKeyWasPressed)
-            {
-                this.performActionsAfterEnterWasPressed();
-            }
         }
 
         // PRIVATE METHODS
+        private void countCurrentPlayerSteps()
+        {
+            this.m_CurrentPlayerStepsCounter++;
+            if (this.m_CurrentPlayerStepsCounter == 1)
+            {
+            }
+            else
+            {
+                //after importing logic, we have to check if the move was right or wrong
+                this.m_CurrentPlayerStepsCounter = 0;
+            }
+        }
+
         private void performActionsAfterEnterWasPressed()
         {
+            this.countCurrentPlayerSteps();
             this.m_CurrentSecretBoxPointer.SelectThisSecretBox();
-            this.m_EnterKeyWasPressed = false;
             this.moveSelectedSecretBoxArrowToTheNextSecretBox();
         }
 
