@@ -160,7 +160,7 @@ namespace myOpenGL.Classes
         private void drawSecretBoxesMatrix()
         {
             GL.glColor3f(1, 1, 1);
-
+          
             foreach (List<SecretBox> secretBoxList in this.m_SecretBoxesMatrix)
             {
                 foreach (SecretBox secretBox in secretBoxList)

@@ -222,7 +222,9 @@ namespace OpenGL
             //x - ימינה/שמאלה
             //y - למעלה/למטה
             //z - קרוב/רחוק
+           
             GL.glTranslatef(-5.0f, 0.0f, -10.0f);
+            GL.glRotatef(30.0f, 2.0f, 2.0f, 0.0f);
 
             this.m_StaticAxis3D.DrawAxis3D();
 
