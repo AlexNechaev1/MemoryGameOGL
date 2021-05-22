@@ -15,19 +15,17 @@ namespace myOpenGL.Classes
         private bool m_HasReachedMaxHeight = false;
 
         //Case Angels
-        private float m_topCaseAngle = 0;
-        private float m_rightCaseAngle = 0;
-        private float m_leftCaseAngle = 0;
-        private float m_frontCaseAngle = 0;
-        private float m_backCaseAngle = 0;
+        private float m_TopCaseAngle = 0;
+        private float m_RightCaseAngle = 0;
+        private float m_LeftCaseAngle = 0;
+        private float m_FrontCaseAngle = 0;
+        private float m_BackCaseAngle = 0;
         //Base Angle
-        private float currentAngle = 0.0f;
-        private float angleDelta = 1.0f;
-
+        private float m_CurrentAngle = 0.0f;
+        private float m_AngleDelta = 1.0f;
 
         public bool IsSecretBoxVisible { get; private set; }
         public bool IsSelectedSecretBox { get; private set; }
-
         public Point3D TranslatePoint { get; private set; }
 
         // CTOR
@@ -41,12 +39,11 @@ namespace myOpenGL.Classes
         // PUBLIC METHODS
         public void DrawSecretBox()
         {
-
-            OpenGL.GL.glColor3f(1, 1, 1);
+            GL.glColor3f(1, 1, 1);
 
             GL.glPushMatrix();
-            calculateAddValue();
-            openBox();
+            //calculateAddValue();
+            //openBox();
 
             GL.glTranslatef(this.TranslatePoint.X, this.TranslatePoint.Y, this.TranslatePoint.Z);
             GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
@@ -54,29 +51,6 @@ namespace myOpenGL.Classes
             preformSecretBoxDrawing();
 
             GL.glPopMatrix();
-        }
-
-        public void Update(int caseSide,float angle)
-        {
-            switch (caseSide)
-            {
-                case 1: //Top case
-                    m_topCaseAngle = angle;
-                    break;
-                case 2: //Right case
-                    m_rightCaseAngle = angle;
-                    break;
-                case 3: //Left case
-                    m_leftCaseAngle = angle;
-                    break;
-                case 4: //Front case
-                    m_frontCaseAngle = angle;
-                    break;
-                case 5: //Back Case
-                    m_backCaseAngle = angle;
-                    break;
-            }
-
         }
 
         public void SelectThisSecretBox()
@@ -94,6 +68,29 @@ namespace myOpenGL.Classes
         }
 
         // PRIVATE METHODS
+        private void update(int i_CaseSide, float i_Angle)
+        {
+            switch (i_CaseSide)
+            {
+                case 1: //Top case
+                    m_TopCaseAngle = i_Angle;
+                    break;
+                case 2: //Right case
+                    m_RightCaseAngle = i_Angle;
+                    break;
+                case 3: //Left case
+                    m_LeftCaseAngle = i_Angle;
+                    break;
+                case 4: //Front case
+                    m_FrontCaseAngle = i_Angle;
+                    break;
+                case 5: //Back Case
+                    m_BackCaseAngle = i_Angle;
+                    break;
+            }
+
+        }
+
         private void calculateAddValue()
         {
             if (this.m_AddToCurrentElevationValueFlag)
@@ -123,42 +120,38 @@ namespace myOpenGL.Classes
 
         public void openBox()
         {
-            if (currentAngle <= 90)
+            if (m_CurrentAngle <= 90)
             {
-                currentAngle += angleDelta;
+                m_CurrentAngle += m_AngleDelta;
             }
             //Reset the box to close position
             else
             {
-                currentAngle = 0.0f;
+                m_CurrentAngle = 0.0f;
             }
 
             //OPEN TOP CASE
-            this.Update(1, (-1)* currentAngle);
+            this.update(1, (-1)* m_CurrentAngle);
             //OPEN RIGHT CASE
-            this.Update(2, (-1)* currentAngle);
+            this.update(2, (-1)* m_CurrentAngle);
             //OPEN LEFT CASE
-            this.Update(3, currentAngle);
+            this.update(3, m_CurrentAngle);
             //OPEN FRONT CASE
-            this.Update(4, currentAngle);
+            this.update(4, m_CurrentAngle);
         }
 
         private void preformSecretBoxDrawing()
         {
             drawBackCase();
-
             drawLeftCase();
-
             drawRightCase();
-
             drawFrontCase();
-
             drawBottomCase();
-
             drawUpperCase();
         }
 
-        public void drawBackCase()
+        #region SecretBox drawing methods
+        private void drawBackCase()
         {
             GL.glPushMatrix();
 
@@ -183,11 +176,11 @@ namespace myOpenGL.Classes
             GL.glPopMatrix();
         }
 
-        public void drawLeftCase()
+        private void drawLeftCase()
         {
             GL.glPushMatrix();
 
-            GL.glRotatef(m_leftCaseAngle, 0, 0, 1);
+            GL.glRotatef(m_LeftCaseAngle, 0, 0, 1);
 
             GL.glBegin(GL.GL_QUADS);
 
@@ -208,12 +201,12 @@ namespace myOpenGL.Classes
             GL.glPopMatrix();
         }
 
-        public void drawRightCase()
+        private void drawRightCase()
         {
             GL.glPushMatrix();
 
             GL.glTranslatef(1.0f, 0.0f, 0.0f);
-            GL.glRotatef(m_rightCaseAngle, 0, 0, 1);
+            GL.glRotatef(m_RightCaseAngle, 0, 0, 1);
             GL.glTranslatef(-1.0f, 0.0f, 0.0f);
 
             GL.glBegin(GL.GL_QUADS);
@@ -236,13 +229,12 @@ namespace myOpenGL.Classes
             GL.glPopMatrix();
         }
 
-
-        public void drawFrontCase()
+        private void drawFrontCase()
         {
             GL.glPushMatrix();
 
             GL.glTranslatef(0.0f, 0.0f, 1.0f);
-            GL.glRotatef(m_frontCaseAngle, 1, 0, 0);
+            GL.glRotatef(m_FrontCaseAngle, 1, 0, 0);
             GL.glTranslatef(0.0f, 0.0f, -1.0f);
 
             GL.glBegin(GL.GL_QUADS);
@@ -264,8 +256,7 @@ namespace myOpenGL.Classes
             GL.glPopMatrix();
         }
 
-
-        public void drawBottomCase()
+        private void drawBottomCase()
         {
            
             GL.glBegin(GL.GL_QUADS);
@@ -285,13 +276,13 @@ namespace myOpenGL.Classes
             GL.glEnd();
         }
 
-        public void drawUpperCase()
+        private void drawUpperCase()
         {
 
             GL.glPushMatrix();
 
             GL.glTranslatef(0.0f, 1, 0);
-            GL.glRotatef(m_topCaseAngle, 1, 0, 0);
+            GL.glRotatef(m_TopCaseAngle, 1, 0, 0);
             GL.glTranslatef(0.0f, -1, 0);
 
             GL.glBegin(GL.GL_QUADS);
@@ -312,7 +303,6 @@ namespace myOpenGL.Classes
 
             GL.glPopMatrix();
         }
-
+        #endregion
     }
-
 }
