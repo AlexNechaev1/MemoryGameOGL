@@ -156,31 +156,47 @@ namespace myOpenGL
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            ePossibleMoveInSecretBoxMatrix? possibleMoveInSecretBoxMatrix = null;
             char pressedKey = e.KeyChar;
             e.Handled = true;
 
-            switch(pressedKey)
+            if (this.checkIfPressedKeyIsMovementKey(pressedKey))
             {
-                case 'w':
-                case 'W':
-                    possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveUpInSecretBoxMatrix;
-                    break;
-                case 'a':
-                case 'A':
-                    possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveLeftInSecretBoxMatrix;
-                    break;
-                case 's':
-                case 'S':
-                    possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveDownInSecretBoxMatrix;
-                    break;
-                case 'd':
-                case 'D':
-                    possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveRightInSecretBoxMatrix;
-                    break;
-            }
+                ePossibleMoveInSecretBoxMatrix? possibleMoveInSecretBoxMatrix = null;
+                switch (pressedKey)
+                {
+                    case 'w':
+                    case 'W':
+                        possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveUpInSecretBoxMatrix;
+                        break;
+                    case 'a':
+                    case 'A':
+                        possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveLeftInSecretBoxMatrix;
+                        break;
+                    case 's':
+                    case 'S':
+                        possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveDownInSecretBoxMatrix;
+                        break;
+                    case 'd':
+                    case 'D':
+                        possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveRightInSecretBoxMatrix;
+                        break;
+                }
 
-            cGL.SecretBoxMatrixInstance.MoveSelectedSecretBoxArrow(possibleMoveInSecretBoxMatrix);
+                cGL.SecretBoxMatrixInstance.MoveSelectedSecretBoxArrow(possibleMoveInSecretBoxMatrix);
+            }
+        }
+
+        private bool checkIfPressedKeyIsMovementKey(char i_KeyToCheck)
+        {
+            bool result = false;
+            i_KeyToCheck = Char.ToLower(i_KeyToCheck);
+
+            result = i_KeyToCheck == 's';
+            result |= i_KeyToCheck == 'a';
+            result |= i_KeyToCheck == 'd';
+            result |= i_KeyToCheck == 'w';
+
+            return result;
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
