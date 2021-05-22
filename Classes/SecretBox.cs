@@ -12,7 +12,6 @@ namespace myOpenGL.Classes
         private float m_CurrentElevationValue = 0;
         private const float k_BoxSize = 1;
         private bool m_AddToCurrentElevationValueFlag = true;
-        private bool m_IsSelectedSecretBox = false;
         private bool m_HasReachedMaxHeight = false;
 
         //Case Angels
@@ -25,12 +24,18 @@ namespace myOpenGL.Classes
         private float currentAngle = 0.0f;
         private float angleDelta = 1.0f;
 
+
+        public bool IsSecretBoxVisible { get; private set; }
+        public bool IsSelectedSecretBox { get; private set; }
+
         public Point3D TranslatePoint { get; private set; }
 
         // CTOR
         public SecretBox(Point3D i_TranslatePoint)
         {
             this.TranslatePoint = i_TranslatePoint;
+            this.IsSecretBoxVisible = true;
+            this.IsSelectedSecretBox = false;
         }
 
         // PUBLIC METHODS
@@ -76,14 +81,14 @@ namespace myOpenGL.Classes
 
         public void SelectThisSecretBox()
         {
-            this.m_IsSelectedSecretBox = true;
+            this.IsSelectedSecretBox = true;
             this.m_MaxElevationValue = 2.5f;
             this.m_ElevationDeltaValue = 0.02f;
         }
 
         public void ForgetThisSecretBox()
         {
-            this.m_IsSelectedSecretBox = false;
+            this.IsSelectedSecretBox = false;
             this.m_MaxElevationValue = 1;
             this.m_ElevationDeltaValue = 0.01f;
         }
@@ -97,7 +102,7 @@ namespace myOpenGL.Classes
                 if (this.m_CurrentElevationValue > m_MaxElevationValue)
                 {
                     this.m_AddToCurrentElevationValueFlag = false;
-                    if (this.m_IsSelectedSecretBox)
+                    if (this.IsSelectedSecretBox)
                     {
                         this.m_HasReachedMaxHeight = true;
                     }
@@ -105,7 +110,7 @@ namespace myOpenGL.Classes
             }
             else
             {
-                if (!(this.m_IsSelectedSecretBox && this.m_HasReachedMaxHeight))
+                if (!(this.IsSelectedSecretBox && this.m_HasReachedMaxHeight))
                 {
                     this.m_CurrentElevationValue -= m_ElevationDeltaValue;
                     if (this.m_CurrentElevationValue < m_MinElevationValue)
