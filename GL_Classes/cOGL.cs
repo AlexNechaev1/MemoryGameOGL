@@ -66,7 +66,7 @@ namespace OpenGL
             pfd.cDepthBits = 32;
             pfd.iLayerType = (byte)(WGL.PFD_MAIN_PLANE);
 
-            //for Stencil support 
+            // for Stencil support 
             pfd.cStencilBits = 32;
 
             int pixelFormatIndex = 0;
@@ -169,7 +169,7 @@ namespace OpenGL
         }
         #endregion
 
-        public SecretBoxMatrix SecretBoxMatrixInstance { get; }
+        public SecretBoxMatrix SecretBoxMatrixInstance { get; private set; }
         private Form1 m_Form1Instance;
         private uint[] m_TextureUIntArray;
         private Axis3D m_StaticAxis3D;

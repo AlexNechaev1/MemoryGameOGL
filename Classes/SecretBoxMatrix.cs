@@ -3,6 +3,7 @@ using myOpenGL.Structs;
 using System;
 using System.Collections.Generic;
 using OpenGL;
+using MemoryGameLogic;
 
 namespace myOpenGL.Classes
 {
@@ -10,17 +11,19 @@ namespace myOpenGL.Classes
     {
         // CLASS MEMBERS
         private int m_NumberOfRowsAndColumns;
+        private List<Color> m_ColorsList;
         private List<List<SecretBox>> m_SecretBoxesMatrix;
+        private List<MatrixIndexPair> m_MatrixIndexPairList;
         private int m_CurrentSecretBoxXCoordinate = 0;
         private int m_CurrentSecretBoxYCoordinate = 0;
         private GLUquadric m_GLUquadricObject;
         private SecretBox m_CurrentSecretBoxPointer;
-        private bool m_EnterKeyWasPressed = false;
         private bool m_DrawSelectedSecretBoxArrow = true;
 
         // CTOR
         public SecretBoxMatrix(int i_NumberOfRowsAndColumns)
         {
+            this.initializeColorsList();
             this.m_NumberOfRowsAndColumns = i_NumberOfRowsAndColumns;
             this.fillSecretBoxesMatrix();
             this.m_GLUquadricObject = GLU.gluNewQuadric();
@@ -34,15 +37,43 @@ namespace myOpenGL.Classes
         }
 
         // PUBLIC METHODS
+        public void ColorHiddenObjectsInSecretBoxesMatrix(GameLogicComponent i_GameLogicComponent)
+        {
+            int colorsListCounter = 0;
+            MatrixIndex firstMatrixIndex, secondMatrixIndex;
+            this.m_MatrixIndexPairList = i_GameLogicComponent.MatrixIndexPairList;
+
+            foreach (MatrixIndexPair matrixIndexPair in this.m_MatrixIndexPairList)
+            {
+                firstMatrixIndex = matrixIndexPair.FirstIndex.Value;
+                secondMatrixIndex = matrixIndexPair.SecondIndex.Value;
+
+                this.m_SecretBoxesMatrix[firstMatrixIndex.MatrixRowIndex][firstMatrixIndex.MatrixColumnIndex].HiddenObjectColor = this.m_ColorsList[colorsListCounter];
+                this.m_SecretBoxesMatrix[secondMatrixIndex.MatrixRowIndex][secondMatrixIndex.MatrixColumnIndex].HiddenObjectColor = this.m_ColorsList[colorsListCounter];
+                colorsListCounter++;
+            }
+        }
+
+        public void SetXAndYValuesAsCurrentPlayerStep(Player i_CurrentPlayer, bool i_FirstStepFlag)
+        {
+            if (i_FirstStepFlag)
+            {
+                i_CurrentPlayer.FirstStep = new PlayerStep(this.m_CurrentSecretBoxXCoordinate, this.m_CurrentSecretBoxYCoordinate);
+            }
+            else
+            {
+                i_CurrentPlayer.SecondStep = new PlayerStep(this.m_CurrentSecretBoxXCoordinate, this.m_CurrentSecretBoxYCoordinate);
+            }
+        }
+
         public void DrawSelectedSecretBoxArrow()
         {
             if (this.m_DrawSelectedSecretBoxArrow)
             {
                 Point3D currentPoint = this.m_CurrentSecretBoxPointer.TranslatePoint;
-
                 GL.glPushMatrix();
 
-                GL.glColor3f(1.0f, 0.0f, 0.0f);
+                GL.glColor3f(1, 0, 0);
                 GL.glTranslatef(currentPoint.X + 0.5f, currentPoint.Y + 2, currentPoint.Z + 0.5f);
                 GL.glRotatef(-90, 1, 0, 0);
                 GLU.gluCylinder(this.m_GLUquadricObject, 0.0, 0.5, 1.5, 16, 16);
@@ -57,14 +88,15 @@ namespace myOpenGL.Classes
             this.drawSecretBoxesMatrix();
         }
 
-        public void PerformEnterKeyPress()
+        public void SelectTheCurrentSecretBox()
         {
-            this.m_EnterKeyWasPressed = true;
+            this.m_CurrentSecretBoxPointer.SelectThisSecretBox();
+            this.moveSelectedSecretBoxArrowToTheNextSecretBox();
         }
 
         public void MoveSelectedSecretBoxArrow(ePossibleMoveInSecretBoxMatrix? i_PossibleMoveInSecretBoxMatrix)
         {
-            this.m_CurrentSecretBoxPointer.ForgetThisSecretBox();
+            //this.m_CurrentSecretBoxPointer.ForgetThisSecretBox();
 
             switch (i_PossibleMoveInSecretBoxMatrix)
             {
@@ -83,18 +115,25 @@ namespace myOpenGL.Classes
             }
 
             this.m_CurrentSecretBoxPointer = this.m_SecretBoxesMatrix[m_CurrentSecretBoxXCoordinate][m_CurrentSecretBoxYCoordinate];
-            if (this.m_EnterKeyWasPressed)
-            {
-                this.performActionsAfterEnterWasPressed();
-            }
         }
 
         // PRIVATE METHODS
-        private void performActionsAfterEnterWasPressed()
+        private void initializeColorsList()
         {
-            this.m_CurrentSecretBoxPointer.SelectThisSecretBox();
-            this.m_EnterKeyWasPressed = false;
-            this.moveSelectedSecretBoxArrowToTheNextSecretBox();
+            this.m_ColorsList = new List<Color>();
+
+            // alex, please pick better colors
+            // note, that for some reason there are some colors that dont work
+            // like blue (0,0,1) that will show as black
+            // and white (1,1,1) that will show as yellow
+            this.m_ColorsList.Add(new Color(1, 0, 0));//1
+            this.m_ColorsList.Add(new Color(0, 1, 0));//2
+            this.m_ColorsList.Add(new Color(0, 1, 1));//3
+            this.m_ColorsList.Add(new Color(1, 0.5f, 0));//4
+            this.m_ColorsList.Add(new Color(0.5f, 0, 1));//5
+            this.m_ColorsList.Add(new Color(1, 0, 1));//6
+            this.m_ColorsList.Add(new Color(0.5f, 0, 0.5f));//7
+            this.m_ColorsList.Add(new Color(0.7f, 0 ,0.3f));//8
         }
 
         private void moveSelectedSecretBoxArrowToTheNextSecretBox()
@@ -165,7 +204,7 @@ namespace myOpenGL.Classes
             {
                 foreach (SecretBox secretBox in secretBoxList)
                 {
-                    secretBox.DrawSecretBox();
+                    secretBox.DrawSecretBoxWithItsContent();
                 }
             }
         }
