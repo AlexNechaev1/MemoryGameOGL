@@ -1,5 +1,7 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
+using MemoryGameLogic;
 using myOpenGL.Enums;
 using OpenGL;
 
@@ -8,6 +10,11 @@ namespace myOpenGL
     public partial class Form1 : Form
     {
         cOGL cGL;
+        private GameBoardDimensions m_CurrentGameBoardDimensions;
+        private GameLogicComponent m_GameLogicComponent;
+        private Player m_PlayerOne;
+        private Player m_PlayerTwo;
+        private int m_PlayerStepsCounter = 0;
 
         public Form1()
         {
@@ -26,6 +33,11 @@ namespace myOpenGL
             hScrollBarScroll(hScrollBar8, null);
             hScrollBarScroll(hScrollBar9, null);
             #endregion
+
+            this.m_CurrentGameBoardDimensions = new GameBoardDimensions(4, 4);
+            this.m_PlayerOne = new Player("Player one", true, Color.FromArgb(0, 192, 0));
+            this.m_PlayerTwo = new Player("Computer", false, Color.FromArgb(148, 0, 211));
+            this.m_GameLogicComponent = new GameLogicComponent(this.m_CurrentGameBoardDimensions, this.m_PlayerOne, this.m_PlayerTwo);
         }
 
         #region Original methods
@@ -203,8 +215,36 @@ namespace myOpenGL
         {
             if (e.KeyCode == Keys.Enter)
             {
-                cGL.SecretBoxMatrixInstance.PerformEnterKeyPress();
+                this.preformATurn();
+                this.cGL.SecretBoxMatrixInstance.PerformEnterKeyPress();
             }
         }
+
+        private void preformATurn()
+        {
+            /*if (this.m_GameLogicComponent.CheckIfCardIsNotShown(X, Y))
+            {
+                this.m_PlayerOne.FirstStep = new PlayerStep(X, Y);
+            }*/
+        }
+
+        /*private void preformATurn(IndexPictureBox i_IndexButton)
+        {
+            if (this.m_GameLogicComponent.CheckIfCardIsNotShown(i_IndexButton.HeightIndex, i_IndexButton.WidthIndex))
+            {
+                this.m_PlayerStepsCounter++;
+                this.m_PlayerPointer = this.m_GameLogicComponent.CurrentPlayerPointer;
+                showClickedButtonImage(i_IndexButton);
+                if (this.m_PlayerStepsCounter == 1)
+                {
+                    this.m_PlayerPointer.FirstStep = performHumanStep(i_IndexButton);
+                }
+                else
+                {
+                    this.m_PlayerPointer.SecondStep = performHumanStep(i_IndexButton);
+                    this.m_CardsRevealTimer.Start();
+                }
+            }
+        }*/
     }
 }

@@ -43,7 +43,7 @@ namespace myOpenGL.Classes
 
             GL.glPushMatrix();
             calculateAddValue();
-            //openBox();
+            openBox();
 
             GL.glTranslatef(this.TranslatePoint.X, this.TranslatePoint.Y, this.TranslatePoint.Z);
             GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);

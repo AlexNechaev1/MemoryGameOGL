@@ -16,7 +16,6 @@ namespace myOpenGL.Classes
         private GLUquadric m_GLUquadricObject;
         private SecretBox m_CurrentSecretBoxPointer;
         private bool m_DrawSelectedSecretBoxArrow = true;
-        private int m_CurrentPlayerStepsCounter = 0;
 
         // CTOR
         public SecretBoxMatrix(int i_NumberOfRowsAndColumns)
@@ -58,7 +57,8 @@ namespace myOpenGL.Classes
 
         public void PerformEnterKeyPress()
         {
-            this.performActionsAfterEnterWasPressed();
+            this.m_CurrentSecretBoxPointer.SelectThisSecretBox();
+            this.moveSelectedSecretBoxArrowToTheNextSecretBox();
         }
 
         public void MoveSelectedSecretBoxArrow(ePossibleMoveInSecretBoxMatrix? i_PossibleMoveInSecretBoxMatrix)
@@ -85,26 +85,6 @@ namespace myOpenGL.Classes
         }
 
         // PRIVATE METHODS
-        private void countCurrentPlayerSteps()
-        {
-            this.m_CurrentPlayerStepsCounter++;
-            if (this.m_CurrentPlayerStepsCounter == 1)
-            {
-            }
-            else
-            {
-                //after importing logic, we have to check if the move was right or wrong
-                this.m_CurrentPlayerStepsCounter = 0;
-            }
-        }
-
-        private void performActionsAfterEnterWasPressed()
-        {
-            this.countCurrentPlayerSteps();
-            this.m_CurrentSecretBoxPointer.SelectThisSecretBox();
-            this.moveSelectedSecretBoxArrowToTheNextSecretBox();
-        }
-
         private void moveSelectedSecretBoxArrowToTheNextSecretBox()
         {
             SecretBox secretBoxPointer = null;
