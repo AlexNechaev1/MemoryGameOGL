@@ -5,7 +5,7 @@ namespace myOpenGL.Classes
 {
     public class SecretBox
     {
-        // CLASS MEMBERS
+        #region CLASS MEMBERS
         private float m_MaxElevationValue = 1;
         private float m_MinElevationValue = 0;
         private float m_ElevationDeltaValue = 0.01f;
@@ -13,46 +13,49 @@ namespace myOpenGL.Classes
         private const float k_BoxSize = 1;
         private bool m_AddToCurrentElevationValueFlag = true;
         private bool m_HasReachedMaxHeight = false;
+        #endregion
 
-        //Case Angels
+        #region Case Angels
         private float m_TopCaseAngle = 0;
         private float m_RightCaseAngle = 0;
         private float m_LeftCaseAngle = 0;
         private float m_FrontCaseAngle = 0;
         private float m_BackCaseAngle = 0;
-        //Base Angle
+        #endregion
+
+        #region Base Angle
         private float m_CurrentAngle = 0.0f;
         private float m_AngleDelta = 1.0f;
         private float m_BoxAngle = 0.0f;
+        #endregion
 
         public bool IsSecretBoxVisible { get; private set; }
         public bool IsSelectedSecretBox { get; private set; }
         public Point3D TranslatePoint { get; private set; }
 
+        public Color HiddenObjectColor { get; set; }
+        private GLUquadric m_GLUquadricObject;
+
         // CTOR
         public SecretBox(Point3D i_TranslatePoint)
         {
+            this.HiddenObjectColor = new Color(1, 1, 1);
             this.TranslatePoint = i_TranslatePoint;
             this.IsSecretBoxVisible = true;
             this.IsSelectedSecretBox = false;
+            this.m_GLUquadricObject = GLU.gluNewQuadric();
+        }
+
+        ~SecretBox()
+        {
+            GLU.gluDeleteQuadric(this.m_GLUquadricObject);
         }
 
         // PUBLIC METHODS
-        public void DrawSecretBox()
+        public void DrawSecretBoxWithItsContent()
         {
-            GL.glColor3f(1, 1, 1);
-
-            GL.glPushMatrix();
-            calculateAddValue();
-            openBox();
-            spinBox();
-
-            GL.glTranslatef(this.TranslatePoint.X, this.TranslatePoint.Y, this.TranslatePoint.Z);
-            GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
-
-            preformSecretBoxDrawing();
-
-            GL.glPopMatrix();
+            this.drawSecretBox();
+            this.drawHiddenObject();
         }
 
         public void SelectThisSecretBox()
@@ -69,13 +72,13 @@ namespace myOpenGL.Classes
             this.m_ElevationDeltaValue = 0.01f;
         }
 
-        // PRIVATE METHODS
-        public void spinBox()
+        public void SpinBox()
         {
             m_BoxAngle = m_BoxAngle + 5;
             m_BoxAngle = m_BoxAngle % 360;
         }
 
+        // PRIVATE METHODS
         private void update(int i_CaseSide, float i_Angle)
         {
             switch (i_CaseSide)
@@ -126,7 +129,7 @@ namespace myOpenGL.Classes
             }
         }
 
-        public void openBox()
+        private void openBox()
         {
             if (m_CurrentAngle <= 90)
             {
@@ -139,13 +142,43 @@ namespace myOpenGL.Classes
             }
 
             //OPEN TOP CASE
-            this.update(1, (-1)* m_CurrentAngle);
+            this.update(1, (-1) * m_CurrentAngle);
             //OPEN RIGHT CASE
-            this.update(2, (-1)* m_CurrentAngle);
+            this.update(2, (-1) * m_CurrentAngle);
             //OPEN LEFT CASE
             this.update(3, m_CurrentAngle);
             //OPEN FRONT CASE
             this.update(4, m_CurrentAngle);
+        }
+        
+        #region Drawing methods
+        private void drawSecretBox()
+        {
+            GL.glColor3f(1, 1, 1);
+
+            GL.glPushMatrix();
+            calculateAddValue();
+            openBox();
+            SpinBox();
+
+            GL.glTranslatef(this.TranslatePoint.X, this.TranslatePoint.Y, this.TranslatePoint.Z);
+            GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
+
+            this.preformSecretBoxDrawing();
+
+            GL.glPopMatrix();
+        }
+
+        private void drawHiddenObject()
+        {
+            GL.glPushMatrix();
+
+            GL.glColor3f(this.HiddenObjectColor.R, this.HiddenObjectColor.G, this.HiddenObjectColor.B);
+            GL.glTranslatef(this.TranslatePoint.X + 0.5f, this.TranslatePoint.Y + 0.5f, this.TranslatePoint.Z + 0.5f);
+            GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
+            this.preformHiddenObjectDrawing();
+
+            GL.glPopMatrix();
         }
 
         private void preformSecretBoxDrawing()
@@ -165,6 +198,14 @@ namespace myOpenGL.Classes
 
             GL.glPopMatrix();
         }
+
+        private void preformHiddenObjectDrawing()
+        {
+            GL.glPushMatrix();
+            GLU.gluSphere(this.m_GLUquadricObject, 0.4, 10, 10);
+            GL.glPopMatrix();
+        }
+        #endregion
 
         #region SecretBox drawing methods
         private void drawBackCase()
@@ -274,7 +315,7 @@ namespace myOpenGL.Classes
 
         private void drawBottomCase()
         {
-           
+
             GL.glBegin(GL.GL_QUADS);
 
             GL.glTexCoord2f(0.5f, 0.0f);
