@@ -23,6 +23,7 @@ namespace myOpenGL.Classes
         //Base Angle
         private float m_CurrentAngle = 0.0f;
         private float m_AngleDelta = 1.0f;
+        private float m_BoxAngle = 0.0f;
 
         public bool IsSecretBoxVisible { get; private set; }
         public bool IsSelectedSecretBox { get; private set; }
@@ -44,6 +45,7 @@ namespace myOpenGL.Classes
             GL.glPushMatrix();
             calculateAddValue();
             openBox();
+            spinBox();
 
             GL.glTranslatef(this.TranslatePoint.X, this.TranslatePoint.Y, this.TranslatePoint.Z);
             GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
@@ -68,6 +70,12 @@ namespace myOpenGL.Classes
         }
 
         // PRIVATE METHODS
+        public void spinBox()
+        {
+            m_BoxAngle = m_BoxAngle + 5;
+            m_BoxAngle = m_BoxAngle % 360;
+        }
+
         private void update(int i_CaseSide, float i_Angle)
         {
             switch (i_CaseSide)
@@ -142,12 +150,20 @@ namespace myOpenGL.Classes
 
         private void preformSecretBoxDrawing()
         {
+            GL.glPushMatrix();
+
+            GL.glTranslatef(0.5f, 0.0f, 0.5f);
+            GL.glRotatef(m_BoxAngle, 0, 1, 0);
+            GL.glTranslatef(-0.5f, 0.0f, -0.5f);
+
             drawBackCase();
             drawLeftCase();
             drawRightCase();
             drawFrontCase();
             drawBottomCase();
             drawUpperCase();
+
+            GL.glPopMatrix();
         }
 
         #region SecretBox drawing methods
