@@ -13,6 +13,7 @@ namespace myOpenGL.Classes
         private const float k_BoxSize = 1;
         private bool m_AddToCurrentElevationValueFlag = true;
         private bool m_HasReachedMaxHeight = false;
+        private bool m_boxSelectedFlag = false;
         #endregion
 
         #region Case Angels
@@ -26,7 +27,7 @@ namespace myOpenGL.Classes
         #region Base Angle
         private float m_CurrentAngle = 0.0f;
         private float m_AngleDelta = 1.0f;
-        private float m_BoxAngle = 0.0f;
+        private float m_BoxRotateAngle = 0.0f;
         #endregion
 
         public bool IsSecretBoxVisible { get; private set; }
@@ -35,6 +36,7 @@ namespace myOpenGL.Classes
 
         public Color HiddenObjectColor { get; set; }
         private GLUquadric m_GLUquadricObject;
+       
 
         // CTOR
         public SecretBox(Point3D i_TranslatePoint)
@@ -52,6 +54,27 @@ namespace myOpenGL.Classes
         }
 
         // PUBLIC METHODS
+        public void setBoxSelectedFlag(bool i_boxSelectedFlag)
+        {
+            this.m_boxSelectedFlag = i_boxSelectedFlag;
+        }
+
+        public void openBoxRotateAngle()
+        {
+            if (this.m_boxSelectedFlag == true) 
+            {
+                if (this.m_CurrentAngle < 90)
+                {
+                    this.m_CurrentAngle += this.m_AngleDelta*(2.2f);
+                }
+                else
+                {
+                    this.m_boxSelectedFlag = false;
+                }
+                openBox();
+            }
+        }
+
         public void DrawSecretBoxWithItsContent()
         {
             this.drawSecretBox();
@@ -62,7 +85,7 @@ namespace myOpenGL.Classes
         {
             this.IsSelectedSecretBox = true;
             this.m_MaxElevationValue = 2.5f;
-            this.m_ElevationDeltaValue = 0.02f;
+            this.m_ElevationDeltaValue = 0.05f;
         }
 
         public void ForgetThisSecretBox()
@@ -74,12 +97,12 @@ namespace myOpenGL.Classes
 
         public void SpinBox()
         {
-            m_BoxAngle = m_BoxAngle + 5;
-            m_BoxAngle = m_BoxAngle % 360;
+            m_BoxRotateAngle = m_BoxRotateAngle + 5;
+            m_BoxRotateAngle = m_BoxRotateAngle % 360;
         }
 
         // PRIVATE METHODS
-        private void update(int i_CaseSide, float i_Angle)
+        private void Update(int i_CaseSide, float i_Angle)
         {
             switch (i_CaseSide)
             {
@@ -115,6 +138,7 @@ namespace myOpenGL.Classes
                         this.m_HasReachedMaxHeight = true;
                     }
                 }
+
             }
             else
             {
@@ -129,26 +153,29 @@ namespace myOpenGL.Classes
             }
         }
 
-        private void openBox()
+
+        public void openBox()
         {
-            if (m_CurrentAngle <= 90)
-            {
-                m_CurrentAngle += m_AngleDelta;
-            }
+            //if (m_CurrentAngle < 90)
+            //{
+            //    m_CurrentAngle += m_AngleDelta;
+            //}
             //Reset the box to close position
-            else
-            {
-                m_CurrentAngle = 0.0f;
-            }
+            //else
+            //{
+            //    m_CurrentAngle = 0.0f;
+            //}
 
             //OPEN TOP CASE
-            this.update(1, (-1) * m_CurrentAngle);
+            this.Update(1, (-3) * m_CurrentAngle);
             //OPEN RIGHT CASE
-            this.update(2, (-1) * m_CurrentAngle);
+            this.Update(2, (-1) * m_CurrentAngle);
             //OPEN LEFT CASE
-            this.update(3, m_CurrentAngle);
+            this.Update(3, m_CurrentAngle);
             //OPEN FRONT CASE
-            this.update(4, m_CurrentAngle);
+            this.Update(4, m_CurrentAngle);
+
+            this.Update(5, (-1)*m_CurrentAngle);
         }
         
         #region Drawing methods
@@ -158,7 +185,9 @@ namespace myOpenGL.Classes
 
             GL.glPushMatrix();
             calculateAddValue();
-            openBox();
+            openBoxRotateAngle();
+         
+            //openBox();
             SpinBox();
 
             GL.glTranslatef(this.TranslatePoint.X, this.TranslatePoint.Y, this.TranslatePoint.Z);
@@ -186,7 +215,7 @@ namespace myOpenGL.Classes
             GL.glPushMatrix();
 
             GL.glTranslatef(0.5f, 0.0f, 0.5f);
-            GL.glRotatef(m_BoxAngle, 0, 1, 0);
+            GL.glRotatef(m_BoxRotateAngle, 0, 1, 0);
             GL.glTranslatef(-0.5f, 0.0f, -0.5f);
 
             drawBackCase();
@@ -194,7 +223,7 @@ namespace myOpenGL.Classes
             drawRightCase();
             drawFrontCase();
             drawBottomCase();
-            drawUpperCase();
+            drawTopCase();
 
             GL.glPopMatrix();
         }
@@ -212,7 +241,7 @@ namespace myOpenGL.Classes
         {
             GL.glPushMatrix();
 
-            //GL.glRotatef(-90f, 1, 0, 0);
+            GL.glRotatef(m_BackCaseAngle+1, 1, 0, 0);
 
             GL.glBegin(GL.GL_QUADS);
 
@@ -333,14 +362,18 @@ namespace myOpenGL.Classes
             GL.glEnd();
         }
 
-        private void drawUpperCase()
+        private void drawTopCase()
         {
 
             GL.glPushMatrix();
 
-            GL.glTranslatef(0.0f, 1, 0);
+
+            GL.glRotatef(m_BackCaseAngle, 1, 0, 0);
+
+            GL.glTranslatef(0.0f, 1f, 0);
             GL.glRotatef(m_TopCaseAngle, 1, 0, 0);
             GL.glTranslatef(0.0f, -1, 0);
+
 
             GL.glBegin(GL.GL_QUADS);
 

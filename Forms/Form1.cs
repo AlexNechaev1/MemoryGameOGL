@@ -219,6 +219,7 @@ namespace myOpenGL
             if (e.KeyCode == Keys.Enter)
             {
                 this.preformATurn();
+                //Preform OpenBox to the selected box
             }
         }
 

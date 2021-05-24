@@ -74,7 +74,7 @@ namespace myOpenGL.Classes
                 GL.glPushMatrix();
 
                 GL.glColor3f(1, 0, 0);
-                GL.glTranslatef(currentPoint.X + 0.5f, currentPoint.Y + 2, currentPoint.Z + 0.5f);
+                GL.glTranslatef(currentPoint.X + 0.5f, currentPoint.Y + 3.5f, currentPoint.Z + 0.5f);
                 GL.glRotatef(-90, 1, 0, 0);
                 GLU.gluCylinder(this.m_GLUquadricObject, 0.0, 0.5, 1.5, 16, 16);
                 GL.glTranslatef(-1 * (currentPoint.X + 0.5f), -1 * (currentPoint.Y + 3), -1 * (currentPoint.Z + 0.5f));
@@ -91,6 +91,8 @@ namespace myOpenGL.Classes
         public void SelectTheCurrentSecretBox()
         {
             this.m_CurrentSecretBoxPointer.SelectThisSecretBox();
+            this.m_CurrentSecretBoxPointer.setBoxSelectedFlag(true);
+            this.m_CurrentSecretBoxPointer.openBox();
             this.moveSelectedSecretBoxArrowToTheNextSecretBox();
         }
 
