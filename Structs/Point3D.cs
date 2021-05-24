@@ -12,5 +12,10 @@
             this.Y = i_Y;
             this.Z = i_Z;
         }
+
+        public override string ToString()
+        {
+            return string.Format("X = {0}, Y = {1}, Z = {2}", this.X, this.Y, this.Z);
+        }
     }
 }
