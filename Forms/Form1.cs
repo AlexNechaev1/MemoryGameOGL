@@ -1,5 +1,8 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
+using MemoryGameLogic;
+using myOpenGL.Enums;
 using OpenGL;
 
 namespace myOpenGL
@@ -7,9 +10,16 @@ namespace myOpenGL
     public partial class Form1 : Form
     {
         cOGL cGL;
+        private GameBoardDimensions m_CurrentGameBoardDimensions;
+        private GameLogicComponent m_GameLogicComponent;
+        private Player m_PlayerOne;
+        private Player m_PlayerTwo;
+        private Player m_CurrentPlayerPointer;
+        private int m_PlayerStepsCounter = 0;
 
         public Form1()
         {
+            #region Original CTOR code
             InitializeComponent();
             cGL = new cOGL(panel1, this);
             //apply the bars values as cGL.ScrollValue[..] properties 
@@ -23,8 +33,17 @@ namespace myOpenGL
             hScrollBarScroll(hScrollBar7, null);
             hScrollBarScroll(hScrollBar8, null);
             hScrollBarScroll(hScrollBar9, null);
+            #endregion
+
+            this.m_CurrentGameBoardDimensions = new GameBoardDimensions(4, 4);
+            this.m_PlayerOne = new Player("Player one", true, Color.FromArgb(0, 192, 0));
+            this.m_PlayerTwo = new Player("Computer", false, Color.FromArgb(148, 0, 211));
+            this.m_CurrentPlayerPointer = this.m_PlayerOne;
+            this.m_GameLogicComponent = new GameLogicComponent(this.m_CurrentGameBoardDimensions, this.m_PlayerOne, this.m_PlayerTwo);
+            this.cGL.SecretBoxMatrixInstance.ColorHiddenObjectsInSecretBoxesMatrix(this.m_GameLogicComponent);
         }
 
+        #region Original methods
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             cGL.Draw();
@@ -147,6 +166,76 @@ namespace myOpenGL
         private void secretBoxElevationTimer_Tick(object sender, EventArgs e)
         {
             cGL.Draw();
+        }
+        #endregion
+
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char pressedKey = e.KeyChar;
+            e.Handled = true;
+
+            if (this.checkIfPressedKeyIsMovementKey(pressedKey))
+            {
+                ePossibleMoveInSecretBoxMatrix? possibleMoveInSecretBoxMatrix = null;
+                switch (pressedKey)
+                {
+                    case 'w':
+                    case 'W':
+                        possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveUpInSecretBoxMatrix;
+                        break;
+                    case 'a':
+                    case 'A':
+                        possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveLeftInSecretBoxMatrix;
+                        break;
+                    case 's':
+                    case 'S':
+                        possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveDownInSecretBoxMatrix;
+                        break;
+                    case 'd':
+                    case 'D':
+                        possibleMoveInSecretBoxMatrix = ePossibleMoveInSecretBoxMatrix.MoveRightInSecretBoxMatrix;
+                        break;
+                }
+
+                cGL.SecretBoxMatrixInstance.MoveSelectedSecretBoxArrow(possibleMoveInSecretBoxMatrix);
+            }
+        }
+
+        private bool checkIfPressedKeyIsMovementKey(char i_KeyToCheck)
+        {
+            bool result = false;
+            i_KeyToCheck = Char.ToLower(i_KeyToCheck);
+
+            result = i_KeyToCheck == 's';
+            result |= i_KeyToCheck == 'a';
+            result |= i_KeyToCheck == 'd';
+            result |= i_KeyToCheck == 'w';
+
+            return result;
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.preformATurn();
+                //Preform OpenBox to the selected box
+            }
+        }
+
+        private void preformATurn()
+        {
+            this.m_PlayerStepsCounter++;
+            this.cGL.SecretBoxMatrixInstance.SelectTheCurrentSecretBox();
+            if (this.m_PlayerStepsCounter == 1)
+            {
+                this.cGL.SecretBoxMatrixInstance.SetXAndYValuesAsCurrentPlayerStep(this.m_CurrentPlayerPointer, true);
+            }
+            else
+            {
+                this.m_PlayerStepsCounter = 0;
+                this.cGL.SecretBoxMatrixInstance.SetXAndYValuesAsCurrentPlayerStep(this.m_CurrentPlayerPointer, false);
+            }
         }
     }
 }

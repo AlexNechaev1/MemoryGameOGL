@@ -45,7 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Axis3D.cs" />
+    <Compile Include="Classes\Reflector.cs" />
     <Compile Include="Classes\SecretBox.cs" />
+    <Compile Include="Classes\SecretBoxMatrix.cs" />
+    <Compile Include="Enums\ePossibleMoveInSecretBoxMatrix.cs" />
     <Compile Include="GL_Classes\cOGL.cs" />
     <Compile Include="Forms\Form1.cs">
       <SubType>Form</SubType>
@@ -58,6 +61,7 @@
     <Compile Include="GL_Classes\OpenGL.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structs\Color.cs" />
     <Compile Include="Structs\Point3D.cs" />
     <EmbeddedResource Include="Forms\Form1.resx">
       <SubType>Designer</SubType>

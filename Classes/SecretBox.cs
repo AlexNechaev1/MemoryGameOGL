@@ -5,134 +5,394 @@ namespace myOpenGL.Classes
 {
     public class SecretBox
     {
-        // CLASS MEMBERS
-        private const float k_MaxElevationValue = 1;
-        private const float k_MinElevationValue = 0;
-        private const float k_ElevationDeltaValue = 0.01f;
+        #region CLASS MEMBERS
+        private float m_MaxElevationValue = 1;
+        private float m_MinElevationValue = 0;
+        private float m_ElevationDeltaValue = 0.01f;
         private float m_CurrentElevationValue = 0;
+        private const float k_BoxSize = 1;
         private bool m_AddToCurrentElevationValueFlag = true;
-        private Point3D m_BottomLeftPoint;
+        private bool m_HasReachedMaxHeight = false;
+        private bool m_boxSelectedFlag = false;
+        #endregion
+
+        #region Case Angels
+        private float m_TopCaseAngle = 0;
+        private float m_RightCaseAngle = 0;
+        private float m_LeftCaseAngle = 0;
+        private float m_FrontCaseAngle = 0;
+        private float m_BackCaseAngle = 0;
+        #endregion
+
+        #region Base Angle
+        private float m_CurrentAngle = 0.0f;
+        private float m_AngleDelta = 1.0f;
+        private float m_BoxRotateAngle = 0.0f;
+        #endregion
+
+        public bool IsSecretBoxVisible { get; private set; }
+        public bool IsSelectedSecretBox { get; private set; }
+        public Point3D TranslatePoint { get; private set; }
+
+        public Color HiddenObjectColor { get; set; }
+        private GLUquadric m_GLUquadricObject;
+       
 
         // CTOR
-        public SecretBox(Point3D i_BottomLeftPoint)
+        public SecretBox(Point3D i_TranslatePoint)
         {
-            this.m_BottomLeftPoint = i_BottomLeftPoint;
+            this.HiddenObjectColor = new Color(1, 1, 1);
+            this.TranslatePoint = i_TranslatePoint;
+            this.IsSecretBoxVisible = true;
+            this.IsSelectedSecretBox = false;
+            this.m_GLUquadricObject = GLU.gluNewQuadric();
+        }
+
+        ~SecretBox()
+        {
+            GLU.gluDeleteQuadric(this.m_GLUquadricObject);
         }
 
         // PUBLIC METHODS
-        public void DrawSecretBox()
+        public void setBoxSelectedFlag(bool i_boxSelectedFlag)
         {
-            calculateAddValue();
+            this.m_boxSelectedFlag = i_boxSelectedFlag;
+        }
 
-            GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
-            preformSecretBoxDrawing();
-            GL.glTranslatef(0.0f, -1 * this.m_CurrentElevationValue, 0);
+        public void openBoxRotateAngle()
+        {
+            if (this.m_boxSelectedFlag == true) 
+            {
+                if (this.m_CurrentAngle < 90)
+                {
+                    this.m_CurrentAngle += this.m_AngleDelta*(2.2f);
+                }
+                else
+                {
+                    this.m_boxSelectedFlag = false;
+                }
+                openBox();
+            }
+        }
+
+        public void DrawSecretBoxWithItsContent()
+        {
+            this.drawSecretBox();
+            this.drawHiddenObject();
+        }
+
+        public void SelectThisSecretBox()
+        {
+            this.IsSelectedSecretBox = true;
+            this.m_MaxElevationValue = 2.5f;
+            this.m_ElevationDeltaValue = 0.05f;
+        }
+
+        public void ForgetThisSecretBox()
+        {
+            this.IsSelectedSecretBox = false;
+            this.m_MaxElevationValue = 1;
+            this.m_ElevationDeltaValue = 0.01f;
+        }
+
+        public void SpinBox()
+        {
+            m_BoxRotateAngle = m_BoxRotateAngle + 5;
+            m_BoxRotateAngle = m_BoxRotateAngle % 360;
         }
 
         // PRIVATE METHODS
+        private void Update(int i_CaseSide, float i_Angle)
+        {
+            switch (i_CaseSide)
+            {
+                case 1: //Top case
+                    m_TopCaseAngle = i_Angle;
+                    break;
+                case 2: //Right case
+                    m_RightCaseAngle = i_Angle;
+                    break;
+                case 3: //Left case
+                    m_LeftCaseAngle = i_Angle;
+                    break;
+                case 4: //Front case
+                    m_FrontCaseAngle = i_Angle;
+                    break;
+                case 5: //Back Case
+                    m_BackCaseAngle = i_Angle;
+                    break;
+            }
+
+        }
+
         private void calculateAddValue()
         {
             if (this.m_AddToCurrentElevationValueFlag)
             {
-                this.m_CurrentElevationValue += k_ElevationDeltaValue;
-                if (this.m_CurrentElevationValue > k_MaxElevationValue)
+                this.m_CurrentElevationValue += m_ElevationDeltaValue;
+                if (this.m_CurrentElevationValue > m_MaxElevationValue)
                 {
                     this.m_AddToCurrentElevationValueFlag = false;
+                    if (this.IsSelectedSecretBox)
+                    {
+                        this.m_HasReachedMaxHeight = true;
+                    }
                 }
+
             }
             else
             {
-                this.m_CurrentElevationValue -= k_ElevationDeltaValue;
-                if (this.m_CurrentElevationValue < k_MinElevationValue)
+                if (!(this.IsSelectedSecretBox && this.m_HasReachedMaxHeight))
                 {
-                    this.m_AddToCurrentElevationValueFlag = true;
+                    this.m_CurrentElevationValue -= m_ElevationDeltaValue;
+                    if (this.m_CurrentElevationValue < m_MinElevationValue)
+                    {
+                        this.m_AddToCurrentElevationValueFlag = true;
+                    }
                 }
             }
+        }
+
+
+        public void openBox()
+        {
+            //if (m_CurrentAngle < 90)
+            //{
+            //    m_CurrentAngle += m_AngleDelta;
+            //}
+            //Reset the box to close position
+            //else
+            //{
+            //    m_CurrentAngle = 0.0f;
+            //}
+
+            //OPEN TOP CASE
+            this.Update(1, (-3) * m_CurrentAngle);
+            //OPEN RIGHT CASE
+            this.Update(2, (-1) * m_CurrentAngle);
+            //OPEN LEFT CASE
+            this.Update(3, m_CurrentAngle);
+            //OPEN FRONT CASE
+            this.Update(4, m_CurrentAngle);
+
+            this.Update(5, (-1)*m_CurrentAngle);
+        }
+        
+        #region Drawing methods
+        private void drawSecretBox()
+        {
+            GL.glColor3f(1, 1, 1);
+
+            GL.glPushMatrix();
+            calculateAddValue();
+            openBoxRotateAngle();
+         
+            //openBox();
+            SpinBox();
+
+            GL.glTranslatef(this.TranslatePoint.X, this.TranslatePoint.Y, this.TranslatePoint.Z);
+            GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
+
+            this.preformSecretBoxDrawing();
+
+            GL.glPopMatrix();
+        }
+
+        private void drawHiddenObject()
+        {
+            GL.glPushMatrix();
+
+            GL.glColor3f(this.HiddenObjectColor.R, this.HiddenObjectColor.G, this.HiddenObjectColor.B);
+            GL.glTranslatef(this.TranslatePoint.X + 0.5f, this.TranslatePoint.Y + 0.5f, this.TranslatePoint.Z + 0.5f);
+            GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
+            this.preformHiddenObjectDrawing();
+
+            GL.glPopMatrix();
         }
 
         private void preformSecretBoxDrawing()
         {
+            GL.glPushMatrix();
+
+            GL.glTranslatef(0.5f, 0.0f, 0.5f);
+            GL.glRotatef(m_BoxRotateAngle, 0, 1, 0);
+            GL.glTranslatef(-0.5f, 0.0f, -0.5f);
+
+            drawBackCase();
+            drawLeftCase();
+            drawRightCase();
+            drawFrontCase();
+            drawBottomCase();
+            drawTopCase();
+
+            GL.glPopMatrix();
+        }
+
+        private void preformHiddenObjectDrawing()
+        {
+            GL.glPushMatrix();
+            GLU.gluSphere(this.m_GLUquadricObject, 0.4, 10, 10);
+            GL.glPopMatrix();
+        }
+        #endregion
+
+        #region SecretBox drawing methods
+        private void drawBackCase()
+        {
+            GL.glPushMatrix();
+
+            GL.glRotatef(m_BackCaseAngle+1, 1, 0, 0);
+
             GL.glBegin(GL.GL_QUADS);
 
-            //Back side
             GL.glTexCoord2f(0.5f, 0.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X, this.m_BottomLeftPoint.Y, this.m_BottomLeftPoint.Z);
+            GL.glVertex3f(0, 0, 0);
 
             GL.glTexCoord2f(0.0f, 0.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X + 1, this.m_BottomLeftPoint.Y, this.m_BottomLeftPoint.Z);
+            GL.glVertex3f(1, 0, 0);
 
             GL.glTexCoord2f(0.0f, 1.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X + 1, this.m_BottomLeftPoint.Y + 1, this.m_BottomLeftPoint.Z);
+            GL.glVertex3f(1, 1, 0);
 
             GL.glTexCoord2f(0.5f, 1.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X, this.m_BottomLeftPoint.Y + 1, this.m_BottomLeftPoint.Z);
+            GL.glVertex3f(0, 1, 0);
 
-            //Left side
-            GL.glTexCoord2f(0.0f, 0.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X, this.m_BottomLeftPoint.Y, this.m_BottomLeftPoint.Z);
+            GL.glEnd();
 
-            GL.glTexCoord2f(0.5f, 0.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X, this.m_BottomLeftPoint.Y, this.m_BottomLeftPoint.Z + 1);
+            GL.glPopMatrix();
+        }
 
-            GL.glTexCoord2f(0.5f, 1.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X, this.m_BottomLeftPoint.Y + 1, this.m_BottomLeftPoint.Z + 1);
+        private void drawLeftCase()
+        {
+            GL.glPushMatrix();
 
-            GL.glTexCoord2f(0.0f, 1.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X, this.m_BottomLeftPoint.Y + 1, this.m_BottomLeftPoint.Z);
+            GL.glRotatef(m_LeftCaseAngle, 0, 0, 1);
 
-            //Right side
-            GL.glTexCoord2f(0.5f, 0.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X + 1, this.m_BottomLeftPoint.Y, this.m_BottomLeftPoint.Z);
+            GL.glBegin(GL.GL_QUADS);
 
             GL.glTexCoord2f(0.0f, 0.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X + 1, this.m_BottomLeftPoint.Y, this.m_BottomLeftPoint.Z + 1);
+            GL.glVertex3f(0, 0, 0);
 
-            GL.glTexCoord2f(0.0f, 1.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X + 1, this.m_BottomLeftPoint.Y + 1, this.m_BottomLeftPoint.Z + 1);
+            GL.glTexCoord2f(0.5f, 0.0f);
+            GL.glVertex3f(0, 0, 1);
 
             GL.glTexCoord2f(0.5f, 1.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X + 1, this.m_BottomLeftPoint.Y + 1, this.m_BottomLeftPoint.Z);
+            GL.glVertex3f(0, 1, 1);
 
-            //FrontSide
+            GL.glTexCoord2f(0.0f, 1.0f);
+            GL.glVertex3f(0, 1, 0);
+
+            GL.glEnd();
+
+            GL.glPopMatrix();
+        }
+
+        private void drawRightCase()
+        {
+            GL.glPushMatrix();
+
+            GL.glTranslatef(1.0f, 0.0f, 0.0f);
+            GL.glRotatef(m_RightCaseAngle, 0, 0, 1);
+            GL.glTranslatef(-1.0f, 0.0f, 0.0f);
+
+            GL.glBegin(GL.GL_QUADS);
+
+            GL.glTexCoord2f(0.5f, 0.0f);
+            GL.glVertex3f(1, 0, 0);
+
             GL.glTexCoord2f(0.0f, 0.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X, this.m_BottomLeftPoint.Y, this.m_BottomLeftPoint.Z + 1);
-
-            GL.glTexCoord2f(0.5f, 0.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X + 1, this.m_BottomLeftPoint.Y, this.m_BottomLeftPoint.Z + 1);
-
-            GL.glTexCoord2f(0.5f, 1.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X + 1, this.m_BottomLeftPoint.Y + 1, this.m_BottomLeftPoint.Z + 1);
+            GL.glVertex3f(1, 0, 1);
 
             GL.glTexCoord2f(0.0f, 1.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X, this.m_BottomLeftPoint.Y + 1, this.m_BottomLeftPoint.Z + 1);
-                                  
-            //bottom case
-            GL.glTexCoord2f(0.5f, 0.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X, this.m_BottomLeftPoint.Y, this.m_BottomLeftPoint.Z);
+            GL.glVertex3f(1, 1, 1);
 
             GL.glTexCoord2f(0.5f, 1.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X + 1, this.m_BottomLeftPoint.Y, this.m_BottomLeftPoint.Z);
+            GL.glVertex3f(1, 1, 0);
+
+
+            GL.glEnd();
+
+            GL.glPopMatrix();
+        }
+
+        private void drawFrontCase()
+        {
+            GL.glPushMatrix();
+
+            GL.glTranslatef(0.0f, 0.0f, 1.0f);
+            GL.glRotatef(m_FrontCaseAngle, 1, 0, 0);
+            GL.glTranslatef(0.0f, 0.0f, -1.0f);
+
+            GL.glBegin(GL.GL_QUADS);
+
+            GL.glTexCoord2f(0.0f, 0.0f);
+            GL.glVertex3f(0, 0, 1);
+
+            GL.glTexCoord2f(0.5f, 0.0f);
+            GL.glVertex3f(1, 0, 1);
+
+            GL.glTexCoord2f(0.5f, 1.0f);
+            GL.glVertex3f(1, 1, 1);
+
+            GL.glTexCoord2f(0.0f, 1.0f);
+            GL.glVertex3f(0, 1, 1);
+
+            GL.glEnd();
+
+            GL.glPopMatrix();
+        }
+
+        private void drawBottomCase()
+        {
+
+            GL.glBegin(GL.GL_QUADS);
+
+            GL.glTexCoord2f(0.5f, 0.0f);
+            GL.glVertex3f(0, 0, 0);
+
+            GL.glTexCoord2f(0.5f, 1.0f);
+            GL.glVertex3f(1, 0, 0);
 
             GL.glTexCoord2f(1.0f, 1.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X + 1, this.m_BottomLeftPoint.Y, this.m_BottomLeftPoint.Z + 1);
+            GL.glVertex3f(1, 0, 1);
 
             GL.glTexCoord2f(1.0f, 0.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X, this.m_BottomLeftPoint.Y, this.m_BottomLeftPoint.Z + 1);
-
-            //upper case
-            GL.glTexCoord2f(0.5f, 0.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X, this.m_BottomLeftPoint.Y + 1, this.m_BottomLeftPoint.Z);
-
-            GL.glTexCoord2f(0.5f, 1.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X + 1, this.m_BottomLeftPoint.Y + 1, this.m_BottomLeftPoint.Z);
-
-            GL.glTexCoord2f(1.0f, 1.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X + 1, this.m_BottomLeftPoint.Y + 1, this.m_BottomLeftPoint.Z + 1);
-
-            GL.glTexCoord2f(1.0f, 0.0f);
-            GL.glVertex3f(this.m_BottomLeftPoint.X, this.m_BottomLeftPoint.Y + 1, this.m_BottomLeftPoint.Z + 1);
+            GL.glVertex3f(0, 0, 1);
 
             GL.glEnd();
         }
+
+        private void drawTopCase()
+        {
+
+            GL.glPushMatrix();
+
+
+            GL.glRotatef(m_BackCaseAngle, 1, 0, 0);
+
+            GL.glTranslatef(0.0f, 1f, 0);
+            GL.glRotatef(m_TopCaseAngle, 1, 0, 0);
+            GL.glTranslatef(0.0f, -1, 0);
+
+
+            GL.glBegin(GL.GL_QUADS);
+
+            GL.glTexCoord2f(0.5f, 0.0f);
+            GL.glVertex3f(0, 1, 0);
+
+            GL.glTexCoord2f(0.5f, 1.0f);
+            GL.glVertex3f(1, 1, 0);
+
+            GL.glTexCoord2f(1.0f, 1.0f);
+            GL.glVertex3f(1, 1, 1);
+
+            GL.glTexCoord2f(1.0f, 0.0f);
+            GL.glVertex3f(0, 1, 1);
+
+            GL.glEnd();
+
+            GL.glPopMatrix();
+        }
+        #endregion
     }
 }
