@@ -1,6 +1,5 @@
 ﻿using myOpenGL.Structs;
 using OpenGL;
-using System;
 
 namespace myOpenGL.Classes
 {
@@ -30,7 +29,6 @@ namespace myOpenGL.Classes
             if (this.m_SecretBoxMatrixInstance.DrawSelectedSecretBoxArrowFlag)
             {
                 Point3D currentPoint = this.m_SecretBoxMatrixInstance.CurrentSecretBoxPointer.TranslatePoint;
-                Console.WriteLine(currentPoint.ToString());
                 GL.glPushMatrix();
 
                 GL.glColor3f(1, 0, 0);
