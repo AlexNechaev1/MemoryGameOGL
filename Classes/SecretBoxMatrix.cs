@@ -16,9 +16,8 @@ namespace myOpenGL.Classes
         private List<MatrixIndexPair> m_MatrixIndexPairList;
         private int m_CurrentSecretBoxXCoordinate = 0;
         private int m_CurrentSecretBoxYCoordinate = 0;
-        private GLUquadric m_GLUquadricObject;
-        private SecretBox m_CurrentSecretBoxPointer;
-        private bool m_DrawSelectedSecretBoxArrow = true;
+        public SecretBox CurrentSecretBoxPointer { get; private set; }
+        public bool DrawSelectedSecretBoxArrowFlag { get; set; }
 
         // CTOR
         public SecretBoxMatrix(int i_NumberOfRowsAndColumns)
@@ -26,14 +25,8 @@ namespace myOpenGL.Classes
             this.initializeColorsList();
             this.m_NumberOfRowsAndColumns = i_NumberOfRowsAndColumns;
             this.fillSecretBoxesMatrix();
-            this.m_GLUquadricObject = GLU.gluNewQuadric();
-            this.m_CurrentSecretBoxPointer = this.m_SecretBoxesMatrix[0][0];
-        }
-
-        // DTOR
-        ~SecretBoxMatrix()
-        {
-            GLU.gluDeleteQuadric(this.m_GLUquadricObject);
+            this.CurrentSecretBoxPointer = this.m_SecretBoxesMatrix[0][0];
+            this.DrawSelectedSecretBoxArrowFlag = true;
         }
 
         // PUBLIC METHODS
@@ -66,23 +59,6 @@ namespace myOpenGL.Classes
             }
         }
 
-        public void DrawSelectedSecretBoxArrow()
-        {
-            if (this.m_DrawSelectedSecretBoxArrow)
-            {
-                Point3D currentPoint = this.m_CurrentSecretBoxPointer.TranslatePoint;
-                GL.glPushMatrix();
-
-                GL.glColor3f(1, 0, 0);
-                GL.glTranslatef(currentPoint.X + 0.5f, currentPoint.Y + 3.5f, currentPoint.Z + 0.5f);
-                GL.glRotatef(-90, 1, 0, 0);
-                GLU.gluCylinder(this.m_GLUquadricObject, 0.0, 0.5, 1.5, 16, 16);
-                GL.glTranslatef(-1 * (currentPoint.X + 0.5f), -1 * (currentPoint.Y + 3), -1 * (currentPoint.Z + 0.5f));
-
-                GL.glPopMatrix();
-            }
-        }
-
         public void DrawSecretBoxMatrix()
         {
             this.drawSecretBoxesMatrix();
@@ -90,10 +66,10 @@ namespace myOpenGL.Classes
 
         public void SelectTheCurrentSecretBox()
         {
-            this.m_CurrentSecretBoxPointer.SelectThisSecretBox();
-            this.m_CurrentSecretBoxPointer.setBoxSelectedFlag(true);
-            this.m_CurrentSecretBoxPointer.openBox();
-            this.moveSelectedSecretBoxArrowToTheNextSecretBox();
+            this.CurrentSecretBoxPointer.SelectThisSecretBox();
+            this.CurrentSecretBoxPointer.setBoxSelectedFlag(true);
+            this.CurrentSecretBoxPointer.openBox();
+            this.MoveSelectedSecretBoxArrowToTheNextSecretBox();
         }
 
         public void MoveSelectedSecretBoxArrow(ePossibleMoveInSecretBoxMatrix? i_PossibleMoveInSecretBoxMatrix)
@@ -116,7 +92,7 @@ namespace myOpenGL.Classes
                     break;
             }
 
-            this.m_CurrentSecretBoxPointer = this.m_SecretBoxesMatrix[m_CurrentSecretBoxXCoordinate][m_CurrentSecretBoxYCoordinate];
+            this.CurrentSecretBoxPointer = this.m_SecretBoxesMatrix[m_CurrentSecretBoxXCoordinate][m_CurrentSecretBoxYCoordinate];
         }
 
         // PRIVATE METHODS
@@ -138,7 +114,7 @@ namespace myOpenGL.Classes
             this.m_ColorsList.Add(new Color(0.7f, 0 ,0.3f));//8
         }
 
-        private void moveSelectedSecretBoxArrowToTheNextSecretBox()
+        public void MoveSelectedSecretBoxArrowToTheNextSecretBox()
         {
             SecretBox secretBoxPointer = null;
             bool isSuitabeSecretBoxFound = false;
@@ -150,7 +126,7 @@ namespace myOpenGL.Classes
                     secretBoxPointer = this.m_SecretBoxesMatrix[i][n];
                     if (!secretBoxPointer.IsSelectedSecretBox && secretBoxPointer.IsSecretBoxVisible)
                     {
-                        this.m_CurrentSecretBoxPointer = secretBoxPointer;
+                        this.CurrentSecretBoxPointer = secretBoxPointer;
                         this.m_CurrentSecretBoxXCoordinate = i;
                         this.m_CurrentSecretBoxYCoordinate = n;
                         isSuitabeSecretBoxFound = true;
@@ -164,7 +140,7 @@ namespace myOpenGL.Classes
                 }
             }
 
-            this.m_DrawSelectedSecretBoxArrow = isSuitabeSecretBoxFound;
+            DrawSelectedSecretBoxArrowFlag = isSuitabeSecretBoxFound;
         }
 
         private void fillSecretBoxesMatrix()

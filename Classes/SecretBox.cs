@@ -138,7 +138,6 @@ namespace myOpenGL.Classes
                         this.m_HasReachedMaxHeight = true;
                     }
                 }
-
             }
             else
             {
@@ -152,7 +151,6 @@ namespace myOpenGL.Classes
                 }
             }
         }
-
 
         public void openBox()
         {

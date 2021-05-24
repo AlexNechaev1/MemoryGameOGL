@@ -175,6 +175,7 @@ namespace OpenGL
         private Axis3D m_StaticAxis3D;
         private Axis3D m_DynamicAxis3D;
         private Reflector m_Reflector;
+        private SecretBoxArrow m_SecretBoxArrow;
 
         // CTOR
         public cOGL(Control i_ControlInstance, Form1 i_Form1Instance)
@@ -189,6 +190,7 @@ namespace OpenGL
             this.m_StaticAxis3D = new Axis3D(new float[] { 10, 10, 10, 1 });
             this.m_DynamicAxis3D = new Axis3D();
             this.m_Reflector = new Reflector();
+            this.m_SecretBoxArrow = new SecretBoxArrow(this.SecretBoxMatrixInstance);
         }
 
         // DTOR
@@ -299,12 +301,12 @@ namespace OpenGL
             this.m_DynamicAxis3D.DrawAxis3D();
 
             this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
-            this.SecretBoxMatrixInstance.DrawSelectedSecretBoxArrow();
+            this.m_SecretBoxArrow.DrawSelectedSecretBoxArrow();
 
             this.m_Reflector.ReflectBeforeSecretBoxMatrixDrawing();
 
             this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
-            this.SecretBoxMatrixInstance.DrawSelectedSecretBoxArrow();
+            this.m_SecretBoxArrow.DrawSelectedSecretBoxArrow();
 
             this.m_Reflector.ReflectAfterSecretBoxMatrixDrawing();
             
