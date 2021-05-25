@@ -15,9 +15,9 @@ namespace myOpenGL.Classes
         private bool m_HasReachedMaxHeight = false;
 
         #region Box state
-        private bool m_openBoxFlag = false;
-        private bool m_closeBoxFlag = false;
-        private bool m_isBoxOpen = false;
+        public bool OpenBoxFlag { get; set; }
+        public bool CloseBoxFlag { get; set; }
+        public bool IsBoxOpen { get; private set; }
         #endregion
 
         #region Case Angels
@@ -52,6 +52,9 @@ namespace myOpenGL.Classes
             this.IsSecretBoxVisible = true;
             this.IsSelectedSecretBox = false;
             this.m_GLUquadricObject = GLU.gluNewQuadric();
+            this.OpenBoxFlag = false;
+            this.CloseBoxFlag = false;
+            this.IsBoxOpen = false;
         }
 
         ~SecretBox()
@@ -119,24 +122,9 @@ namespace myOpenGL.Classes
         }
         #endregion
 
-        public void setOpenBoxFlag(bool i_openBoxFlag)
-        {
-            this.m_openBoxFlag = i_openBoxFlag;
-        }
-
-        public void setCloseBoxFlag(bool i_closeBoxFlag)
-        {
-            this.m_closeBoxFlag = i_closeBoxFlag;
-        }
-
-        public bool getIsBoxOpen()
-        {
-            return this.m_isBoxOpen;
-        }
-
         public void openBoxRotateAngle()
         {
-            if (this.m_openBoxFlag) 
+            if (this.OpenBoxFlag) 
             {
                 if (this.m_CurrentAngle < 90)
                 {
@@ -145,8 +133,8 @@ namespace myOpenGL.Classes
                 }
                 else
                 {
-                    this.m_openBoxFlag = false;
-                    this.m_isBoxOpen = true;
+                    this.OpenBoxFlag = false;
+                    this.IsBoxOpen = true;
                 }
                 
             }
@@ -154,7 +142,7 @@ namespace myOpenGL.Classes
 
         public void closeBoxRotateAngle()
         {
-            if (this.m_closeBoxFlag)
+            if (this.CloseBoxFlag)
             {
                 if(this.m_CurrentAngle > 0)
                 {
@@ -163,8 +151,8 @@ namespace myOpenGL.Classes
                 }
                 else
                 {
-                    this.m_closeBoxFlag = false;
-                    this.m_isBoxOpen = false;
+                    this.CloseBoxFlag = false;
+                    this.IsBoxOpen = false;
                 }
             }
         }
