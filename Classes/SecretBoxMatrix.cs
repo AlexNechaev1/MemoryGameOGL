@@ -68,17 +68,13 @@ namespace myOpenGL.Classes
         {
 
             if (!this.CurrentSecretBoxPointer.getIsBoxOpen()) {
-
                 this.CurrentSecretBoxPointer.SelectThisSecretBox();
                 this.CurrentSecretBoxPointer.setOpenBoxFlag(true);
-
             }
             else
             {
-
                 this.CurrentSecretBoxPointer.ForgetThisSecretBox();
                 this.CurrentSecretBoxPointer.setCloseBoxFlag(true);
-
             }
             this.MoveSelectedSecretBoxArrowToTheNextSecretBox();
         }

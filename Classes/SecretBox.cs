@@ -13,6 +13,8 @@ namespace myOpenGL.Classes
         private const float k_BoxSize = 1;
         private bool m_AddToCurrentElevationValueFlag = true;
         private bool m_HasReachedMaxHeight = false;
+
+        #region Box state
         private bool m_openBoxFlag = false;
         private bool m_closeBoxFlag = false;
         private bool m_isBoxOpen = false;
@@ -30,6 +32,8 @@ namespace myOpenGL.Classes
         private float m_CurrentAngle = 0.0f;
         private float m_AngleDelta = 1.0f;
         private float m_BoxRotateAngle = 0.0f;
+        #endregion
+
         #endregion
 
         public bool IsSecretBoxVisible { get; private set; }
