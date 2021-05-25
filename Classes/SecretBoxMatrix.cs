@@ -66,9 +66,20 @@ namespace myOpenGL.Classes
 
         public void SelectTheCurrentSecretBox()
         {
-            this.CurrentSecretBoxPointer.SelectThisSecretBox();
-            this.CurrentSecretBoxPointer.setBoxSelectedFlag(true);
-            this.CurrentSecretBoxPointer.openBox();
+
+            if (!this.CurrentSecretBoxPointer.getIsBoxOpen()) {
+
+                this.CurrentSecretBoxPointer.SelectThisSecretBox();
+                this.CurrentSecretBoxPointer.setOpenBoxFlag(true);
+
+            }
+            else
+            {
+
+                this.CurrentSecretBoxPointer.ForgetThisSecretBox();
+                this.CurrentSecretBoxPointer.setCloseBoxFlag(true);
+
+            }
             this.MoveSelectedSecretBoxArrowToTheNextSecretBox();
         }
 
@@ -182,7 +193,7 @@ namespace myOpenGL.Classes
             {
                 foreach (SecretBox secretBox in secretBoxList)
                 {
-                    secretBox.DrawSecretBoxWithItsContent();
+                    secretBox.drawSecretBoxWithItsContent();
                 }
             }
         }
