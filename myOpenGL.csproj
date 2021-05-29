@@ -49,7 +49,9 @@
     <Compile Include="Classes\SecretBox.cs" />
     <Compile Include="Classes\SecretBoxArrow.cs" />
     <Compile Include="Classes\SecretBoxMatrix.cs" />
+    <Compile Include="Enums\ePlayerStepsStates.cs" />
     <Compile Include="Enums\ePossibleMoveInSecretBoxMatrix.cs" />
+    <Compile Include="Enums\eSecretBoxDrawState.cs" />
     <Compile Include="GL_Classes\cOGL.cs" />
     <Compile Include="Forms\Form1.cs">
       <SubType>Form</SubType>

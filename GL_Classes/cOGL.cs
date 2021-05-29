@@ -184,7 +184,7 @@ namespace OpenGL
             m_ControlInstance = i_ControlInstance;
             m_WidthValue = m_ControlInstance.Width;
             m_HeightValue = m_ControlInstance.Height;
-            this.SecretBoxMatrixInstance = new SecretBoxMatrix(4);
+            this.SecretBoxMatrixInstance = new SecretBoxMatrix(4, this.m_Form1Instance);
             InitializeGL();
 
             this.m_StaticAxis3D = new Axis3D(new float[] { 10, 10, 10, 1 });

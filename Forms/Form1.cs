@@ -16,6 +16,7 @@ namespace myOpenGL
         private Player m_PlayerTwo;
         private Player m_CurrentPlayerPointer;
         private int m_PlayerStepsCounter = 0;
+        private ePlayerStepsStates m_PlayerStepsState;
 
         public Form1()
         {
@@ -35,6 +36,7 @@ namespace myOpenGL
             hScrollBarScroll(hScrollBar9, null);
             #endregion
 
+            this.m_PlayerStepsState = ePlayerStepsStates.FirstPlayerStep;
             this.m_CurrentGameBoardDimensions = new GameBoardDimensions(4, 4);
             this.m_PlayerOne = new Player("Player one", true, Color.FromArgb(0, 192, 0));
             this.m_PlayerTwo = new Player("Computer", false, Color.FromArgb(148, 0, 211));
@@ -219,22 +221,45 @@ namespace myOpenGL
             if (e.KeyCode == Keys.Enter)
             {
                 this.preformATurn();
-                //Preform OpenBox to the selected box
+            }
+        }
+
+        private void switchValueForPlayerStepsState()
+        {
+            if (this.m_PlayerStepsState == ePlayerStepsStates.FirstPlayerStep)
+            {
+                this.m_PlayerStepsState = ePlayerStepsStates.SecondPlayerStep;
+            }
+            else
+            {
+                this.m_PlayerStepsState = ePlayerStepsStates.FirstPlayerStep;
             }
         }
 
         private void preformATurn()
         {
-            this.m_PlayerStepsCounter++;
+            this.cGL.SecretBoxMatrixInstance.SetXAndYValuesAsCurrentPlayerStep(this.m_CurrentPlayerPointer, this.m_PlayerStepsState);
+            this.switchValueForPlayerStepsState();
             this.cGL.SecretBoxMatrixInstance.SelectTheCurrentSecretBox();
-            if (this.m_PlayerStepsCounter == 1)
-            {
-                this.cGL.SecretBoxMatrixInstance.SetXAndYValuesAsCurrentPlayerStep(this.m_CurrentPlayerPointer, true);
-            }
-            else
+        }
+
+        public void CheckIfPlayerStepsAreCorrect()
+        {
+            this.m_PlayerStepsCounter++;
+            if (this.m_PlayerStepsCounter == 2)
             {
                 this.m_PlayerStepsCounter = 0;
-                this.cGL.SecretBoxMatrixInstance.SetXAndYValuesAsCurrentPlayerStep(this.m_CurrentPlayerPointer, false);
+                if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
+                {
+                    Console.Beep();
+                }
+                else
+                {
+                    this.cGL.SecretBoxMatrixInstance.ForgetSecretBoxByGivenPlayerStep(this.m_CurrentPlayerPointer.FirstStep);
+                    this.cGL.SecretBoxMatrixInstance.ForgetSecretBoxByGivenPlayerStep(this.m_CurrentPlayerPointer.SecondStep);
+                    this.m_GameLogicComponent.SwitchTurn();
+                    this.m_CurrentPlayerPointer = this.m_GameLogicComponent.CurrentPlayerPointer;
+                }
             }
         }
     }

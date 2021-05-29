@@ -10,6 +10,7 @@ namespace myOpenGL.Classes
     public class SecretBoxMatrix
     {
         // CLASS MEMBERS
+        private Form1 m_MainForm;
         private int m_NumberOfRowsAndColumns;
         private List<Color> m_ColorsList;
         private List<List<SecretBox>> m_SecretBoxesMatrix;
@@ -20,9 +21,10 @@ namespace myOpenGL.Classes
         public bool DrawSelectedSecretBoxArrowFlag { get; set; }
 
         // CTOR
-        public SecretBoxMatrix(int i_NumberOfRowsAndColumns)
+        public SecretBoxMatrix(int i_NumberOfRowsAndColumns, Form1 i_MainForm)
         {
             this.initializeColorsList();
+            this.m_MainForm = i_MainForm;
             this.m_NumberOfRowsAndColumns = i_NumberOfRowsAndColumns;
             this.fillSecretBoxesMatrix();
             this.CurrentSecretBoxPointer = this.m_SecretBoxesMatrix[0][0];
@@ -47,9 +49,9 @@ namespace myOpenGL.Classes
             }
         }
 
-        public void SetXAndYValuesAsCurrentPlayerStep(Player i_CurrentPlayer, bool i_FirstStepFlag)
+        public void SetXAndYValuesAsCurrentPlayerStep(Player i_CurrentPlayer, ePlayerStepsStates i_PlayerStepsState)
         {
-            if (i_FirstStepFlag)
+            if (i_PlayerStepsState == ePlayerStepsStates.FirstPlayerStep)
             {
                 i_CurrentPlayer.FirstStep = new PlayerStep(this.m_CurrentSecretBoxXCoordinate, this.m_CurrentSecretBoxYCoordinate);
             }
@@ -66,24 +68,26 @@ namespace myOpenGL.Classes
 
         public void SelectTheCurrentSecretBox()
         {
-            if (!this.CurrentSecretBoxPointer.IsBoxOpen)
+            if (!this.CurrentSecretBoxPointer.IsBoxOpen) // box is closed
             {
                 this.CurrentSecretBoxPointer.SelectThisSecretBox();
-                this.CurrentSecretBoxPointer.OpenBoxFlag = true;
-            }
-            else
-            {
-                this.CurrentSecretBoxPointer.ForgetThisSecretBox();
-                this.CurrentSecretBoxPointer.CloseBoxFlag = true;
+                this.CurrentSecretBoxPointer.SecretBoxDrawState = eSecretBoxDrawState.OpenSecretBox;
             }
 
             this.MoveSelectedSecretBoxArrowToTheNextSecretBox();
         }
 
+        public void ForgetSecretBoxByGivenPlayerStep(PlayerStep i_PlayerStep)
+        {
+            int xValue = i_PlayerStep.RowIndex;
+            int yValue = i_PlayerStep.ColumnIndex;
+
+            this.m_SecretBoxesMatrix[xValue][yValue].SecretBoxDrawState = eSecretBoxDrawState.CloseSecretBox;
+            this.m_SecretBoxesMatrix[xValue][yValue].ForgetThisSecretBox();
+        }
+
         public void MoveSelectedSecretBoxArrow(ePossibleMoveInSecretBoxMatrix? i_PossibleMoveInSecretBoxMatrix)
         {
-            //this.m_CurrentSecretBoxPointer.ForgetThisSecretBox();
-
             switch (i_PossibleMoveInSecretBoxMatrix)
             {
                 case ePossibleMoveInSecretBoxMatrix.MoveUpInSecretBoxMatrix:
@@ -132,7 +136,7 @@ namespace myOpenGL.Classes
                 for (int n = 0; n < this.m_NumberOfRowsAndColumns; n++)
                 {
                     secretBoxPointer = this.m_SecretBoxesMatrix[i][n];
-                    if (!secretBoxPointer.IsSelectedSecretBox && secretBoxPointer.IsSecretBoxVisible)
+                    if (!secretBoxPointer.IsSelectedSecretBox && secretBoxPointer.IsSecretBoxVisible && !secretBoxPointer.IsBoxOpen)
                     {
                         this.CurrentSecretBoxPointer = secretBoxPointer;
                         this.m_CurrentSecretBoxXCoordinate = i;
@@ -175,10 +179,13 @@ namespace myOpenGL.Classes
 
         private void fillCurrentSecretBoxesList(List<SecretBox> i_SecretBoxListToFill, float i_HeightOffsetValue)
         {
+            SecretBox secretBoxPointer = null;
+
             for (int i = 0; i < this.m_NumberOfRowsAndColumns; i++)
             {
-                i_SecretBoxListToFill.Add(new SecretBox(new Point3D(0.0f + i * 2, 0.0f, 0.0f + i_HeightOffsetValue)));
-
+                secretBoxPointer = new SecretBox(new Point3D(0.0f + i * 2, 0.0f, 0.0f + i_HeightOffsetValue));
+                secretBoxPointer.CheckIfPlayerStepsAreCorrectAction = this.m_MainForm.CheckIfPlayerStepsAreCorrect;
+                i_SecretBoxListToFill.Add(secretBoxPointer);
             }
         }
 
