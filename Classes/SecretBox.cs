@@ -1,5 +1,7 @@
-﻿using myOpenGL.Structs;
+﻿using myOpenGL.Enums;
+using myOpenGL.Structs;
 using OpenGL;
+using System;
 
 namespace myOpenGL.Classes
 {
@@ -14,9 +16,10 @@ namespace myOpenGL.Classes
         private bool m_AddToCurrentElevationValueFlag = true;
         private bool m_HasReachedMaxHeight = false;
 
+        public Action CheckIfPlayerStepsAreCorrectAction { get; set; }
+
         #region Box state
-        public bool OpenBoxFlag { get; set; }
-        public bool CloseBoxFlag { get; set; }
+        public eSecretBoxDrawState SecretBoxDrawState { get; set; }
         public bool IsBoxOpen { get; private set; }
         #endregion
 
@@ -43,7 +46,6 @@ namespace myOpenGL.Classes
         public Color HiddenObjectColor { get; set; }
         private GLUquadric m_GLUquadricObject;
        
-
         // CTOR
         public SecretBox(Point3D i_TranslatePoint)
         {
@@ -52,8 +54,8 @@ namespace myOpenGL.Classes
             this.IsSecretBoxVisible = true;
             this.IsSelectedSecretBox = false;
             this.m_GLUquadricObject = GLU.gluNewQuadric();
-            this.OpenBoxFlag = false;
-            this.CloseBoxFlag = false;
+
+            this.SecretBoxDrawState = eSecretBoxDrawState.None;
             this.IsBoxOpen = false;
         }
 
@@ -63,7 +65,6 @@ namespace myOpenGL.Classes
         }
 
         // PUBLIC METHODS
-
         #region Drawing methods
         private void drawSecretBox()
         {
@@ -124,7 +125,7 @@ namespace myOpenGL.Classes
 
         public void openBoxRotateAngle()
         {
-            if (this.OpenBoxFlag) 
+            if (this.SecretBoxDrawState == eSecretBoxDrawState.OpenSecretBox) 
             {
                 if (this.m_CurrentAngle < 90)
                 {
@@ -133,7 +134,7 @@ namespace myOpenGL.Classes
                 }
                 else
                 {
-                    this.OpenBoxFlag = false;
+                    this.SecretBoxDrawState = eSecretBoxDrawState.None;
                     this.IsBoxOpen = true;
                 }
                 
@@ -142,7 +143,7 @@ namespace myOpenGL.Classes
 
         public void closeBoxRotateAngle()
         {
-            if (this.CloseBoxFlag)
+            if (this.SecretBoxDrawState == eSecretBoxDrawState.CloseSecretBox)
             {
                 if(this.m_CurrentAngle > 0)
                 {
@@ -151,7 +152,7 @@ namespace myOpenGL.Classes
                 }
                 else
                 {
-                    this.CloseBoxFlag = false;
+                    this.SecretBoxDrawState = eSecretBoxDrawState.None;
                     this.IsBoxOpen = false;
                 }
             }
@@ -166,6 +167,7 @@ namespace myOpenGL.Classes
         public void SelectThisSecretBox()
         {
             this.IsSelectedSecretBox = true;
+            this.m_AddToCurrentElevationValueFlag = true;
             this.m_MaxElevationValue = 2.5f;
             this.m_ElevationDeltaValue = 0.05f;
         }
@@ -173,8 +175,11 @@ namespace myOpenGL.Classes
         public void ForgetThisSecretBox()
         {
             this.IsSelectedSecretBox = false;
+            this.m_HasReachedMaxHeight = false;
             this.m_MaxElevationValue = 1;
             this.m_ElevationDeltaValue = 0.01f;
+
+            closeBoxRotateAngle();
         }
 
         public void spinBox()
@@ -218,6 +223,8 @@ namespace myOpenGL.Classes
                     if (this.IsSelectedSecretBox)
                     {
                         this.m_HasReachedMaxHeight = true;
+                        Console.WriteLine(this.TranslatePoint.ToString());
+                        CheckIfPlayerStepsAreCorrectAction.Invoke();
                     }
                 }
             }
@@ -357,7 +364,6 @@ namespace myOpenGL.Classes
 
         private void drawBottomCase()
         {
-
             GL.glBegin(GL.GL_QUADS);
 
             GL.glTexCoord2f(0.5f, 0.0f);
@@ -377,16 +383,13 @@ namespace myOpenGL.Classes
 
         private void drawTopCase()
         {
-
             GL.glPushMatrix();
-
 
             GL.glRotatef(m_BackCaseAngle, 1, 0, 0);
 
             GL.glTranslatef(0.0f, 1f, 0);
             GL.glRotatef(m_TopCaseAngle, 1, 0, 0);
             GL.glTranslatef(0.0f, -1, 0);
-
 
             GL.glBegin(GL.GL_QUADS);
 
