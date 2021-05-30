@@ -124,6 +124,7 @@ namespace MemoryGameLogic
                 }
 
                 charToSet++;
+
                 this.r_MatrixIndexPairList.Add(new MatrixIndexPair(firstIndex, secondIndex));
             }
         }

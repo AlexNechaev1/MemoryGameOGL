@@ -7,9 +7,11 @@ namespace myOpenGL.Classes
     {
         private SecretBoxMatrix m_SecretBoxMatrixInstance;
         private GLUquadric m_GLUquadricObject;
-        
+        public bool DrawSecretBoxArrowFlag { get; set; }
+
         public SecretBoxArrow(SecretBoxMatrix i_SecretBoxMatrix)
         {
+            this.DrawSecretBoxArrowFlag = true;
             this.m_GLUquadricObject = GLU.gluNewQuadric();
             this.m_SecretBoxMatrixInstance = i_SecretBoxMatrix;
         }
@@ -21,7 +23,10 @@ namespace myOpenGL.Classes
 
         public void DrawSelectedSecretBoxArrow()
         {
-            this.performSecretBoxArrowDrawing();
+            if (DrawSecretBoxArrowFlag)
+            {
+                this.performSecretBoxArrowDrawing();
+            }
         }
 
         private void performSecretBoxArrowDrawing()

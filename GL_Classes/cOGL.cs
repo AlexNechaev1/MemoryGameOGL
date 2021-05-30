@@ -170,12 +170,12 @@ namespace OpenGL
         #endregion
 
         public SecretBoxMatrix SecretBoxMatrixInstance { get; private set; }
+        public SecretBoxArrow SecretBoxArrowInstance { get; set; }
         private Form1 m_Form1Instance;
         private uint[] m_TextureUIntArray;
         private Axis3D m_StaticAxis3D;
         private Axis3D m_DynamicAxis3D;
         private Reflector m_Reflector;
-        private SecretBoxArrow m_SecretBoxArrow;
 
         // CTOR
         public cOGL(Control i_ControlInstance, Form1 i_Form1Instance)
@@ -184,13 +184,13 @@ namespace OpenGL
             m_ControlInstance = i_ControlInstance;
             m_WidthValue = m_ControlInstance.Width;
             m_HeightValue = m_ControlInstance.Height;
-            this.SecretBoxMatrixInstance = new SecretBoxMatrix(4);
+            this.SecretBoxMatrixInstance = new SecretBoxMatrix(4, this.m_Form1Instance);
             InitializeGL();
 
             this.m_StaticAxis3D = new Axis3D(new float[] { 10, 10, 10, 1 });
             this.m_DynamicAxis3D = new Axis3D();
             this.m_Reflector = new Reflector();
-            this.m_SecretBoxArrow = new SecretBoxArrow(this.SecretBoxMatrixInstance);
+            this.SecretBoxArrowInstance = new SecretBoxArrow(this.SecretBoxMatrixInstance);
         }
 
         // DTOR
@@ -301,12 +301,12 @@ namespace OpenGL
             this.m_DynamicAxis3D.DrawAxis3D();
 
             this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
-            this.m_SecretBoxArrow.DrawSelectedSecretBoxArrow();
+            this.SecretBoxArrowInstance.DrawSelectedSecretBoxArrow();
 
             this.m_Reflector.ReflectBeforeSecretBoxMatrixDrawing();
 
             this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
-            this.m_SecretBoxArrow.DrawSelectedSecretBoxArrow();
+            this.SecretBoxArrowInstance.DrawSelectedSecretBoxArrow();
 
             this.m_Reflector.ReflectAfterSecretBoxMatrixDrawing();
             
