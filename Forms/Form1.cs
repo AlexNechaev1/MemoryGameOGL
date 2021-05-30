@@ -10,13 +10,16 @@ namespace myOpenGL
     public partial class Form1 : Form
     {
         cOGL cGL;
+        private const int k_ComputerThinkingTimerInterval = 5000;
         private GameBoardDimensions m_CurrentGameBoardDimensions;
         private GameLogicComponent m_GameLogicComponent;
         private Player m_PlayerOne;
         private Player m_PlayerTwo;
         private Player m_CurrentPlayerPointer;
-        private int m_PlayerStepsCounter = 0;
+        private int m_FirstPlayerStepsCounter = 0;
+        private int m_SecondPlayerStepsCounter = 0;
         private ePlayerStepsStates m_PlayerStepsState;
+        private Timer m_ComputerThinkingTimer;
 
         public Form1()
         {
@@ -36,6 +39,9 @@ namespace myOpenGL
             hScrollBarScroll(hScrollBar9, null);
             #endregion
 
+            this.m_ComputerThinkingTimer = new System.Windows.Forms.Timer();
+            this.m_ComputerThinkingTimer.Interval = k_ComputerThinkingTimerInterval;
+            this.m_ComputerThinkingTimer.Tick += m_ComputerThinkingTimer_Tick;
             this.m_PlayerStepsState = ePlayerStepsStates.FirstPlayerStep;
             this.m_CurrentGameBoardDimensions = new GameBoardDimensions(4, 4);
             this.m_PlayerOne = new Player("Player one", true, Color.FromArgb(0, 192, 0));
@@ -43,6 +49,11 @@ namespace myOpenGL
             this.m_CurrentPlayerPointer = this.m_PlayerOne;
             this.m_GameLogicComponent = new GameLogicComponent(this.m_CurrentGameBoardDimensions, this.m_PlayerOne, this.m_PlayerTwo);
             this.cGL.SecretBoxMatrixInstance.ColorHiddenObjectsInSecretBoxesMatrix(this.m_GameLogicComponent);
+        }
+
+        private void m_ComputerThinkingTimer_Tick(object sender, EventArgs e)
+        {
+            this.preformComputerTurn();
         }
 
         #region Original methods
@@ -238,29 +249,123 @@ namespace myOpenGL
 
         private void preformATurn()
         {
-            this.cGL.SecretBoxMatrixInstance.SetXAndYValuesAsCurrentPlayerStep(this.m_CurrentPlayerPointer, this.m_PlayerStepsState);
-            this.switchValueForPlayerStepsState();
-            this.cGL.SecretBoxMatrixInstance.SelectTheCurrentSecretBox();
+            if (this.cGL.SecretBoxMatrixInstance.CheckIfSecretBoxIsNotShown(this.m_GameLogicComponent))
+            {
+                if (this.m_CurrentPlayerPointer == this.m_PlayerOne)
+                {
+                    this.cGL.SecretBoxMatrixInstance.SetXAndYValuesAsCurrentPlayerStep(this.m_CurrentPlayerPointer, this.m_PlayerStepsState);
+                }
+
+                this.switchCardStatus();// switch card visibility step by step
+                this.switchValueForPlayerStepsState();
+                this.cGL.SecretBoxMatrixInstance.SelectTheCurrentSecretBox();
+            }
+        }
+
+        private void preformComputerTurn()
+        {
+            bool restartTimerFlag = false;
+            this.m_ComputerThinkingTimer.Stop();
+            this.m_SecondPlayerStepsCounter++;
+
+            if (this.m_SecondPlayerStepsCounter == 1)
+            {
+                this.m_CurrentPlayerPointer.FirstStep = this.m_GameLogicComponent.GetRandomMachineStep();
+                this.cGL.SecretBoxMatrixInstance.SelectCurrentSecretBoxByRandomPlayerStep(this.m_CurrentPlayerPointer.FirstStep);
+                restartTimerFlag = true;
+            }
+            else
+            {
+                this.m_SecondPlayerStepsCounter = 0;
+                this.m_CurrentPlayerPointer.SecondStep = this.m_GameLogicComponent.GetMachineSecondStep(this.m_CurrentPlayerPointer.FirstStep);
+                this.cGL.SecretBoxMatrixInstance.SelectCurrentSecretBoxByRandomPlayerStep(this.m_CurrentPlayerPointer.SecondStep);
+            }
+
+            this.preformATurn();
+            if (restartTimerFlag)
+            {
+                this.m_ComputerThinkingTimer.Start();
+            }
+        }
+
+        private void switchCardStatus()
+        {
+            PlayerStep? currentPlayerStep = null;
+
+            if (this.m_PlayerStepsState == ePlayerStepsStates.FirstPlayerStep)
+            {
+                currentPlayerStep = this.m_CurrentPlayerPointer.FirstStep;
+            }
+            else
+            {
+                currentPlayerStep = this.m_CurrentPlayerPointer.SecondStep;
+            }
+
+            this.m_GameLogicComponent.SwitchCardStatus(currentPlayerStep.Value.RowIndex, currentPlayerStep.Value.ColumnIndex);
         }
 
         public void CheckIfPlayerStepsAreCorrect()
         {
-            this.m_PlayerStepsCounter++;
-            if (this.m_PlayerStepsCounter == 2)
+            if (this.m_CurrentPlayerPointer == this.m_PlayerOne)
             {
-                this.m_PlayerStepsCounter = 0;
+                checkIfHumanPlayerStepsAreCorrect();
+            }
+            else
+            {
+                checkIfComputerPlayerStepsAreCorrect();
+            }
+        }
+
+        private void checkIfHumanPlayerStepsAreCorrect()
+        {
+            this.m_FirstPlayerStepsCounter++;
+            if (this.m_FirstPlayerStepsCounter == 2)
+            {
+                this.m_FirstPlayerStepsCounter = 0;
                 if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
                 {
+                    this.m_GameLogicComponent.AddPoint();
                     Console.Beep();
                 }
                 else
                 {
-                    this.cGL.SecretBoxMatrixInstance.ForgetSecretBoxByGivenPlayerStep(this.m_CurrentPlayerPointer.FirstStep);
-                    this.cGL.SecretBoxMatrixInstance.ForgetSecretBoxByGivenPlayerStep(this.m_CurrentPlayerPointer.SecondStep);
-                    this.m_GameLogicComponent.SwitchTurn();
-                    this.m_CurrentPlayerPointer = this.m_GameLogicComponent.CurrentPlayerPointer;
+                    this.prepareForOtherPlayerMoves();
+                    this.m_ComputerThinkingTimer.Start();
                 }
             }
+        }
+
+        private void checkIfComputerPlayerStepsAreCorrect()
+        {
+            if (this.m_SecondPlayerStepsCounter == 0)
+            {
+                if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
+                {
+                    this.m_GameLogicComponent.AddPoint();
+                    Console.Beep();
+                    this.m_ComputerThinkingTimer.Start();
+                }
+                else
+                {
+                    this.prepareForOtherPlayerMoves();
+                }
+            }
+        }
+
+        private void prepareForOtherPlayerMoves()
+        {
+            bool drawSelectSecretBoxArrowFlag;
+
+            this.m_GameLogicComponent.SaveMachineStepInList(this.m_GameLogicComponent.CurrentPlayerPointer.FirstStep);
+            this.m_GameLogicComponent.SaveMachineStepInList(this.m_GameLogicComponent.CurrentPlayerPointer.SecondStep);
+            this.cGL.SecretBoxMatrixInstance.ForgetSecretBoxByGivenPlayerStep(this.m_CurrentPlayerPointer.FirstStep);
+            this.cGL.SecretBoxMatrixInstance.ForgetSecretBoxByGivenPlayerStep(this.m_CurrentPlayerPointer.SecondStep);
+            this.m_GameLogicComponent.SwitchCardStatus(this.m_CurrentPlayerPointer.FirstStep);// switch both cards visibility at once
+            this.m_GameLogicComponent.SwitchCardStatus(this.m_CurrentPlayerPointer.SecondStep);// switch both cards visibility at once
+            this.m_GameLogicComponent.SwitchTurn();
+            this.m_CurrentPlayerPointer = this.m_GameLogicComponent.CurrentPlayerPointer;
+            drawSelectSecretBoxArrowFlag = this.m_CurrentPlayerPointer == this.m_PlayerOne;
+            this.cGL.SecretBoxArrowInstance.DrawSecretBoxArrowFlag = drawSelectSecretBoxArrowFlag;
         }
     }
 }

@@ -42,7 +42,6 @@ namespace myOpenGL.Classes
             {
                 firstMatrixIndex = matrixIndexPair.FirstIndex.Value;
                 secondMatrixIndex = matrixIndexPair.SecondIndex.Value;
-
                 this.m_SecretBoxesMatrix[firstMatrixIndex.MatrixRowIndex][firstMatrixIndex.MatrixColumnIndex].HiddenObjectColor = this.m_ColorsList[colorsListCounter];
                 this.m_SecretBoxesMatrix[secondMatrixIndex.MatrixRowIndex][secondMatrixIndex.MatrixColumnIndex].HiddenObjectColor = this.m_ColorsList[colorsListCounter];
                 colorsListCounter++;
@@ -59,6 +58,13 @@ namespace myOpenGL.Classes
             {
                 i_CurrentPlayer.SecondStep = new PlayerStep(this.m_CurrentSecretBoxXCoordinate, this.m_CurrentSecretBoxYCoordinate);
             }
+        }
+
+        public void SelectCurrentSecretBoxByRandomPlayerStep(PlayerStep i_MachineRandomPlayerStep)
+        {
+            this.m_CurrentSecretBoxXCoordinate = i_MachineRandomPlayerStep.RowIndex;
+            this.m_CurrentSecretBoxYCoordinate = i_MachineRandomPlayerStep.ColumnIndex;
+            this.CurrentSecretBoxPointer = this.m_SecretBoxesMatrix[m_CurrentSecretBoxXCoordinate][m_CurrentSecretBoxYCoordinate];
         }
 
         public void DrawSecretBoxMatrix()
@@ -113,7 +119,7 @@ namespace myOpenGL.Classes
             this.m_ColorsList = new List<Color>();
 
             // alex, please pick better colors
-            // note, that for some reason there are some colors that dont work
+            // note that for some reason there are some colors that dont work
             // like blue (0,0,1) that will show as black
             // and white (1,1,1) that will show as yellow
             this.m_ColorsList.Add(new Color(1, 0, 0));//1
@@ -124,6 +130,13 @@ namespace myOpenGL.Classes
             this.m_ColorsList.Add(new Color(1, 0, 1));//6
             this.m_ColorsList.Add(new Color(0.5f, 0, 0.5f));//7
             this.m_ColorsList.Add(new Color(0.7f, 0 ,0.3f));//8
+        }
+
+        public bool CheckIfSecretBoxIsNotShown(GameLogicComponent i_GameLogicComponent)
+        {
+            bool result = i_GameLogicComponent.CheckIfCardIsNotShown(this.m_CurrentSecretBoxXCoordinate, this.m_CurrentSecretBoxYCoordinate);
+
+            return result;
         }
 
         public void MoveSelectedSecretBoxArrowToTheNextSecretBox()
