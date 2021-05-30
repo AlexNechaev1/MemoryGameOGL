@@ -71,9 +71,9 @@ namespace myOpenGL.Classes
             GL.glColor3f(1, 1, 1);
 
             GL.glPushMatrix();
-            calculateAddValue();
-            openBoxRotateAngle();
-            closeBoxRotateAngle();
+            this.calculateAddValue();
+            this.openBoxRotateAngle();
+            this.closeBoxRotateAngle();
 
             spinBox();
 
@@ -89,7 +89,7 @@ namespace myOpenGL.Classes
         {
             GL.glPushMatrix();
 
-            GL.glColor3f(this.HiddenObjectColor.R, this.HiddenObjectColor.G, this.HiddenObjectColor.B);
+            GL.glColor3f(1,1,1);
             GL.glTranslatef(this.TranslatePoint.X + 0.5f, this.TranslatePoint.Y + 0.5f, this.TranslatePoint.Z + 0.5f);
             GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
             this.preformHiddenObjectDrawing();
@@ -118,6 +118,7 @@ namespace myOpenGL.Classes
         private void preformHiddenObjectDrawing()
         {
             GL.glPushMatrix();
+            GL.glColor3f(this.HiddenObjectColor.R, this.HiddenObjectColor.G, this.HiddenObjectColor.B);
             GLU.gluSphere(this.m_GLUquadricObject, 0.4, 10, 10);
             GL.glPopMatrix();
         }
@@ -180,7 +181,6 @@ namespace myOpenGL.Classes
             this.IsSelectedSecretBox = false;
             this.m_HasReachedMaxHeight = false;
             this.m_MaxElevationValue = 1;
-            this.m_ElevationDeltaValue = 0.01f;
 
             closeBoxRotateAngle();
         }
@@ -232,6 +232,7 @@ namespace myOpenGL.Classes
                     this.m_CurrentElevationValue -= m_ElevationDeltaValue;
                     if (this.m_CurrentElevationValue < m_MinElevationValue)
                     {
+                        this.m_ElevationDeltaValue = 0.01f;
                         this.m_AddToCurrentElevationValueFlag = true;
                     }
                 }

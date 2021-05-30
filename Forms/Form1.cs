@@ -293,6 +293,7 @@ namespace myOpenGL
             if (this.m_FirstPlayerStepsCounter == 2)
             {
                 this.m_FirstPlayerStepsCounter = 0;
+                // alex - put here animation
                 if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
                 {
                     this.m_GameLogicComponent.AddPoint();
@@ -310,6 +311,7 @@ namespace myOpenGL
         {
             if (this.m_SecondPlayerStepsCounter == 0)
             {
+                // alex - put here animation
                 if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
                 {
                     this.m_GameLogicComponent.AddPoint();
