@@ -39,7 +39,7 @@ namespace myOpenGL
             hScrollBarScroll(hScrollBar9, null);
             #endregion
 
-            this.m_ComputerThinkingTimer = new System.Windows.Forms.Timer();
+            this.m_ComputerThinkingTimer = new Timer();
             this.m_ComputerThinkingTimer.Interval = k_ComputerThinkingTimerInterval;
             this.m_ComputerThinkingTimer.Tick += m_ComputerThinkingTimer_Tick;
             this.m_PlayerStepsState = ePlayerStepsStates.FirstPlayerStep;
@@ -182,6 +182,7 @@ namespace myOpenGL
         }
         #endregion
 
+        #region Events
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
             char pressedKey = e.KeyChar;
@@ -214,6 +215,15 @@ namespace myOpenGL
             }
         }
 
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.preformATurn();
+            }
+        }
+        #endregion
+
         private bool checkIfPressedKeyIsMovementKey(char i_KeyToCheck)
         {
             bool result = false;
@@ -225,15 +235,7 @@ namespace myOpenGL
             result |= i_KeyToCheck == 'w';
 
             return result;
-        }
-
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                this.preformATurn();
-            }
-        }
+        }   
 
         private void switchValueForPlayerStepsState()
         {
@@ -272,7 +274,7 @@ namespace myOpenGL
             {
                 this.m_CurrentPlayerPointer.FirstStep = this.m_GameLogicComponent.GetRandomMachineStep();
                 this.cGL.SecretBoxMatrixInstance.SelectCurrentSecretBoxByRandomPlayerStep(this.m_CurrentPlayerPointer.FirstStep);
-                restartTimerFlag = true;
+                restartTimerFlag = !this.m_GameLogicComponent.CheckIfGameIsFinished();
             }
             else
             {
@@ -304,6 +306,56 @@ namespace myOpenGL
             this.m_GameLogicComponent.SwitchCardStatus(currentPlayerStep.Value.RowIndex, currentPlayerStep.Value.ColumnIndex);
         }
 
+        #region End game methods
+        private bool checkIfGameFinished()
+        {
+            bool isGameFinished = this.m_GameLogicComponent.CheckIfGameIsFinished();
+
+            if (isGameFinished)
+            {
+                string messageToShow = getWinnerMessage();
+                messageToShow = string.Format("{0}{1}{2}", messageToShow, Environment.NewLine, "Would you like to play another game?");
+                DialogResult dialogResult = MessageBox.Show(messageToShow, "Game Over", MessageBoxButtons.YesNo);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    /*this.m_GameLogicComponent.ResetGameSettings();
+                    this.m_GameLogicComponent.CreateAndFillMemoryBoard();
+                    setMatchingPicturesInIndexPictureBoxesMatrix();
+                    resetGameBoard();
+                    setTextInLables();*/
+                    this.Dispose();
+                    this.Close();
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    this.Dispose();
+                    this.Close();
+                }
+            }
+
+            return isGameFinished;
+        }
+
+        private string getWinnerMessage()
+        {
+            string stringToReturn = string.Empty;
+            Player winningPlayerPointer = null;
+
+            this.m_GameLogicComponent.DecideWinningPlayer(ref winningPlayerPointer);
+            if (winningPlayerPointer == null)
+            {
+                stringToReturn = "We have a tie here!";
+            }
+            else
+            {
+                stringToReturn = string.Format("{0}, you are the winner!", winningPlayerPointer.PlayerName);
+            }
+
+            return stringToReturn;
+        }
+        #endregion
+
         public void CheckIfPlayerStepsAreCorrect()
         {
             if (this.m_CurrentPlayerPointer == this.m_PlayerOne)
@@ -313,6 +365,11 @@ namespace myOpenGL
             else
             {
                 checkIfComputerPlayerStepsAreCorrect();
+            }
+
+            if (this.checkIfGameFinished())
+            {
+                // reset the game???
             }
         }
 
