@@ -9,8 +9,9 @@ namespace myOpenGL
 {
     public partial class Form1 : Form
     {
+        #region CLASS MEMBERS
         cOGL cGL;
-        private const int k_ComputerThinkingTimerInterval = 5000;
+        private const int k_ComputerThinkingTimerInterval = 3000;
         private GameBoardDimensions m_CurrentGameBoardDimensions;
         private GameLogicComponent m_GameLogicComponent;
         private Player m_PlayerOne;
@@ -20,6 +21,7 @@ namespace myOpenGL
         private int m_SecondPlayerStepsCounter = 0;
         private ePlayerStepsStates m_PlayerStepsState;
         private Timer m_ComputerThinkingTimer;
+        #endregion
 
         public Form1()
         {
@@ -49,11 +51,6 @@ namespace myOpenGL
             this.m_CurrentPlayerPointer = this.m_PlayerOne;
             this.m_GameLogicComponent = new GameLogicComponent(this.m_CurrentGameBoardDimensions, this.m_PlayerOne, this.m_PlayerTwo);
             this.cGL.SecretBoxMatrixInstance.ColorHiddenObjectsInSecretBoxesMatrix(this.m_GameLogicComponent);
-        }
-
-        private void m_ComputerThinkingTimer_Tick(object sender, EventArgs e)
-        {
-            this.preformComputerTurn();
         }
 
         #region Original methods
@@ -222,33 +219,14 @@ namespace myOpenGL
                 this.preformATurn();
             }
         }
+
+        private void m_ComputerThinkingTimer_Tick(object sender, EventArgs e)
+        {
+            this.preformComputerTurn();
+        }
         #endregion
 
-        private bool checkIfPressedKeyIsMovementKey(char i_KeyToCheck)
-        {
-            bool result = false;
-            i_KeyToCheck = Char.ToLower(i_KeyToCheck);
-
-            result = i_KeyToCheck == 's';
-            result |= i_KeyToCheck == 'a';
-            result |= i_KeyToCheck == 'd';
-            result |= i_KeyToCheck == 'w';
-
-            return result;
-        }   
-
-        private void switchValueForPlayerStepsState()
-        {
-            if (this.m_PlayerStepsState == ePlayerStepsStates.FirstPlayerStep)
-            {
-                this.m_PlayerStepsState = ePlayerStepsStates.SecondPlayerStep;
-            }
-            else
-            {
-                this.m_PlayerStepsState = ePlayerStepsStates.FirstPlayerStep;
-            }
-        }
-
+        #region Turn methods
         private void preformATurn()
         {
             if (this.cGL.SecretBoxMatrixInstance.CheckIfSecretBoxIsNotShown(this.m_GameLogicComponent))
@@ -289,6 +267,78 @@ namespace myOpenGL
                 this.m_ComputerThinkingTimer.Start();
             }
         }
+        #endregion
+
+        #region Checking player steps methods
+        public void CheckIfPlayerStepsAreCorrect()
+        {
+            if (this.m_CurrentPlayerPointer == this.m_PlayerOne)
+            {
+                checkIfHumanPlayerStepsAreCorrect();
+            }
+            else
+            {
+                checkIfComputerPlayerStepsAreCorrect();
+            }
+
+            if (this.checkIfGameFinished())
+            {
+                // reset the game???
+            }
+        }
+
+        private void checkIfHumanPlayerStepsAreCorrect()
+        {
+            this.m_FirstPlayerStepsCounter++;
+            if (this.m_FirstPlayerStepsCounter == 2)
+            {
+                this.m_FirstPlayerStepsCounter = 0;
+                if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
+                {
+                    this.m_GameLogicComponent.AddPoint();
+                    Console.Beep();
+                }
+                else
+                {
+                    this.prepareForOtherPlayerMoves();
+                    this.m_ComputerThinkingTimer.Start();
+                }
+            }
+        }
+
+        private void checkIfComputerPlayerStepsAreCorrect()
+        {
+            if (this.m_SecondPlayerStepsCounter == 0)
+            {
+                if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
+                {
+                    this.m_GameLogicComponent.AddPoint();
+                    Console.Beep();
+                    if (!this.m_GameLogicComponent.CheckIfGameIsFinished())
+                    {
+                        this.m_ComputerThinkingTimer.Start();
+                    }
+                }
+                else
+                {
+                    this.prepareForOtherPlayerMoves();
+                }
+            }
+        }
+        #endregion
+
+        #region Switch values methods
+        private void switchValueForPlayerStepsState()
+        {
+            if (this.m_PlayerStepsState == ePlayerStepsStates.FirstPlayerStep)
+            {
+                this.m_PlayerStepsState = ePlayerStepsStates.SecondPlayerStep;
+            }
+            else
+            {
+                this.m_PlayerStepsState = ePlayerStepsStates.FirstPlayerStep;
+            }
+        }
 
         private void switchCardStatus()
         {
@@ -305,6 +355,7 @@ namespace myOpenGL
 
             this.m_GameLogicComponent.SwitchCardStatus(currentPlayerStep.Value.RowIndex, currentPlayerStep.Value.ColumnIndex);
         }
+        #endregion
 
         #region End game methods
         private bool checkIfGameFinished()
@@ -356,57 +407,17 @@ namespace myOpenGL
         }
         #endregion
 
-        public void CheckIfPlayerStepsAreCorrect()
+        private bool checkIfPressedKeyIsMovementKey(char i_KeyToCheck)
         {
-            if (this.m_CurrentPlayerPointer == this.m_PlayerOne)
-            {
-                checkIfHumanPlayerStepsAreCorrect();
-            }
-            else
-            {
-                checkIfComputerPlayerStepsAreCorrect();
-            }
+            bool result = false;
+            i_KeyToCheck = Char.ToLower(i_KeyToCheck);
 
-            if (this.checkIfGameFinished())
-            {
-                // reset the game???
-            }
-        }
+            result = i_KeyToCheck == 's';
+            result |= i_KeyToCheck == 'a';
+            result |= i_KeyToCheck == 'd';
+            result |= i_KeyToCheck == 'w';
 
-        private void checkIfHumanPlayerStepsAreCorrect()
-        {
-            this.m_FirstPlayerStepsCounter++;
-            if (this.m_FirstPlayerStepsCounter == 2)
-            {
-                this.m_FirstPlayerStepsCounter = 0;
-                if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
-                {
-                    this.m_GameLogicComponent.AddPoint();
-                    Console.Beep();
-                }
-                else
-                {
-                    this.prepareForOtherPlayerMoves();
-                    this.m_ComputerThinkingTimer.Start();
-                }
-            }
-        }
-
-        private void checkIfComputerPlayerStepsAreCorrect()
-        {
-            if (this.m_SecondPlayerStepsCounter == 0)
-            {
-                if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
-                {
-                    this.m_GameLogicComponent.AddPoint();
-                    Console.Beep();
-                    this.m_ComputerThinkingTimer.Start();
-                }
-                else
-                {
-                    this.prepareForOtherPlayerMoves();
-                }
-            }
+            return result;
         }
 
         private void prepareForOtherPlayerMoves()

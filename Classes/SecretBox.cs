@@ -15,15 +15,20 @@ namespace myOpenGL.Classes
         private const float k_BoxSize = 1;
         private bool m_AddToCurrentElevationValueFlag = true;
         private bool m_HasReachedMaxHeight = false;
-
         public Action CheckIfPlayerStepsAreCorrectAction { get; set; }
+        public bool IsSecretBoxVisible { get; private set; }
+        public bool IsSelectedSecretBox { get; private set; }
+        public Point3D TranslatePoint { get; private set; }
+        public Color HiddenObjectColor { get; set; }
+        private GLUquadric m_GLUquadricObject;
+        #endregion
 
-        #region Box state
+        #region Box state members
         public eSecretBoxDrawState SecretBoxDrawState { get; set; }
         public bool IsBoxOpen { get; private set; }
         #endregion
 
-        #region Case Angels
+        #region Case angels members
         private float m_TopCaseAngle = 0;
         private float m_RightCaseAngle = 0;
         private float m_LeftCaseAngle = 0;
@@ -31,22 +36,12 @@ namespace myOpenGL.Classes
         private float m_BackCaseAngle = 0;
         #endregion
 
-        #region Base Angle
+        #region Base angle members
         private float m_CurrentAngle = 0.0f;
         private float m_AngleDelta = 1.0f;
         private float m_BoxRotateAngle = 0.0f;
         #endregion
-
-        #endregion
-
-        public bool IsSecretBoxVisible { get; private set; }
-        public bool IsSelectedSecretBox { get; private set; }
-        public Point3D TranslatePoint { get; private set; }
-
-        public Color HiddenObjectColor { get; set; }
-        private GLUquadric m_GLUquadricObject;
-       
-        // CTOR
+                      
         public SecretBox(Point3D i_TranslatePoint)
         {
             this.HiddenObjectColor = new Color(1, 1, 1);
@@ -64,8 +59,13 @@ namespace myOpenGL.Classes
             GLU.gluDeleteQuadric(this.m_GLUquadricObject);
         }
 
-        // PUBLIC METHODS
         #region Drawing methods
+        public void drawSecretBoxWithItsContent()
+        {
+            this.drawSecretBox();
+            this.drawHiddenObject();
+        }
+
         private void drawSecretBox()
         {
             GL.glColor3f(1, 1, 1);
@@ -123,13 +123,14 @@ namespace myOpenGL.Classes
         }
         #endregion
 
+        #region open, close and spin methods
         public void openBoxRotateAngle()
         {
-            if (this.SecretBoxDrawState == eSecretBoxDrawState.OpenSecretBox) 
+            if (this.SecretBoxDrawState == eSecretBoxDrawState.OpenSecretBox)
             {
                 if (this.m_CurrentAngle < 90)
                 {
-                    this.m_CurrentAngle += this.m_AngleDelta*(2.2f);
+                    this.m_CurrentAngle += this.m_AngleDelta * (2.2f);
                     changeBoxState();
                 }
                 else
@@ -137,7 +138,7 @@ namespace myOpenGL.Classes
                     this.SecretBoxDrawState = eSecretBoxDrawState.None;
                     this.IsBoxOpen = true;
                 }
-                
+
             }
         }
 
@@ -145,7 +146,7 @@ namespace myOpenGL.Classes
         {
             if (this.SecretBoxDrawState == eSecretBoxDrawState.CloseSecretBox)
             {
-                if(this.m_CurrentAngle > 0)
+                if (this.m_CurrentAngle > 0)
                 {
                     this.m_CurrentAngle -= this.m_AngleDelta * (2.2f);
                     changeBoxState();
@@ -158,12 +159,14 @@ namespace myOpenGL.Classes
             }
         }
 
-        public void drawSecretBoxWithItsContent()
+        public void spinBox()
         {
-            this.drawSecretBox();
-            this.drawHiddenObject();
+            m_BoxRotateAngle = m_BoxRotateAngle + 5;
+            m_BoxRotateAngle = m_BoxRotateAngle % 360;
         }
+        #endregion
 
+        #region select and forget methods
         public void SelectThisSecretBox()
         {
             this.IsSelectedSecretBox = true;
@@ -181,15 +184,10 @@ namespace myOpenGL.Classes
 
             closeBoxRotateAngle();
         }
+        #endregion
 
-        public void spinBox()
-        {
-            m_BoxRotateAngle = m_BoxRotateAngle + 5;
-            m_BoxRotateAngle = m_BoxRotateAngle % 360;
-        }
-
-        // PRIVATE METHODS
-        private void Update(int i_CaseSide, float i_Angle)
+        #region update, calculate and change state methods
+        private void update(int i_CaseSide, float i_Angle)
         {
             switch (i_CaseSide)
             {
@@ -240,20 +238,20 @@ namespace myOpenGL.Classes
             }
         }
 
-        public void changeBoxState()
+        private void changeBoxState()
         {
             //OPENS TOP CASE
-            this.Update(1, (-3) * m_CurrentAngle);
+            this.update(1, (-3) * m_CurrentAngle);
             //OPENS RIGHT CASE
-            this.Update(2, (-1) * m_CurrentAngle);
+            this.update(2, (-1) * m_CurrentAngle);
             //OPENS LEFT CASE
-            this.Update(3, m_CurrentAngle);
+            this.update(3, m_CurrentAngle);
             //OPENS FRONT CASE
-            this.Update(4, m_CurrentAngle);
+            this.update(4, m_CurrentAngle);
             //OPENS BACK CASE
-            this.Update(5, (-1)*m_CurrentAngle);
+            this.update(5, (-1) * m_CurrentAngle);
         }
-      
+        #endregion
 
         #region SecretBox drawing methods
         private void drawBackCase()
