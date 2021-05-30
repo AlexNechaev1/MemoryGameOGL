@@ -223,7 +223,6 @@ namespace myOpenGL.Classes
                     if (this.IsSelectedSecretBox)
                     {
                         this.m_HasReachedMaxHeight = true;
-                        Console.WriteLine(this.TranslatePoint.ToString());
                         CheckIfPlayerStepsAreCorrectAction.Invoke();
                     }
                 }

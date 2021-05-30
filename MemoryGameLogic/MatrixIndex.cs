@@ -23,5 +23,11 @@
         {
             get { return this.r_MatrixColumnIndex; }
         }
+
+        // TO STRING
+        public override string ToString()
+        {
+            return string.Format("X = {0}, Y = {1}", this.r_MatrixRowIndex, this.r_MatrixColumnIndex);
+        }
     }
 }
