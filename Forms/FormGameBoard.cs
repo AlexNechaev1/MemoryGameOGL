@@ -5,7 +5,7 @@ using MemoryGameLogic;
 using myOpenGL.Enums;
 using OpenGL;
 
-namespace myOpenGL
+namespace myOpenGL.Forms
 {
     public partial class FormGameBoard : Form
     {
@@ -21,15 +21,17 @@ namespace myOpenGL
         private int m_SecondPlayerStepsCounter = 0;
         private ePlayerStepsStates m_PlayerStepsState;
         private Timer m_ComputerThinkingTimer;
+        private eGameModes m_GameMode;
         #endregion
 
-        public FormGameBoard()
+        public FormGameBoard(string i_PlayerOneName, eGameModes i_GameMode)
         {
             #region Original CTOR code
             InitializeComponent();
             cGL = new cOGL(panel1, this);
             //apply the bars values as cGL.ScrollValue[..] properties 
             //!!!
+
             hScrollBarScroll(hScrollBar1, null);
             hScrollBarScroll(hScrollBar2, null);
             hScrollBarScroll(hScrollBar3, null);
@@ -39,19 +41,55 @@ namespace myOpenGL
             hScrollBarScroll(hScrollBar7, null);
             hScrollBarScroll(hScrollBar8, null);
             hScrollBarScroll(hScrollBar9, null);
+
+
             #endregion
 
+            this.CenterToScreen();
             this.m_ComputerThinkingTimer = new Timer();
             this.m_ComputerThinkingTimer.Interval = k_ComputerThinkingTimerInterval;
             this.m_ComputerThinkingTimer.Tick += m_ComputerThinkingTimer_Tick;
             this.m_PlayerStepsState = ePlayerStepsStates.FirstPlayerStep;
             this.m_CurrentGameBoardDimensions = new GameBoardDimensions(4, 4);
-            this.m_PlayerOne = new Player("Player one", true, Color.FromArgb(0, 192, 0));
+            this.m_PlayerOne = new Player(i_PlayerOneName, true, Color.FromArgb(0, 192, 0));
             this.m_PlayerTwo = new Player("Computer", false, Color.FromArgb(148, 0, 211));
             this.m_CurrentPlayerPointer = this.m_PlayerOne;
             this.m_GameLogicComponent = new GameLogicComponent(this.m_CurrentGameBoardDimensions, this.m_PlayerOne, this.m_PlayerTwo);
             this.cGL.SecretBoxMatrixInstance.ColorHiddenObjectsInSecretBoxesMatrix(this.m_GameLogicComponent);
+
+            #region Setting the right game mode
+            this.m_GameMode = i_GameMode;
+            this.setControlsVisibility();
+            this.setPanelViewOnWindow();
+            #endregion
         }
+
+        #region Game modes switch methods
+        private void setControlsVisibility()
+        {
+            hScrollBar1.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+            hScrollBar2.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+            hScrollBar3.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+            hScrollBar4.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+            hScrollBar5.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+            hScrollBar6.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+            hScrollBar7.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+            hScrollBar8.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+            hScrollBar9.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+
+
+            groupBox1.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+            groupBox2.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+        }
+
+        private void setPanelViewOnWindow()
+        {
+            if (this.m_GameMode == eGameModes.FullScreenMode)
+            {
+                this.panel1.Dock = DockStyle.Fill;
+            }
+        }
+        #endregion
 
         #region Original methods
         private void panel1_Paint(object sender, PaintEventArgs e)

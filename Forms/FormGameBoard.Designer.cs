@@ -1,4 +1,4 @@
-namespace myOpenGL
+namespace myOpenGL.Forms
 {
     partial class FormGameBoard
     {

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using myOpenGL.Properties;
 using myOpenGL.Classes;
-using myOpenGL;
+using myOpenGL.Forms;
 
 namespace OpenGL
 {
