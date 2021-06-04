@@ -7,7 +7,7 @@ using OpenGL;
 
 namespace myOpenGL
 {
-    public partial class Form1 : Form
+    public partial class FormGameBoard : Form
     {
         #region CLASS MEMBERS
         cOGL cGL;
@@ -23,7 +23,7 @@ namespace myOpenGL
         private Timer m_ComputerThinkingTimer;
         #endregion
 
-        public Form1()
+        public FormGameBoard()
         {
             #region Original CTOR code
             InitializeComponent();
@@ -180,7 +180,15 @@ namespace myOpenGL
         #endregion
 
         #region Events
-        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        private void FormGameBoard_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.preformATurn();
+            }
+        }
+
+        private void FormGameBoard_KeyPress(object sender, KeyPressEventArgs e)
         {
             char pressedKey = e.KeyChar;
             e.Handled = true;
@@ -209,14 +217,6 @@ namespace myOpenGL
                 }
 
                 cGL.SecretBoxMatrixInstance.MoveSelectedSecretBoxArrow(possibleMoveInSecretBoxMatrix);
-            }
-        }
-
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                this.preformATurn();
             }
         }
 
