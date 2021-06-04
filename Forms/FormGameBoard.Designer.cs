@@ -1,6 +1,6 @@
 namespace myOpenGL
 {
-    partial class Form1
+    partial class FormGameBoard
     {
         /// <summary>
         /// Required designer variable.
@@ -361,7 +361,7 @@ namespace myOpenGL
             this.secretBoxElevationTimer.Enabled = true;
             this.secretBoxElevationTimer.Tick += new System.EventHandler(this.secretBoxElevationTimer_Tick);
             // 
-            // Form1
+            // FormGameBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -379,10 +379,10 @@ namespace myOpenGL
             this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.panel1);
             this.KeyPreview = true;
-            this.Name = "Form1";
+            this.Name = "FormGameBoard";
             this.Text = "Form1";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormGameBoard_KeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormGameBoard_KeyPress);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();

@@ -171,20 +171,20 @@ namespace OpenGL
 
         public SecretBoxMatrix SecretBoxMatrixInstance { get; private set; }
         public SecretBoxArrow SecretBoxArrowInstance { get; set; }
-        private Form1 m_Form1Instance;
+        private FormGameBoard m_FormGameBoardInstance;
         private uint[] m_TextureUIntArray;
         private Axis3D m_StaticAxis3D;
         private Axis3D m_DynamicAxis3D;
         private Reflector m_Reflector;
 
         // CTOR
-        public cOGL(Control i_ControlInstance, Form1 i_Form1Instance)
+        public cOGL(Control i_ControlInstance, FormGameBoard i_FormGameBoardInstance)
         {
-            this.m_Form1Instance = i_Form1Instance;
+            this.m_FormGameBoardInstance = i_FormGameBoardInstance;
             m_ControlInstance = i_ControlInstance;
             m_WidthValue = m_ControlInstance.Width;
             m_HeightValue = m_ControlInstance.Height;
-            this.SecretBoxMatrixInstance = new SecretBoxMatrix(4, this.m_Form1Instance);
+            this.SecretBoxMatrixInstance = new SecretBoxMatrix(4, this.m_FormGameBoardInstance);
             InitializeGL();
 
             this.m_StaticAxis3D = new Axis3D(new float[] { 10, 10, 10, 1 });
@@ -239,9 +239,9 @@ namespace OpenGL
 
             //make transformation in accordance to KeyCode
             float delta;
-            if ((intOptionC != 0) && this.m_Form1Instance.NumericUpDownValueChanged)
+            if ((intOptionC != 0) && this.m_FormGameBoardInstance.NumericUpDownValueChanged)
             {
-                m_Form1Instance.NumericUpDownValueChanged = false;
+                m_FormGameBoardInstance.NumericUpDownValueChanged = false;
                 delta = 5.0f * Math.Abs(intOptionC) / intOptionC; // signed 5
 
                 switch (Math.Abs(intOptionC))

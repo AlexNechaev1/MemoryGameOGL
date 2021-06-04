@@ -10,7 +10,7 @@ namespace myOpenGL.Classes
     public class SecretBoxMatrix
     {
         #region CLASS MEMBERS
-        private Form1 m_MainForm;
+        private FormGameBoard m_MainForm;
         private int m_NumberOfRowsAndColumns;
         private List<Color> m_ColorsList;
         private List<List<SecretBox>> m_SecretBoxesMatrix;
@@ -21,7 +21,7 @@ namespace myOpenGL.Classes
         public bool DrawSelectedSecretBoxArrowFlag { get; set; }
         #endregion
 
-        public SecretBoxMatrix(int i_NumberOfRowsAndColumns, Form1 i_MainForm)
+        public SecretBoxMatrix(int i_NumberOfRowsAndColumns, FormGameBoard i_MainForm)
         {
             this.initializeColorsList();
             this.m_MainForm = i_MainForm;
