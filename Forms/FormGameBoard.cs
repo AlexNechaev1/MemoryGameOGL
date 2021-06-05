@@ -61,32 +61,45 @@ namespace myOpenGL.Forms
             this.m_GameMode = i_GameMode;
             this.setControlsVisibility();
             this.setPanelViewOnWindow();
+            this.setSuitableNameForForm();
             #endregion
         }
 
         #region Game modes switch methods
         private void setControlsVisibility()
         {
-            hScrollBar1.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
-            hScrollBar2.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
-            hScrollBar3.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
-            hScrollBar4.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
-            hScrollBar5.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
-            hScrollBar6.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
-            hScrollBar7.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
-            hScrollBar8.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
-            hScrollBar9.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+            hScrollBar1.Visible = this.m_GameMode == eGameModes.SceneMode;
+            hScrollBar2.Visible = this.m_GameMode == eGameModes.SceneMode;
+            hScrollBar3.Visible = this.m_GameMode == eGameModes.SceneMode;
+            hScrollBar4.Visible = this.m_GameMode == eGameModes.SceneMode;
+            hScrollBar5.Visible = this.m_GameMode == eGameModes.SceneMode;
+            hScrollBar6.Visible = this.m_GameMode == eGameModes.SceneMode;
+            hScrollBar7.Visible = this.m_GameMode == eGameModes.SceneMode;
+            hScrollBar8.Visible = this.m_GameMode == eGameModes.SceneMode;
+            hScrollBar9.Visible = this.m_GameMode == eGameModes.SceneMode;
 
 
-            groupBox1.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
-            groupBox2.Visible = this.m_GameMode == eGameModes.ControlsShowMode;
+            groupBox1.Visible = this.m_GameMode == eGameModes.SceneMode;
+            groupBox2.Visible = this.m_GameMode == eGameModes.SceneMode;
         }
 
         private void setPanelViewOnWindow()
         {
-            if (this.m_GameMode == eGameModes.FullScreenMode)
+            if (this.m_GameMode == eGameModes.GameMode)
             {
                 this.panel1.Dock = DockStyle.Fill;
+            }
+        }
+
+        private void setSuitableNameForForm()
+        {
+            if (this.m_GameMode == eGameModes.GameMode)
+            {
+                this.Text += " - Game Mode";
+            }
+            else
+            {
+                this.Text += " - Scene Mode";
             }
         }
         #endregion

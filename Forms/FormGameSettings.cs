@@ -14,36 +14,24 @@ namespace myOpenGL.Forms
         {
             this.CenterToScreen();
             InitializeComponent();
-            this.m_GameMode = eGameModes.FullScreenMode;
+            this.m_GameMode = eGameModes.GameMode;
         }
 
         #region Events
         private void gameModeBtn_Click(object sender, System.EventArgs e)
         {
-            this.switchGameModeAndButtonText();
+            this.m_GameMode = eGameModes.GameMode;
+            this.startNewGame();
         }
 
-        private void buttonStart_Click(object sender, System.EventArgs e)
+        private void sceneModeBtn_Click(object sender, System.EventArgs e)
         {
+            this.m_GameMode = eGameModes.SceneMode;
             this.startNewGame();
         }
         #endregion
 
         #region Events Methods
-        private void switchGameModeAndButtonText()
-        {
-            if (this.m_GameMode == eGameModes.FullScreenMode)
-            {
-                this.m_GameMode = eGameModes.ControlsShowMode;
-                this.gameModeBtn.Text = "Controls Show Mode";
-            }
-            else
-            {
-                this.m_GameMode = eGameModes.FullScreenMode;
-                this.gameModeBtn.Text = "Full Screen Mode";
-            }
-        }
-
         private bool checkPlayerOneName()
         {
             return Regex.IsMatch(this.textBoxFirstPlayerName.Text, @"^[a-zA-Z]+$");

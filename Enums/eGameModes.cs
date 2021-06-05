@@ -2,7 +2,7 @@
 {
     public enum eGameModes
     {
-        FullScreenMode,
-        ControlsShowMode
+        GameMode,
+        SceneMode
     }
 }
