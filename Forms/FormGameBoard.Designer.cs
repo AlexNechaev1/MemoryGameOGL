@@ -380,7 +380,7 @@ namespace myOpenGL.Forms
             this.Controls.Add(this.panel1);
             this.KeyPreview = true;
             this.Name = "FormGameBoard";
-            this.Text = "Form1";
+            this.Text = "Memory Game";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormGameBoard_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormGameBoard_KeyPress);
             this.groupBox1.ResumeLayout(false);
