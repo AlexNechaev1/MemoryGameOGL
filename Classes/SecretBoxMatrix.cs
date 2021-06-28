@@ -83,12 +83,12 @@ namespace myOpenGL.Classes
             // and white (1,1,1) that will show as yellow
             this.m_ColorsList.Add(new Color(1, 0, 0));//1
             this.m_ColorsList.Add(new Color(0, 1, 0));//2
-            this.m_ColorsList.Add(new Color(0, 1, 1));//3
-            this.m_ColorsList.Add(new Color(1, 0.5f, 0));//4
-            this.m_ColorsList.Add(new Color(0.5f, 0, 1));//5
-            this.m_ColorsList.Add(new Color(1, 0, 1));//6
-            this.m_ColorsList.Add(new Color(0.5f, 0, 0.5f));//7
-            this.m_ColorsList.Add(new Color(0.7f, 0, 0.3f));//8
+            this.m_ColorsList.Add(new Color(1, 0.5f, 1));//3
+            this.m_ColorsList.Add(new Color(0.5f, 1, 1));//4
+            this.m_ColorsList.Add(new Color(1, 0.3f, 1));//5
+            this.m_ColorsList.Add(new Color(0, 0.5f, 0.8f));//6
+            this.m_ColorsList.Add(new Color(1, 1, 1));//7
+            this.m_ColorsList.Add(new Color(0.5f, 0, 0));//8
         }
 
         public void SetXAndYValuesAsCurrentPlayerStep(Player i_CurrentPlayer, ePlayerStepsStates i_PlayerStepsState)

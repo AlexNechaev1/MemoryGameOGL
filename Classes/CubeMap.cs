@@ -6,11 +6,12 @@ namespace myOpenGL.Classes
     public class CubeMap
     {
         public Point3D TranslatePoint = new Point3D(-10, -10, -10);
+        private Color m_CubeMapColor = new Color(1, 1, 1);
         private const int k_ScalingValue = 35;
 
         public void DrawCubeMap()
         {
-            GL.glColor3f(1, 0.5f, 1);
+            GL.glColor3f(this.m_CubeMapColor.R, this.m_CubeMapColor.G, this.m_CubeMapColor.B);
             GL.glPushMatrix();
 
             GL.glTranslatef(TranslatePoint.X, TranslatePoint.Y, TranslatePoint.Z);
