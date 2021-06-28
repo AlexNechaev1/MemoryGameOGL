@@ -7,7 +7,7 @@ using myOpenGL.Forms;
 
 namespace OpenGL
 {
-    class cOGL
+    public class cOGL
     {
         #region Original Class Members
         public double hh = 0;
@@ -201,7 +201,8 @@ namespace OpenGL
 
             //work with acvital
             this.m_CubeMapInstance = new CubeMap();
-
+            
+            // define separate method
             this.m_FloorPointsMatrix[0, 0] = 0;
             this.m_FloorPointsMatrix[0, 1] = this.m_CubeMapInstance.TranslatePoint.Y;
             this.m_FloorPointsMatrix[0, 2] = 0;
