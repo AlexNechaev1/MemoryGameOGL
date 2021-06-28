@@ -60,15 +60,27 @@ namespace myOpenGL.Classes
         }
 
         #region Drawing methods
-        public void drawSecretBoxWithItsContent()
+        public void drawSecretBoxWithItsContent(bool i_DrawShadowFlag)
         {
-            this.drawSecretBox();
-            this.drawHiddenObject();
+            this.drawSecretBox(i_DrawShadowFlag);
+            if (!i_DrawShadowFlag)
+            {
+                this.drawHiddenObject();
+            }
         }
 
-        private void drawSecretBox()
+        private void drawSecretBox(bool i_DrawShadowFlag)
         {
-            GL.glColor3f(1, 1, 1);
+            if (!i_DrawShadowFlag)
+            {
+                GL.glColor3f(1, 1, 1);
+                GL.glEnable(GL.GL_TEXTURE_2D);
+            }
+            else
+            {
+                GL.glColor3f(0.6f, 0.6f, 0.6f);
+                GL.glDisable(GL.GL_TEXTURE_2D);
+            }
 
             GL.glPushMatrix();
             this.calculateAddValue();
@@ -80,7 +92,7 @@ namespace myOpenGL.Classes
             GL.glTranslatef(this.TranslatePoint.X, this.TranslatePoint.Y, this.TranslatePoint.Z);
             GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
 
-            this.preformSecretBoxDrawing();
+            this.preformSecretBoxDrawing(i_DrawShadowFlag);
 
             GL.glPopMatrix();
         }
@@ -97,7 +109,7 @@ namespace myOpenGL.Classes
             GL.glPopMatrix();
         }
 
-        private void preformSecretBoxDrawing()
+        private void preformSecretBoxDrawing(bool i_DrawShadowFlag)
         {
             GL.glPushMatrix();
 

@@ -2,7 +2,6 @@
 using myOpenGL.Structs;
 using System;
 using System.Collections.Generic;
-using OpenGL;
 using MemoryGameLogic;
 using myOpenGL.Forms;
 
@@ -38,7 +37,6 @@ namespace myOpenGL.Classes
             float heightValue = 0;
             checkIfNumberOfRowsAndColumnsIsValid(this.m_NumberOfRowsAndColumns);
             this.m_SecretBoxesMatrix = new List<List<SecretBox>>(this.m_NumberOfRowsAndColumns);
-
             for (int i = 0; i < this.m_NumberOfRowsAndColumns; i++)
             {
                 this.m_SecretBoxesMatrix.Add(new List<SecretBox>(this.m_NumberOfRowsAndColumns));
@@ -107,20 +105,13 @@ namespace myOpenGL.Classes
         #endregion
 
         #region draw methods
-        public void DrawSecretBoxMatrix()
+        public void DrawSecretBoxMatrix(bool i_DrawShadowFlag = false)
         {
-            this.drawSecretBoxesMatrix();
-        }
-
-        private void drawSecretBoxesMatrix()
-        {
-            GL.glColor3f(1, 1, 1);
-
             foreach (List<SecretBox> secretBoxList in this.m_SecretBoxesMatrix)
             {
                 foreach (SecretBox secretBox in secretBoxList)
                 {
-                    secretBox.drawSecretBoxWithItsContent();
+                    secretBox.drawSecretBoxWithItsContent(i_DrawShadowFlag);
                 }
             }
         }
