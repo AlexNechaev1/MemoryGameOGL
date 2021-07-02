@@ -10,6 +10,7 @@ namespace myOpenGL.Classes
     public class SecretBoxMatrix
     {
         #region CLASS MEMBERS
+        private int m_UserTurnCounter = 0;
         private FormGameBoard m_MainForm;
         private int m_NumberOfRowsAndColumns;
         private List<Color> m_ColorsList;
@@ -133,7 +134,7 @@ namespace myOpenGL.Classes
                 this.CurrentSecretBoxPointer.SecretBoxDrawState = eSecretBoxDrawState.OpenSecretBox;
             }
 
-            this.MoveSelectedSecretBoxArrowToTheNextSecretBox();
+            this.drawSelectedSecretBoxArrowIfNeeded();
         }
 
         public void ForgetSecretBoxByGivenPlayerStep(PlayerStep i_PlayerStep)
@@ -168,33 +169,15 @@ namespace myOpenGL.Classes
             this.CurrentSecretBoxPointer = this.m_SecretBoxesMatrix[m_CurrentSecretBoxXCoordinate][m_CurrentSecretBoxYCoordinate];
         }
 
-        public void MoveSelectedSecretBoxArrowToTheNextSecretBox()
+        private void drawSelectedSecretBoxArrowIfNeeded()
         {
-            SecretBox secretBoxPointer = null;
-            bool isSuitabeSecretBoxFound = false;
+            this.m_UserTurnCounter++;
+            DrawSelectedSecretBoxArrowFlag = this.m_UserTurnCounter != 2;
 
-            for (int i = 0; i < this.m_NumberOfRowsAndColumns; i++)
+            if (!DrawSelectedSecretBoxArrowFlag)
             {
-                for (int n = 0; n < this.m_NumberOfRowsAndColumns; n++)
-                {
-                    secretBoxPointer = this.m_SecretBoxesMatrix[i][n];
-                    if (!secretBoxPointer.IsSelectedSecretBox && secretBoxPointer.IsSecretBoxVisible && !secretBoxPointer.IsBoxOpen)
-                    {
-                        this.CurrentSecretBoxPointer = secretBoxPointer;
-                        this.m_CurrentSecretBoxXCoordinate = i;
-                        this.m_CurrentSecretBoxYCoordinate = n;
-                        isSuitabeSecretBoxFound = true;
-                        break;
-                    }
-                }
-
-                if (isSuitabeSecretBoxFound)
-                {
-                    break;
-                }
+                this.m_UserTurnCounter = 0;
             }
-
-            DrawSelectedSecretBoxArrowFlag = isSuitabeSecretBoxFound;
         }
         #endregion
 

@@ -64,17 +64,30 @@ namespace myOpenGL.Forms
             this.setSuitableNameForForm();
             this.setStringsInPointsLabels();
             #endregion
+
+            this.prepareForm(i_DrawAxisFlag);
+        }
+
+        private void prepareForm(bool i_FixedFormFlag)
+        {
+            this.computerPlayerPointsPanel.BackColor = this.m_GameLogicComponent.PlayerTwo.PlayerColor;
+            this.humanPlayerPointsPanel.BackColor = this.m_GameLogicComponent.PlayerOne.PlayerColor;
+
+            if (i_FixedFormFlag)
+            {
+                this.MaximizeBox = false;
+                this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            }
+
+            this.MinimumSize = new Size(669, 567);
         }
 
         #region Updating strings in points labels
         private void setStringsInPointsLabels()
         {
             this.currentPlayerInfoLabel.Text = string.Format("Current Player: {0}", this.m_GameLogicComponent.CurrentPlayerPointer.PlayerName);
-            this.currentPlayerInfoLabel.BackColor = this.m_GameLogicComponent.CurrentPlayerPointer.PlayerColor;
             this.firstPlayerInfoLabel.Text = getPlayerInfoMessage(this.m_GameLogicComponent.PlayerOne);
-            this.firstPlayerInfoLabel.BackColor = this.m_GameLogicComponent.PlayerOne.PlayerColor;
             this.secondPlayerInfoLabel.Text = getPlayerInfoMessage(this.m_GameLogicComponent.PlayerTwo);
-            this.secondPlayerInfoLabel.BackColor = this.m_GameLogicComponent.PlayerTwo.PlayerColor;
         }
 
         private string getPlayerInfoMessage(Player i_CurrentPlayer)
@@ -380,6 +393,7 @@ namespace myOpenGL.Forms
                 {
                     this.m_GameLogicComponent.AddPoint();
                     this.setStringsInPointsLabels();
+                    this.cGL.SecretBoxMatrixInstance.DrawSelectedSecretBoxArrowFlag = true;
                     Console.Beep();
                 }
                 else
@@ -407,6 +421,7 @@ namespace myOpenGL.Forms
                 }
                 else
                 {
+                    this.cGL.SecretBoxMatrixInstance.DrawSelectedSecretBoxArrowFlag = true;
                     this.prepareForOtherPlayerMoves();
                 }
             }
@@ -521,6 +536,15 @@ namespace myOpenGL.Forms
             drawSelectSecretBoxArrowFlag = this.m_CurrentPlayerPointer == this.m_PlayerOne;
             this.cGL.SecretBoxArrowInstance.DrawSecretBoxArrowFlag = drawSelectSecretBoxArrowFlag;
             this.setStringsInPointsLabels();
+        }
+
+        private void FormGameBoard_Resize(object sender, EventArgs e)
+        {
+            int newWidth = this.Width / 3;
+
+            this.computerPlayerPointsPanel.Width = newWidth;
+            this.humanPlayerPointsPanel.Width = newWidth;
+            this.currentPlayerInfoLabel.Width = newWidth;
         }
     }
 }
