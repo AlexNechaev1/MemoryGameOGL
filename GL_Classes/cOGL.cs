@@ -177,6 +177,7 @@ namespace OpenGL
         public SecretBoxArrow SecretBoxArrowInstance { get; set; }
         private FormGameBoard m_FormGameBoardInstance;
         private uint[] m_TextureUIntArray;
+        private bool m_DrawAxisFlag;
         private Axis3D m_StaticAxis3D;
         private Axis3D m_DynamicAxis3D;
         private Reflector m_Reflector;
@@ -186,7 +187,7 @@ namespace OpenGL
         private GLUquadric m_GLUquadricObject;
 
         // CTOR
-        public cOGL(Control i_ControlInstance, FormGameBoard i_FormGameBoardInstance)
+        public cOGL(Control i_ControlInstance, FormGameBoard i_FormGameBoardInstance, bool i_DrawAxisFlag)
         {
             this.m_FormGameBoardInstance = i_FormGameBoardInstance;
             m_ControlInstance = i_ControlInstance;
@@ -195,8 +196,13 @@ namespace OpenGL
             this.SecretBoxMatrixInstance = new SecretBoxMatrix(4, this.m_FormGameBoardInstance);
             InitializeGL();
 
-            this.m_StaticAxis3D = new Axis3D(new float[] { 10, 10, 10, 1 });
-            this.m_DynamicAxis3D = new Axis3D();
+            this.m_DrawAxisFlag = i_DrawAxisFlag;
+            if (this.m_DrawAxisFlag)
+            {
+                this.m_StaticAxis3D = new Axis3D(new float[] { 10, 10, 10, 1 });
+                this.m_DynamicAxis3D = new Axis3D();
+            }
+
             this.m_Reflector = new Reflector();
             this.SecretBoxArrowInstance = new SecretBoxArrow(this.SecretBoxMatrixInstance);
 
@@ -232,9 +238,11 @@ namespace OpenGL
             double[] CurrentRotationTraslation = new double[16];
 
             GLU.gluLookAt(30, 10, 4, 1, 5, 4, 0, 1, 0);
-            
 
-            this.m_StaticAxis3D.DrawAxis3D();
+            if (this.m_DrawAxisFlag)
+            {
+                this.m_StaticAxis3D.DrawAxis3D();
+            }
 
             //save current ModelView Matrix values
             //in ModelVievMatrixBeforeSpecificTransforms array
@@ -314,7 +322,10 @@ namespace OpenGL
             GL.glBindTexture(GL.GL_TEXTURE_2D, m_TextureUIntArray[0]);
 
             this.drawShadowWall();
-            this.m_DynamicAxis3D.DrawAxis3D();
+            if (this.m_DrawAxisFlag)
+            {
+                this.m_DynamicAxis3D.DrawAxis3D();
+            }
 
             // draw real objects
             this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
