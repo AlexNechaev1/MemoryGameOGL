@@ -51,8 +51,8 @@ namespace myOpenGL.Forms
             this.m_ComputerThinkingTimer.Tick += m_ComputerThinkingTimer_Tick;
             this.m_PlayerStepsState = ePlayerStepsStates.FirstPlayerStep;
             this.m_CurrentGameBoardDimensions = new GameBoardDimensions(4, 4);
-            this.m_PlayerOne = new Player(i_PlayerOneName, true, Color.FromArgb(0, 192, 0));
-            this.m_PlayerTwo = new Player("Computer", false, Color.FromArgb(148, 0, 211));
+            this.m_PlayerOne = new Player(i_PlayerOneName, true, Color.FromArgb(30, 144, 255));
+            this.m_PlayerTwo = new Player("Computer", false, Color.FromArgb(0, 238, 118));
             this.m_CurrentPlayerPointer = this.m_PlayerOne;
             this.m_GameLogicComponent = new GameLogicComponent(this.m_CurrentGameBoardDimensions, this.m_PlayerOne, this.m_PlayerTwo);
             this.cGL.SecretBoxMatrixInstance.ColorHiddenObjectsInSecretBoxesMatrix(this.m_GameLogicComponent);
@@ -62,8 +62,39 @@ namespace myOpenGL.Forms
             this.setControlsVisibility();
             this.setPanelViewOnWindow();
             this.setSuitableNameForForm();
+            this.setStringsInPointsLabels();
             #endregion
         }
+
+        #region Updating strings in points labels
+        private void setStringsInPointsLabels()
+        {
+            this.currentPlayerInfoLabel.Text = string.Format("Current Player: {0}", this.m_GameLogicComponent.CurrentPlayerPointer.PlayerName);
+            this.currentPlayerInfoLabel.BackColor = this.m_GameLogicComponent.CurrentPlayerPointer.PlayerColor;
+            this.firstPlayerInfoLabel.Text = getPlayerInfoMessage(this.m_GameLogicComponent.PlayerOne);
+            this.firstPlayerInfoLabel.BackColor = this.m_GameLogicComponent.PlayerOne.PlayerColor;
+            this.secondPlayerInfoLabel.Text = getPlayerInfoMessage(this.m_GameLogicComponent.PlayerTwo);
+            this.secondPlayerInfoLabel.BackColor = this.m_GameLogicComponent.PlayerTwo.PlayerColor;
+        }
+
+        private string getPlayerInfoMessage(Player i_CurrentPlayer)
+        {
+            string stringToReturn = string.Empty, pairString = string.Empty;
+
+            if (i_CurrentPlayer.Score == 1)
+            {
+                pairString = "Pair";
+            }
+            else
+            {
+                pairString = "Pairs";
+            }
+
+            stringToReturn = string.Format("{0}: {1} {2}", i_CurrentPlayer.PlayerName, i_CurrentPlayer.Score, pairString);
+
+            return stringToReturn;
+        }
+        #endregion
 
         #region Game modes switch methods
         private void setControlsVisibility()
@@ -348,6 +379,7 @@ namespace myOpenGL.Forms
                 if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
                 {
                     this.m_GameLogicComponent.AddPoint();
+                    this.setStringsInPointsLabels();
                     Console.Beep();
                 }
                 else
@@ -366,6 +398,7 @@ namespace myOpenGL.Forms
                 if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
                 {
                     this.m_GameLogicComponent.AddPoint();
+                    this.setStringsInPointsLabels();
                     Console.Beep();
                     if (!this.m_GameLogicComponent.CheckIfGameIsFinished())
                     {
@@ -487,6 +520,7 @@ namespace myOpenGL.Forms
             this.m_CurrentPlayerPointer = this.m_GameLogicComponent.CurrentPlayerPointer;
             drawSelectSecretBoxArrowFlag = this.m_CurrentPlayerPointer == this.m_PlayerOne;
             this.cGL.SecretBoxArrowInstance.DrawSecretBoxArrowFlag = drawSelectSecretBoxArrowFlag;
+            this.setStringsInPointsLabels();
         }
     }
 }

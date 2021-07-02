@@ -54,6 +54,10 @@ namespace myOpenGL.Forms
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
             this.secretBoxElevationTimer = new System.Windows.Forms.Timer(this.components);
+            this.playersPointsPanel = new System.Windows.Forms.Panel();
+            this.secondPlayerInfoLabel = new System.Windows.Forms.Label();
+            this.firstPlayerInfoLabel = new System.Windows.Forms.Label();
+            this.currentPlayerInfoLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -62,6 +66,7 @@ namespace myOpenGL.Forms
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            this.playersPointsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -69,14 +74,14 @@ namespace myOpenGL.Forms
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.panel1.Location = new System.Drawing.Point(12, 16);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(490, 500);
+            this.panel1.Size = new System.Drawing.Size(490, 426);
             this.panel1.TabIndex = 6;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.Resize += new System.EventHandler(this.panel1_Resize);
             // 
             // hScrollBar1
             // 
-            this.hScrollBar1.Location = new System.Drawing.Point(540, 16);
+            this.hScrollBar1.Location = new System.Drawing.Point(522, 16);
             this.hScrollBar1.Maximum = 200;
             this.hScrollBar1.Name = "hScrollBar1";
             this.hScrollBar1.Size = new System.Drawing.Size(119, 17);
@@ -86,7 +91,7 @@ namespace myOpenGL.Forms
             // 
             // hScrollBar2
             // 
-            this.hScrollBar2.Location = new System.Drawing.Point(540, 37);
+            this.hScrollBar2.Location = new System.Drawing.Point(522, 37);
             this.hScrollBar2.Maximum = 200;
             this.hScrollBar2.Name = "hScrollBar2";
             this.hScrollBar2.Size = new System.Drawing.Size(119, 17);
@@ -96,7 +101,7 @@ namespace myOpenGL.Forms
             // 
             // hScrollBar3
             // 
-            this.hScrollBar3.Location = new System.Drawing.Point(540, 58);
+            this.hScrollBar3.Location = new System.Drawing.Point(522, 58);
             this.hScrollBar3.Maximum = 200;
             this.hScrollBar3.Name = "hScrollBar3";
             this.hScrollBar3.Size = new System.Drawing.Size(119, 17);
@@ -106,7 +111,7 @@ namespace myOpenGL.Forms
             // 
             // hScrollBar4
             // 
-            this.hScrollBar4.Location = new System.Drawing.Point(540, 88);
+            this.hScrollBar4.Location = new System.Drawing.Point(522, 88);
             this.hScrollBar4.Maximum = 200;
             this.hScrollBar4.Name = "hScrollBar4";
             this.hScrollBar4.Size = new System.Drawing.Size(119, 17);
@@ -116,7 +121,7 @@ namespace myOpenGL.Forms
             // 
             // hScrollBar5
             // 
-            this.hScrollBar5.Location = new System.Drawing.Point(540, 110);
+            this.hScrollBar5.Location = new System.Drawing.Point(522, 110);
             this.hScrollBar5.Maximum = 200;
             this.hScrollBar5.Name = "hScrollBar5";
             this.hScrollBar5.Size = new System.Drawing.Size(119, 17);
@@ -126,7 +131,7 @@ namespace myOpenGL.Forms
             // 
             // hScrollBar6
             // 
-            this.hScrollBar6.Location = new System.Drawing.Point(540, 132);
+            this.hScrollBar6.Location = new System.Drawing.Point(522, 132);
             this.hScrollBar6.Maximum = 200;
             this.hScrollBar6.Name = "hScrollBar6";
             this.hScrollBar6.Size = new System.Drawing.Size(119, 17);
@@ -136,7 +141,7 @@ namespace myOpenGL.Forms
             // 
             // hScrollBar9
             // 
-            this.hScrollBar9.Location = new System.Drawing.Point(539, 208);
+            this.hScrollBar9.Location = new System.Drawing.Point(521, 208);
             this.hScrollBar9.Maximum = 200;
             this.hScrollBar9.Name = "hScrollBar9";
             this.hScrollBar9.Size = new System.Drawing.Size(119, 17);
@@ -146,7 +151,7 @@ namespace myOpenGL.Forms
             // 
             // hScrollBar8
             // 
-            this.hScrollBar8.Location = new System.Drawing.Point(540, 186);
+            this.hScrollBar8.Location = new System.Drawing.Point(522, 186);
             this.hScrollBar8.Maximum = 200;
             this.hScrollBar8.Name = "hScrollBar8";
             this.hScrollBar8.Size = new System.Drawing.Size(119, 17);
@@ -156,7 +161,7 @@ namespace myOpenGL.Forms
             // 
             // hScrollBar7
             // 
-            this.hScrollBar7.Location = new System.Drawing.Point(540, 164);
+            this.hScrollBar7.Location = new System.Drawing.Point(522, 164);
             this.hScrollBar7.Maximum = 200;
             this.hScrollBar7.Name = "hScrollBar7";
             this.hScrollBar7.Size = new System.Drawing.Size(119, 17);
@@ -172,7 +177,7 @@ namespace myOpenGL.Forms
             this.groupBox1.Controls.Add(this.numericUpDown3);
             this.groupBox1.Controls.Add(this.numericUpDown2);
             this.groupBox1.Controls.Add(this.numericUpDown1);
-            this.groupBox1.Location = new System.Drawing.Point(539, 245);
+            this.groupBox1.Location = new System.Drawing.Point(521, 245);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(118, 66);
             this.groupBox1.TabIndex = 15;
@@ -268,7 +273,7 @@ namespace myOpenGL.Forms
             this.groupBox2.Controls.Add(this.numericUpDown4);
             this.groupBox2.Controls.Add(this.numericUpDown5);
             this.groupBox2.Controls.Add(this.numericUpDown6);
-            this.groupBox2.Location = new System.Drawing.Point(539, 327);
+            this.groupBox2.Location = new System.Drawing.Point(521, 327);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(118, 66);
             this.groupBox2.TabIndex = 16;
@@ -361,11 +366,51 @@ namespace myOpenGL.Forms
             this.secretBoxElevationTimer.Enabled = true;
             this.secretBoxElevationTimer.Tick += new System.EventHandler(this.secretBoxElevationTimer_Tick);
             // 
+            // playersPointsPanel
+            // 
+            this.playersPointsPanel.BackColor = System.Drawing.Color.Crimson;
+            this.playersPointsPanel.Controls.Add(this.secondPlayerInfoLabel);
+            this.playersPointsPanel.Controls.Add(this.firstPlayerInfoLabel);
+            this.playersPointsPanel.Controls.Add(this.currentPlayerInfoLabel);
+            this.playersPointsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.playersPointsPanel.Location = new System.Drawing.Point(0, 448);
+            this.playersPointsPanel.Name = "playersPointsPanel";
+            this.playersPointsPanel.Size = new System.Drawing.Size(654, 80);
+            this.playersPointsPanel.TabIndex = 17;
+            // 
+            // secondPlayerInfoLabel
+            // 
+            this.secondPlayerInfoLabel.AutoSize = true;
+            this.secondPlayerInfoLabel.Location = new System.Drawing.Point(9, 59);
+            this.secondPlayerInfoLabel.Name = "secondPlayerInfoLabel";
+            this.secondPlayerInfoLabel.Size = new System.Drawing.Size(13, 13);
+            this.secondPlayerInfoLabel.TabIndex = 5;
+            this.secondPlayerInfoLabel.Text = "a";
+            // 
+            // firstPlayerInfoLabel
+            // 
+            this.firstPlayerInfoLabel.AutoSize = true;
+            this.firstPlayerInfoLabel.Location = new System.Drawing.Point(9, 34);
+            this.firstPlayerInfoLabel.Name = "firstPlayerInfoLabel";
+            this.firstPlayerInfoLabel.Size = new System.Drawing.Size(13, 13);
+            this.firstPlayerInfoLabel.TabIndex = 4;
+            this.firstPlayerInfoLabel.Text = "a";
+            // 
+            // currentPlayerInfoLabel
+            // 
+            this.currentPlayerInfoLabel.AutoSize = true;
+            this.currentPlayerInfoLabel.Location = new System.Drawing.Point(9, 9);
+            this.currentPlayerInfoLabel.Name = "currentPlayerInfoLabel";
+            this.currentPlayerInfoLabel.Size = new System.Drawing.Size(13, 13);
+            this.currentPlayerInfoLabel.TabIndex = 3;
+            this.currentPlayerInfoLabel.Text = "a";
+            // 
             // FormGameBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(678, 528);
+            this.ClientSize = new System.Drawing.Size(654, 528);
+            this.Controls.Add(this.playersPointsPanel);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.hScrollBar9);
@@ -393,6 +438,8 @@ namespace myOpenGL.Forms
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            this.playersPointsPanel.ResumeLayout(false);
+            this.playersPointsPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -424,5 +471,9 @@ namespace myOpenGL.Forms
         private System.Windows.Forms.NumericUpDown numericUpDown5;
         private System.Windows.Forms.NumericUpDown numericUpDown6;
         private System.Windows.Forms.Timer secretBoxElevationTimer;
+        private System.Windows.Forms.Panel playersPointsPanel;
+        private System.Windows.Forms.Label secondPlayerInfoLabel;
+        private System.Windows.Forms.Label firstPlayerInfoLabel;
+        private System.Windows.Forms.Label currentPlayerInfoLabel;
     }
 }
