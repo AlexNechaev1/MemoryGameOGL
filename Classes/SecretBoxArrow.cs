@@ -21,22 +21,30 @@ namespace myOpenGL.Classes
             GLU.gluDeleteQuadric(this.m_GLUquadricObject);
         }
 
-        public void DrawSelectedSecretBoxArrow()
+        public void DrawSelectedSecretBoxArrow(bool i_DrawShadowFlag = false)
         {
             if (DrawSecretBoxArrowFlag)
             {
-                this.performSecretBoxArrowDrawing();
+                this.performSecretBoxArrowDrawing(i_DrawShadowFlag);
             }
         }
 
-        private void performSecretBoxArrowDrawing()
+        private void performSecretBoxArrowDrawing(bool i_DrawShadowFlag)
         {
             if (this.m_SecretBoxMatrixInstance.DrawSelectedSecretBoxArrowFlag)
             {
                 Point3D currentPoint = this.m_SecretBoxMatrixInstance.CurrentSecretBoxPointer.TranslatePoint;
                 GL.glPushMatrix();
 
-                GL.glColor3f(1, 0, 0);
+                if (i_DrawShadowFlag)
+                {
+                    GL.glColor3f(0.6f, 0.6f, 0.6f);
+                }
+                else
+                {
+                    GL.glColor3f(1, 0, 0);
+                }
+
                 GL.glTranslatef(currentPoint.X + 0.5f, currentPoint.Y + 3.5f, currentPoint.Z + 0.5f);
                 GL.glRotatef(-90, 1, 0, 0);
                 GLU.gluCylinder(this.m_GLUquadricObject, 0.0, 0.5, 1.5, 16, 16);

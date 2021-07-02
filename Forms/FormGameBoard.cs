@@ -287,7 +287,7 @@ namespace myOpenGL.Forms
                     this.cGL.SecretBoxMatrixInstance.SetXAndYValuesAsCurrentPlayerStep(this.m_CurrentPlayerPointer, this.m_PlayerStepsState);
                 }
 
-                this.switchCardStatus();// switch card visibility step by step
+                this.switchCardStatus(); // switch card visibility step by step
                 this.switchValueForPlayerStepsState();
                 this.cGL.SecretBoxMatrixInstance.SelectTheCurrentSecretBox();
             }
@@ -481,8 +481,8 @@ namespace myOpenGL.Forms
             this.m_GameLogicComponent.SaveMachineStepInList(this.m_GameLogicComponent.CurrentPlayerPointer.SecondStep);
             this.cGL.SecretBoxMatrixInstance.ForgetSecretBoxByGivenPlayerStep(this.m_CurrentPlayerPointer.FirstStep);
             this.cGL.SecretBoxMatrixInstance.ForgetSecretBoxByGivenPlayerStep(this.m_CurrentPlayerPointer.SecondStep);
-            this.m_GameLogicComponent.SwitchCardStatus(this.m_CurrentPlayerPointer.FirstStep);// switch both cards visibility at once
-            this.m_GameLogicComponent.SwitchCardStatus(this.m_CurrentPlayerPointer.SecondStep);// switch both cards visibility at once
+            this.m_GameLogicComponent.SwitchCardStatus(this.m_CurrentPlayerPointer.FirstStep); // switch both cards visibility at once
+            this.m_GameLogicComponent.SwitchCardStatus(this.m_CurrentPlayerPointer.SecondStep); // switch both cards visibility at once
             this.m_GameLogicComponent.SwitchTurn();
             this.m_CurrentPlayerPointer = this.m_GameLogicComponent.CurrentPlayerPointer;
             drawSelectSecretBoxArrowFlag = this.m_CurrentPlayerPointer == this.m_PlayerOne;

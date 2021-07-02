@@ -60,15 +60,24 @@ namespace myOpenGL.Classes
         }
 
         #region Drawing methods
-        public void drawSecretBoxWithItsContent()
+        public void drawSecretBoxWithItsContent(bool i_DrawShadowFlag)
         {
-            this.drawSecretBox();
-            this.drawHiddenObject();
+            this.drawSecretBox(i_DrawShadowFlag);
+            this.drawHiddenObject(i_DrawShadowFlag);
         }
 
-        private void drawSecretBox()
+        private void drawSecretBox(bool i_DrawShadowFlag)
         {
-            GL.glColor3f(1, 1, 1);
+            if (!i_DrawShadowFlag)
+            {
+                GL.glColor3f(1, 1, 1);
+                GL.glEnable(GL.GL_TEXTURE_2D);
+            }
+            else
+            {
+                GL.glColor3f(0.6f, 0.6f, 0.6f);
+                GL.glDisable(GL.GL_TEXTURE_2D);
+            }
 
             GL.glPushMatrix();
             this.calculateAddValue();
@@ -80,24 +89,24 @@ namespace myOpenGL.Classes
             GL.glTranslatef(this.TranslatePoint.X, this.TranslatePoint.Y, this.TranslatePoint.Z);
             GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
 
-            this.preformSecretBoxDrawing();
+            this.preformSecretBoxDrawing(i_DrawShadowFlag);
 
             GL.glPopMatrix();
         }
 
-        private void drawHiddenObject()
+        private void drawHiddenObject(bool i_DrawShadowFlag)
         {
             GL.glPushMatrix();
 
             GL.glColor3f(1,1,1);
             GL.glTranslatef(this.TranslatePoint.X + 0.5f, this.TranslatePoint.Y + 0.5f, this.TranslatePoint.Z + 0.5f);
             GL.glTranslatef(0.0f, this.m_CurrentElevationValue, 0);
-            this.preformHiddenObjectDrawing();
+            this.preformHiddenObjectDrawing(i_DrawShadowFlag);
 
             GL.glPopMatrix();
         }
 
-        private void preformSecretBoxDrawing()
+        private void preformSecretBoxDrawing(bool i_DrawShadowFlag)
         {
             GL.glPushMatrix();
 
@@ -115,10 +124,18 @@ namespace myOpenGL.Classes
             GL.glPopMatrix();
         }
 
-        private void preformHiddenObjectDrawing()
+        private void preformHiddenObjectDrawing(bool i_DrawShadowFlag)
         {
             GL.glPushMatrix();
-            GL.glColor3f(this.HiddenObjectColor.R, this.HiddenObjectColor.G, this.HiddenObjectColor.B);
+            if (!i_DrawShadowFlag)
+            {
+                GL.glColor3f(this.HiddenObjectColor.R, this.HiddenObjectColor.G, this.HiddenObjectColor.B);
+            }
+            else
+            {
+                GL.glColor3f(0.6f, 0.6f, 0.6f);
+            }
+
             GLU.gluSphere(this.m_GLUquadricObject, 0.4, 10, 10);
             GL.glPopMatrix();
         }

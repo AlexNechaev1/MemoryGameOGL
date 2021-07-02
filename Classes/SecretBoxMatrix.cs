@@ -2,7 +2,6 @@
 using myOpenGL.Structs;
 using System;
 using System.Collections.Generic;
-using OpenGL;
 using MemoryGameLogic;
 using myOpenGL.Forms;
 
@@ -38,7 +37,6 @@ namespace myOpenGL.Classes
             float heightValue = 0;
             checkIfNumberOfRowsAndColumnsIsValid(this.m_NumberOfRowsAndColumns);
             this.m_SecretBoxesMatrix = new List<List<SecretBox>>(this.m_NumberOfRowsAndColumns);
-
             for (int i = 0; i < this.m_NumberOfRowsAndColumns; i++)
             {
                 this.m_SecretBoxesMatrix.Add(new List<SecretBox>(this.m_NumberOfRowsAndColumns));
@@ -85,12 +83,12 @@ namespace myOpenGL.Classes
             // and white (1,1,1) that will show as yellow
             this.m_ColorsList.Add(new Color(1, 0, 0));//1
             this.m_ColorsList.Add(new Color(0, 1, 0));//2
-            this.m_ColorsList.Add(new Color(0, 1, 1));//3
-            this.m_ColorsList.Add(new Color(1, 0.5f, 0));//4
-            this.m_ColorsList.Add(new Color(0.5f, 0, 1));//5
-            this.m_ColorsList.Add(new Color(1, 0, 1));//6
-            this.m_ColorsList.Add(new Color(0.5f, 0, 0.5f));//7
-            this.m_ColorsList.Add(new Color(0.7f, 0, 0.3f));//8
+            this.m_ColorsList.Add(new Color(1, 0.5f, 1));//3
+            this.m_ColorsList.Add(new Color(0.5f, 1, 1));//4
+            this.m_ColorsList.Add(new Color(1, 0.3f, 1));//5
+            this.m_ColorsList.Add(new Color(0, 0.5f, 0.8f));//6
+            this.m_ColorsList.Add(new Color(1, 1, 1));//7
+            this.m_ColorsList.Add(new Color(0.5f, 0, 0));//8
         }
 
         public void SetXAndYValuesAsCurrentPlayerStep(Player i_CurrentPlayer, ePlayerStepsStates i_PlayerStepsState)
@@ -107,20 +105,13 @@ namespace myOpenGL.Classes
         #endregion
 
         #region draw methods
-        public void DrawSecretBoxMatrix()
+        public void DrawSecretBoxMatrix(bool i_DrawShadowFlag = false)
         {
-            this.drawSecretBoxesMatrix();
-        }
-
-        private void drawSecretBoxesMatrix()
-        {
-            GL.glColor3f(1, 1, 1);
-
             foreach (List<SecretBox> secretBoxList in this.m_SecretBoxesMatrix)
             {
                 foreach (SecretBox secretBox in secretBoxList)
                 {
-                    secretBox.drawSecretBoxWithItsContent();
+                    secretBox.drawSecretBoxWithItsContent(i_DrawShadowFlag);
                 }
             }
         }

@@ -7,7 +7,7 @@ using myOpenGL.Forms;
 
 namespace OpenGL
 {
-    class cOGL
+    public class cOGL
     {
         #region Original Class Members
         public double hh = 0;
@@ -15,6 +15,7 @@ namespace OpenGL
         private int m_WidthValue;
         int m_HeightValue;
 
+        private float[] m_LightFloatArr = new float[] { 25, 0.5f, 3, 1 };
         public float[] ScrollValue = new float[10];
         public float zShift = 0.0f;
         public float yShift = 0.0f;
@@ -24,6 +25,7 @@ namespace OpenGL
         public float xAngle = 0.0f;
         public int intOptionC = 0;
         double[] AccumulatedRotationsTraslations = new double[16];
+        private float[,] m_FloorPointsMatrix = new float[3, 3];
 
         uint m_uint_HWND = 0;
         uint m_uint_DC = 0;
@@ -95,7 +97,6 @@ namespace OpenGL
                 return;
             }
 
-
             initRenderingGL();
         }
 
@@ -104,6 +105,7 @@ namespace OpenGL
             m_WidthValue = m_ControlInstance.Width;
             m_HeightValue = m_ControlInstance.Height;
             GL.glViewport(0, 0, m_WidthValue, m_HeightValue);
+            //GLU.gluPerspective(45, ((double)m_WidthValue) / m_HeightValue, 1.0, 1000.0);
             Draw();
         }
 
@@ -136,6 +138,8 @@ namespace OpenGL
             //! TEXTURE 1b 
 
             GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+
+            this.controlLightSettings();
         }
 
         private void generateTextures()
@@ -177,6 +181,10 @@ namespace OpenGL
         private Axis3D m_DynamicAxis3D;
         private Reflector m_Reflector;
 
+        //work with avital
+        private CubeMap m_CubeMapInstance;
+        private GLUquadric m_GLUquadricObject;
+
         // CTOR
         public cOGL(Control i_ControlInstance, FormGameBoard i_FormGameBoardInstance)
         {
@@ -191,12 +199,18 @@ namespace OpenGL
             this.m_DynamicAxis3D = new Axis3D();
             this.m_Reflector = new Reflector();
             this.SecretBoxArrowInstance = new SecretBoxArrow(this.SecretBoxMatrixInstance);
+
+            this.m_CubeMapInstance = new CubeMap();
+            this.defineFloorPointsMatrix();
+
+            this.m_GLUquadricObject = GLU.gluNewQuadric();
         }
 
         // DTOR
         ~cOGL()
         {
             WGL.wglDeleteContext(m_uint_RC);
+            GLU.gluDeleteQuadric(this.m_GLUquadricObject);
         }
 
         // PUBLIC METHODS
@@ -204,29 +218,38 @@ namespace OpenGL
         {
             if (m_uint_DC == 0 || m_uint_RC == 0)
                 return;
-               
+
             //Color, Depth and Stencil buffers have been added
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
 
             //FULL and COMPLICATED
-            // GL.glViewport(0,Height/2,Width,Height/2);						
-
+            //GL.glViewport(0, m_HeightValue / 2, m_WidthValue, m_HeightValue / 2);					
+            
             GL.glLoadIdentity();
 
             // not trivial
             double[] ModelVievMatrixBeforeSpecificTransforms = new double[16];
             double[] CurrentRotationTraslation = new double[16];
 
-            GLU.gluLookAt(ScrollValue[0], ScrollValue[1], ScrollValue[2],
+            /*GLU.gluLookAt(ScrollValue[0], ScrollValue[1], ScrollValue[2],
                        ScrollValue[3], ScrollValue[4], ScrollValue[5],
-                       ScrollValue[6], ScrollValue[7], ScrollValue[8]);
+                       ScrollValue[6], ScrollValue[7], ScrollValue[8]);*/
+
+            //GLU.gluLookAt(-15, 10, 4, 1, 5, 4, 0, 1, 0);
+            GLU.gluLookAt(30, 10, 4, 1, 5, 4, 0, 1, 0);
+            
+            // for debug - delete after
+            for (int i = 0; i < ScrollValue.Length; i++)
+            {
+                Console.WriteLine("ScrollValue[" + i + "] = " + ScrollValue[i]);
+            }
 
             //x - ימינה/שמאלה
             //y - למעלה/למטה
             //z - קרוב/רחוק
-           
-            GL.glTranslatef(-5.0f, 0.0f, -10.0f);
-            GL.glRotatef(30.0f, 2.0f, 2.0f, 0.0f);
+
+            //GL.glTranslatef(-5.0f, 0.0f, -12.0f);
+            //GL.glRotatef(30.0f, 2.0f, 2.0f, 0.0f);
 
             this.m_StaticAxis3D.DrawAxis3D();
 
@@ -295,23 +318,198 @@ namespace OpenGL
             //multiply it by KeyCode defined AccumulatedRotationsTraslations matrix
             GL.glMultMatrixd(AccumulatedRotationsTraslations);
 
+            // work with alex & avital
+            GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, this.m_LightFloatArr);
+            GL.glColor3f(1, 0, 0);
+            GL.glTranslatef(m_LightFloatArr[0], m_LightFloatArr[1], m_LightFloatArr[2]);
+            GLUT.gluSphere(this.m_GLUquadricObject, 0.5, 20, 20);
+            GL.glTranslatef(-m_LightFloatArr[0], -m_LightFloatArr[1], -m_LightFloatArr[2]);
+
+            this.m_CubeMapInstance.DrawCubeMap();
+
             GL.glEnable(GL.GL_TEXTURE_2D);
             GL.glBindTexture(GL.GL_TEXTURE_2D, m_TextureUIntArray[0]);
 
+            this.drawShadowWall();
             this.m_DynamicAxis3D.DrawAxis3D();
 
+            // draw real objects
             this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
             this.SecretBoxArrowInstance.DrawSelectedSecretBoxArrow();
 
+            GL.glPushMatrix();
+
+            GL.glDisable(GL.GL_LIGHTING);
+
+            GL.glTranslatef(0, 0.1f, 0);
+            this.MakeShadowMatrix(this.m_FloorPointsMatrix); // nodelman code
+            GL.glMultMatrixf(cubeXform); // nodelman code
+            GL.glTranslatef(0, -0.1f, 0); // test
+
+            // draw shadow objects
+            this.SecretBoxMatrixInstance.DrawSecretBoxMatrix(true);
+            this.SecretBoxArrowInstance.DrawSelectedSecretBoxArrow(true);
+
+            GL.glPopMatrix();
+
+            GL.glEnable(GL.GL_LIGHTING);
+
             this.m_Reflector.ReflectBeforeSecretBoxMatrixDrawing();
 
+            // draw real objects reflection
             this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
             this.SecretBoxArrowInstance.DrawSelectedSecretBoxArrow();
 
             this.m_Reflector.ReflectAfterSecretBoxMatrixDrawing();
-            
+
             GL.glFlush();
             WGL.wglSwapBuffers(m_uint_DC);
         }
+
+        private void drawShadowWall()
+        { 
+            GL.glColor3f(1,0,0);
+            GL.glBegin(GL.GL_QUADS);
+
+            GL.glVertex3d(-5.01f, -3, -5);
+            GL.glVertex3d(-5.01f, -3, 12);
+            GL.glVertex3d(-5.01f, 12, 12);
+            GL.glVertex3d(-5.01f, 12, -5);
+
+            GL.glEnd();
+        }
+
+        #region Light and shadow functions
+        private void defineFloorPointsMatrix()
+        {
+            this.m_FloorPointsMatrix[0, 0] = -5;
+            this.m_FloorPointsMatrix[0, 1] = 0;//this.m_CubeMapInstance.TranslatePoint.Y;
+            this.m_FloorPointsMatrix[0, 2] = 0;
+
+            this.m_FloorPointsMatrix[1, 0] = -5;
+            this.m_FloorPointsMatrix[1, 1] = 1;// this.m_CubeMapInstance.TranslatePoint.Y;
+            this.m_FloorPointsMatrix[1, 2] = 0;
+
+            this.m_FloorPointsMatrix[2, 0] = -5;
+            this.m_FloorPointsMatrix[2, 1] = 0;// this.m_CubeMapInstance.TranslatePoint.Y;
+            this.m_FloorPointsMatrix[2, 2] = 1;
+        }
+
+        private void controlLightSettings()
+        {
+            GL.glEnable(GL.GL_LIGHTING);
+            GL.glEnable(GL.GL_LIGHT0);
+            GL.glEnable(GL.GL_COLOR_MATERIAL);
+
+            //GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, this.m_LightFloatArr);
+
+            GL.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, new float[] { 0.2f, 0.2f, 0.2f, 1 });
+            GL.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, new float[] { 1f, 1f, 1f, 1 }); // change on runtime
+            GL.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, new float[] { 1, 1, 1, 1 });
+        }
+
+        float[] planeCoeff = { 1, 1, 1, 1 };
+        float[,] ground = new float[3, 3];//{ { 1, 1, -0.5 }, { 0, 1, -0.5 }, { 1, 0, -0.5 } };
+        float[,] wall = new float[3, 3];//{ { -15, 3, 0 }, { 15, 3, 0 }, { 15, 3, 15 } };
+
+        float[] cubeXform = new float[16];
+
+        private void MakeShadowMatrix(float[,] points) // points = floor arr
+        {
+            float[] planeCoeff = new float[4];
+            float dot;
+
+            // Find the plane equation coefficients
+            // Find the first three coefficients the same way we
+            // find a normal.
+            calcNormal(points, planeCoeff);
+
+            // Find the last coefficient by back substitutions
+            planeCoeff[3] = -(
+                (planeCoeff[0] * points[2, 0]) + (planeCoeff[1] * points[2, 1]) +
+                (planeCoeff[2] * points[2, 2]));
+
+
+            // Dot product of plane and light position
+            dot = planeCoeff[0] * m_LightFloatArr[0] +
+                    planeCoeff[1] * m_LightFloatArr[1] +
+                    planeCoeff[2] * m_LightFloatArr[2] +
+                    planeCoeff[3];
+
+            // Now do the projection
+            // First column
+            cubeXform[0] = dot - m_LightFloatArr[0] * planeCoeff[0];
+            cubeXform[4] = 0.0f - m_LightFloatArr[0] * planeCoeff[1];
+            cubeXform[8] = 0.0f - m_LightFloatArr[0] * planeCoeff[2];
+            cubeXform[12] = 0.0f - m_LightFloatArr[0] * planeCoeff[3];
+
+            // Second column
+            cubeXform[1] = 0.0f - m_LightFloatArr[1] * planeCoeff[0];
+            cubeXform[5] = dot - m_LightFloatArr[1] * planeCoeff[1];
+            cubeXform[9] = 0.0f - m_LightFloatArr[1] * planeCoeff[2];
+            cubeXform[13] = 0.0f - m_LightFloatArr[1] * planeCoeff[3];
+
+            // Third Column
+            cubeXform[2] = 0.0f - m_LightFloatArr[2] * planeCoeff[0];
+            cubeXform[6] = 0.0f - m_LightFloatArr[2] * planeCoeff[1];
+            cubeXform[10] = dot - m_LightFloatArr[2] * planeCoeff[2];
+            cubeXform[14] = 0.0f - m_LightFloatArr[2] * planeCoeff[3];
+
+            // Fourth Column
+            cubeXform[3] = 0.0f - m_LightFloatArr[3] * planeCoeff[0];
+            cubeXform[7] = 0.0f - m_LightFloatArr[3] * planeCoeff[1];
+            cubeXform[11] = 0.0f - m_LightFloatArr[3] * planeCoeff[2];
+            cubeXform[15] = dot - m_LightFloatArr[3] * planeCoeff[3];
+        }
+
+        const int x = 0;
+        const int y = 1;
+        const int z = 2;
+
+        private void calcNormal(float[,] v, float[] outp)
+        {
+            float[] v1 = new float[3];
+            float[] v2 = new float[3];
+
+            // Calculate two vectors from the three points
+            v1[x] = v[0, x] - v[1, x];
+            v1[y] = v[0, y] - v[1, y];
+            v1[z] = v[0, z] - v[1, z];
+
+            v2[x] = v[1, x] - v[2, x];
+            v2[y] = v[1, y] - v[2, y];
+            v2[z] = v[1, z] - v[2, z];
+
+            // Take the cross product of the two vectors to get
+            // the normal vector which will be stored in out
+            outp[x] = v1[y] * v2[z] - v1[z] * v2[y];
+            outp[y] = v1[z] * v2[x] - v1[x] * v2[z];
+            outp[z] = v1[x] * v2[y] - v1[y] * v2[x];
+
+            // Normalize the vector (shorten length to one)
+            ReduceToUnit(outp);
+        }
+
+        private void ReduceToUnit(float[] vector)
+        {
+            float length;
+
+            // Calculate the length of the vector		
+            length = (float)Math.Sqrt((vector[0] * vector[0]) +
+                                (vector[1] * vector[1]) +
+                                (vector[2] * vector[2]));
+
+            // Keep the program from blowing up by providing an exceptable
+            // value for vectors that may calculated too close to zero.
+            if (length == 0.0f)
+                length = 1.0f;
+
+            // Dividing each element by the length will result in a
+            // unit normal vector.
+            vector[0] /= length;
+            vector[1] /= length;
+            vector[2] /= length;
+        }
+        #endregion
     }
 }
