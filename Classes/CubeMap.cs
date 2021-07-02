@@ -6,7 +6,7 @@ namespace myOpenGL.Classes
     public class CubeMap
     {
         public Point3D TranslatePoint = new Point3D(-10, -10, -10);
-        private Color m_CubeMapColor = new Color(1, 1, 1);
+        private Color m_CubeMapColor = new Color(1, 0.5f, 1);
         private const int k_ScalingValue = 35;
 
         public void DrawCubeMap()

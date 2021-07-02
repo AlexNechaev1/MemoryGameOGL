@@ -25,7 +25,7 @@ namespace OpenGL
         public float xAngle = 0.0f;
         public int intOptionC = 0;
         double[] AccumulatedRotationsTraslations = new double[16];
-        private float[,] m_FloorPointsMatrix = new float[3, 3]; 
+        private float[,] m_FloorPointsMatrix = new float[3, 3];
 
         uint m_uint_HWND = 0;
         uint m_uint_DC = 0;
@@ -199,21 +199,8 @@ namespace OpenGL
             this.m_Reflector = new Reflector();
             this.SecretBoxArrowInstance = new SecretBoxArrow(this.SecretBoxMatrixInstance);
 
-            //work with acvital
             this.m_CubeMapInstance = new CubeMap();
-            
-            // define separate method
-            this.m_FloorPointsMatrix[0, 0] = 0;
-            this.m_FloorPointsMatrix[0, 1] = this.m_CubeMapInstance.TranslatePoint.Y;
-            this.m_FloorPointsMatrix[0, 2] = 0;
-
-            this.m_FloorPointsMatrix[1, 0] = 1;
-            this.m_FloorPointsMatrix[1, 1] = this.m_CubeMapInstance.TranslatePoint.Y;
-            this.m_FloorPointsMatrix[1, 2] = 0;
-
-            this.m_FloorPointsMatrix[2, 0] = 0;
-            this.m_FloorPointsMatrix[2, 1] = this.m_CubeMapInstance.TranslatePoint.Y;
-            this.m_FloorPointsMatrix[2, 2] = 1;
+            this.defineFloorPointsMatrix();
         }
 
         // DTOR
@@ -318,13 +305,16 @@ namespace OpenGL
             //multiply it by KeyCode defined AccumulatedRotationsTraslations matrix
             GL.glMultMatrixd(AccumulatedRotationsTraslations);
 
+            // work with alex & avital
+            //GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, this.m_LightFloatArr);
+
             this.m_CubeMapInstance.DrawCubeMap();
 
             GL.glEnable(GL.GL_TEXTURE_2D);
             GL.glBindTexture(GL.GL_TEXTURE_2D, m_TextureUIntArray[0]);
 
             this.m_DynamicAxis3D.DrawAxis3D();
-            
+
             // draw real objects
             this.SecretBoxMatrixInstance.DrawSecretBoxMatrix();
             this.SecretBoxArrowInstance.DrawSelectedSecretBoxArrow();
@@ -358,6 +348,21 @@ namespace OpenGL
         }
 
         #region Light and shadow functions
+        private void defineFloorPointsMatrix()
+        {
+            this.m_FloorPointsMatrix[0, 0] = 0;
+            this.m_FloorPointsMatrix[0, 1] = this.m_CubeMapInstance.TranslatePoint.Y;
+            this.m_FloorPointsMatrix[0, 2] = 0;
+
+            this.m_FloorPointsMatrix[1, 0] = 1;
+            this.m_FloorPointsMatrix[1, 1] = this.m_CubeMapInstance.TranslatePoint.Y;
+            this.m_FloorPointsMatrix[1, 2] = 0;
+
+            this.m_FloorPointsMatrix[2, 0] = 0;
+            this.m_FloorPointsMatrix[2, 1] = this.m_CubeMapInstance.TranslatePoint.Y;
+            this.m_FloorPointsMatrix[2, 2] = 1;
+        }
+
         private void controlLightSettings()
         {
             GL.glEnable(GL.GL_LIGHTING);
@@ -466,7 +471,7 @@ namespace OpenGL
             // value for vectors that may calculated too close to zero.
             if (length == 0.0f)
                 length = 1.0f;
-        
+
             // Dividing each element by the length will result in a
             // unit normal vector.
             vector[0] /= length;
