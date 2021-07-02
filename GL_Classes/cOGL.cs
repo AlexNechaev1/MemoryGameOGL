@@ -231,25 +231,8 @@ namespace OpenGL
             double[] ModelVievMatrixBeforeSpecificTransforms = new double[16];
             double[] CurrentRotationTraslation = new double[16];
 
-            /*GLU.gluLookAt(ScrollValue[0], ScrollValue[1], ScrollValue[2],
-                       ScrollValue[3], ScrollValue[4], ScrollValue[5],
-                       ScrollValue[6], ScrollValue[7], ScrollValue[8]);*/
-
-            //GLU.gluLookAt(-15, 10, 4, 1, 5, 4, 0, 1, 0);
             GLU.gluLookAt(30, 10, 4, 1, 5, 4, 0, 1, 0);
             
-            // for debug - delete after
-            for (int i = 0; i < ScrollValue.Length; i++)
-            {
-                Console.WriteLine("ScrollValue[" + i + "] = " + ScrollValue[i]);
-            }
-
-            //x - ימינה/שמאלה
-            //y - למעלה/למטה
-            //z - קרוב/רחוק
-
-            //GL.glTranslatef(-5.0f, 0.0f, -12.0f);
-            //GL.glRotatef(30.0f, 2.0f, 2.0f, 0.0f);
 
             this.m_StaticAxis3D.DrawAxis3D();
 
