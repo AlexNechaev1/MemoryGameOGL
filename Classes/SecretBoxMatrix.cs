@@ -218,13 +218,21 @@ namespace myOpenGL.Classes
         #region Movement methods
         private void moveUpInSecretBoxMatrix()
         {
-            if (this.m_CurrentSecretBoxXCoordinate - 1 >= 0)
+            if (this.m_CurrentSecretBoxYCoordinate - 1 >= 0)
             {
-                this.m_CurrentSecretBoxXCoordinate--;
+                this.m_CurrentSecretBoxYCoordinate--;
             }
         }
 
         private void moveDownInSecretBoxMatrix()
+        {
+            if (this.m_CurrentSecretBoxYCoordinate + 1 < this.m_NumberOfRowsAndColumns)
+            {
+                this.m_CurrentSecretBoxYCoordinate++;
+            }
+        }
+
+        private void moveLeftInSecretBoxMatrix()
         {
             if (this.m_CurrentSecretBoxXCoordinate + 1 < this.m_NumberOfRowsAndColumns)
             {
@@ -232,19 +240,11 @@ namespace myOpenGL.Classes
             }
         }
 
-        private void moveLeftInSecretBoxMatrix()
-        {
-            if (this.m_CurrentSecretBoxYCoordinate - 1 >= 0)
-            {
-                this.m_CurrentSecretBoxYCoordinate--;
-            }
-        }
-
         private void moveRightInSecretBoxMatrix()
         {
-            if (this.m_CurrentSecretBoxYCoordinate + 1 < this.m_NumberOfRowsAndColumns)
+            if (this.m_CurrentSecretBoxXCoordinate - 1 >= 0)
             {
-                this.m_CurrentSecretBoxYCoordinate++;
+                this.m_CurrentSecretBoxXCoordinate--;
             }
         }
         #endregion
