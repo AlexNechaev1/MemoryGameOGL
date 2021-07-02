@@ -24,11 +24,11 @@ namespace myOpenGL.Forms
         private eGameModes m_GameMode;
         #endregion
 
-        public FormGameBoard(string i_PlayerOneName, eGameModes i_GameMode)
+        public FormGameBoard(string i_PlayerOneName, eGameModes i_GameMode, bool i_DrawAxisFlag)
         {
             #region Original CTOR code
             InitializeComponent();
-            cGL = new cOGL(panel1, this);
+            cGL = new cOGL(panel1, this, i_DrawAxisFlag);
             //apply the bars values as cGL.ScrollValue[..] properties 
             //!!!
 

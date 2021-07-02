@@ -42,7 +42,8 @@ namespace myOpenGL.Forms
             if (this.checkPlayerOneName())
             {
                 this.m_PlayerOneName = this.textBoxFirstPlayerName.Text;
-                this.m_FormGameBoardInstance = new FormGameBoard(this.m_PlayerOneName, this.m_GameMode);
+                bool drawAxisFlag = this.m_GameMode == eGameModes.SceneMode ? true : false;
+                this.m_FormGameBoardInstance = new FormGameBoard(this.m_PlayerOneName, this.m_GameMode, drawAxisFlag);
 
                 this.Hide();
                 this.m_FormGameBoardInstance.ShowDialog();
