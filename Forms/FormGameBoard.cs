@@ -1,8 +1,11 @@
 using System;
 using System.Drawing;
+using System.IO;
+using System.Media;
 using System.Windows.Forms;
 using MemoryGameLogic;
 using myOpenGL.Enums;
+using myOpenGL.Properties;
 using OpenGL;
 
 namespace myOpenGL.Forms
@@ -10,7 +13,8 @@ namespace myOpenGL.Forms
     public partial class FormGameBoard : Form
     {
         #region CLASS MEMBERS
-        cOGL cGL;
+        private cOGL cGL;
+        private SoundPlayer i_SoundPlayerInstance;
         private const int k_ComputerThinkingTimerInterval = 3000;
         private GameBoardDimensions m_CurrentGameBoardDimensions;
         private GameLogicComponent m_GameLogicComponent;
@@ -46,6 +50,7 @@ namespace myOpenGL.Forms
             #endregion
 
             this.CenterToScreen();
+            this.i_SoundPlayerInstance = new SoundPlayer();
             this.m_ComputerThinkingTimer = new Timer();
             this.m_ComputerThinkingTimer.Interval = k_ComputerThinkingTimerInterval;
             this.m_ComputerThinkingTimer.Tick += m_ComputerThinkingTimer_Tick;
@@ -80,6 +85,12 @@ namespace myOpenGL.Forms
             }
 
             this.MinimumSize = new Size(669, 567);
+        }
+
+        private void playSound(Stream i_Stream)
+        {
+            this.i_SoundPlayerInstance.Stream = i_Stream;
+            this.i_SoundPlayerInstance.Play();
         }
 
         #region Updating strings in points labels
@@ -328,7 +339,12 @@ namespace myOpenGL.Forms
             {
                 if (this.m_CurrentPlayerPointer == this.m_PlayerOne)
                 {
+                    this.playSound(Resources.humanTurnSound);
                     this.cGL.SecretBoxMatrixInstance.SetXAndYValuesAsCurrentPlayerStep(this.m_CurrentPlayerPointer, this.m_PlayerStepsState);
+                }
+                else
+                {
+                    this.playSound(Resources.computerTurnSound);
                 }
 
                 this.switchCardStatus(); // switch card visibility step by step
@@ -394,7 +410,7 @@ namespace myOpenGL.Forms
                     this.m_GameLogicComponent.AddPoint();
                     this.setStringsInPointsLabels();
                     this.cGL.SecretBoxMatrixInstance.DrawSelectedSecretBoxArrowFlag = true;
-                    Console.Beep();
+                    this.playSound(Resources.successSound);
                 }
                 else
                 {
@@ -413,7 +429,7 @@ namespace myOpenGL.Forms
                 {
                     this.m_GameLogicComponent.AddPoint();
                     this.setStringsInPointsLabels();
-                    Console.Beep();
+                    this.playSound(Resources.successSound);
                     if (!this.m_GameLogicComponent.CheckIfGameIsFinished())
                     {
                         this.m_ComputerThinkingTimer.Start();
