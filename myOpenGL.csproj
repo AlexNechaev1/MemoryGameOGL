@@ -121,6 +121,15 @@
   <ItemGroup>
     <None Include="Resources\successSound.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\winSound.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gameOverSound.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\drawSound.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -511,12 +511,25 @@ namespace myOpenGL.Forms
             Player winningPlayerPointer = null;
 
             this.m_GameLogicComponent.DecideWinningPlayer(ref winningPlayerPointer);
+
+
+
             if (winningPlayerPointer == null)
             {
                 stringToReturn = "We have a tie here!";
+                this.playSound(Resources.drawSound);
             }
             else
             {
+                if (winningPlayerPointer == this.m_PlayerOne)
+                {
+                    this.playSound(Resources.winSound);
+                }
+                else
+                {
+                    this.playSound(Resources.gameOverSound);
+                }
+
                 stringToReturn = string.Format("{0}, you are the winner!", winningPlayerPointer.PlayerName);
             }
 
