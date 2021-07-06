@@ -411,6 +411,8 @@ namespace myOpenGL.Forms
                     this.setStringsInPointsLabels();
                     this.cGL.SecretBoxMatrixInstance.DrawSelectedSecretBoxArrowFlag = true;
                     this.playSound(Resources.successSound);
+                    this.cGL.SecretBoxMatrixInstance.setPlayerStepRevealed(this.m_CurrentPlayerPointer.FirstStep);
+                    this.cGL.SecretBoxMatrixInstance.setPlayerStepRevealed(this.m_CurrentPlayerPointer.SecondStep);
                 }
                 else
                 {
@@ -430,6 +432,8 @@ namespace myOpenGL.Forms
                     this.m_GameLogicComponent.AddPoint();
                     this.setStringsInPointsLabels();
                     this.playSound(Resources.successSound);
+                    this.cGL.SecretBoxMatrixInstance.setPlayerStepRevealed(this.m_CurrentPlayerPointer.FirstStep);
+                    this.cGL.SecretBoxMatrixInstance.setPlayerStepRevealed(this.m_CurrentPlayerPointer.SecondStep);
                     if (!this.m_GameLogicComponent.CheckIfGameIsFinished())
                     {
                         this.m_ComputerThinkingTimer.Start();

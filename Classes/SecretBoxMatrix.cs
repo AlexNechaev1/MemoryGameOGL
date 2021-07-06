@@ -207,6 +207,11 @@ namespace myOpenGL.Classes
             }
         }
 
+        public void setPlayerStepRevealed(PlayerStep ps)
+        {
+            this.m_SecretBoxesMatrix[ps.RowIndex][ps.ColumnIndex].m_IsSecretBoxRevealed = true;
+        }
+
         private void moveDownInSecretBoxMatrix()
         {
             if (this.m_CurrentSecretBoxYCoordinate + 1 < this.m_NumberOfRowsAndColumns)
