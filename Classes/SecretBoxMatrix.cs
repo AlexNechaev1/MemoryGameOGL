@@ -201,39 +201,239 @@ namespace myOpenGL.Classes
         #region Movement methods
         private void moveUpInSecretBoxMatrix()
         {
-            if (this.m_CurrentSecretBoxYCoordinate - 1 >= 0)
-            {
-                this.m_CurrentSecretBoxYCoordinate--;
-            }
-        }
+            bool isNewBoxFound = false;
 
-        public void setPlayerStepRevealed(PlayerStep ps)
-        {
-            this.m_SecretBoxesMatrix[ps.RowIndex][ps.ColumnIndex].m_IsSecretBoxRevealed = true;
+            for (int yIndex = this.m_CurrentSecretBoxYCoordinate - 1; yIndex >= 0; yIndex--)
+            {
+                if (!this.m_SecretBoxesMatrix[this.m_CurrentSecretBoxXCoordinate][yIndex].IsSecretBoxRevealed)
+                {
+                    this.m_CurrentSecretBoxYCoordinate = yIndex;
+                    isNewBoxFound = true;
+                    break;
+                }
+            }
+
+            if (!isNewBoxFound)
+            {
+                for (int xIndex = this.m_CurrentSecretBoxXCoordinate + 1; xIndex < this.m_NumberOfRowsAndColumns; xIndex++)
+                {
+                    for (int yIndex = this.m_CurrentSecretBoxYCoordinate - 1; yIndex >= 0; yIndex--)
+                    {
+                        if (!this.m_SecretBoxesMatrix[xIndex][yIndex].IsSecretBoxRevealed)
+                        {
+                            this.m_CurrentSecretBoxYCoordinate = yIndex;
+                            this.m_CurrentSecretBoxXCoordinate = xIndex;
+                            isNewBoxFound = true;
+                            break;
+                        }
+                    }
+
+                    if (isNewBoxFound)
+                    {
+                        break;
+                    }
+                }
+
+                if (!isNewBoxFound)
+                {
+                    for (int xIndex = this.m_CurrentSecretBoxXCoordinate - 1; xIndex >= 0; xIndex--)
+                    {
+                        for (int yIndex = this.m_CurrentSecretBoxYCoordinate - 1; yIndex >= 0; yIndex--)
+                        {
+                            if (!this.m_SecretBoxesMatrix[xIndex][yIndex].IsSecretBoxRevealed)
+                            {
+                                this.m_CurrentSecretBoxYCoordinate = yIndex;
+                                this.m_CurrentSecretBoxXCoordinate = xIndex;
+                                isNewBoxFound = true;
+                                break;
+                            }
+                        }
+
+                        if (isNewBoxFound)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         private void moveDownInSecretBoxMatrix()
         {
-            if (this.m_CurrentSecretBoxYCoordinate + 1 < this.m_NumberOfRowsAndColumns)
+            bool isNewBoxFound = false;
+
+            for (int yIndex = this.m_CurrentSecretBoxYCoordinate + 1; yIndex < this.m_NumberOfRowsAndColumns; yIndex++)
             {
-                this.m_CurrentSecretBoxYCoordinate++;
+                if (!this.m_SecretBoxesMatrix[this.m_CurrentSecretBoxXCoordinate][yIndex].IsSecretBoxRevealed)
+                {
+                    this.m_CurrentSecretBoxYCoordinate = yIndex;
+                    isNewBoxFound = true;
+                    break;
+                }
+            }
+
+            if (!isNewBoxFound)
+            {
+                for (int xIndex = this.m_CurrentSecretBoxXCoordinate - 1; xIndex >= 0; xIndex--)
+                {
+                    for (int yIndex = this.m_CurrentSecretBoxYCoordinate + 1; yIndex < this.m_NumberOfRowsAndColumns; yIndex++)
+                    {
+                        if (!this.m_SecretBoxesMatrix[xIndex][yIndex].IsSecretBoxRevealed)
+                        {
+                            this.m_CurrentSecretBoxYCoordinate = yIndex;
+                            this.m_CurrentSecretBoxXCoordinate = xIndex;
+                            isNewBoxFound = true;
+                            break;
+                        }
+                    }
+
+                    if (isNewBoxFound)
+                    {
+                        break;
+                    }
+                }
+
+                if (!isNewBoxFound)
+                {
+                    for (int xIndex = this.m_CurrentSecretBoxXCoordinate + 1; xIndex < this.m_NumberOfRowsAndColumns; xIndex++)
+                    {
+                        for (int yIndex = this.m_CurrentSecretBoxYCoordinate + 1; yIndex < this.m_NumberOfRowsAndColumns; yIndex++)
+                        {
+                            if (!this.m_SecretBoxesMatrix[xIndex][yIndex].IsSecretBoxRevealed)
+                            {
+                                this.m_CurrentSecretBoxYCoordinate = yIndex;
+                                this.m_CurrentSecretBoxXCoordinate = xIndex;
+                                isNewBoxFound = true;
+                                break;
+                            }
+                        }
+
+                        if (isNewBoxFound)
+                        {
+                            break;
+                        }
+                    }
+                }
             }
         }
 
         private void moveLeftInSecretBoxMatrix()
         {
-            if (this.m_CurrentSecretBoxXCoordinate + 1 < this.m_NumberOfRowsAndColumns)
+            bool isNewBoxFound = false;
+
+            for (int xIndex = this.m_CurrentSecretBoxXCoordinate + 1; xIndex < this.m_NumberOfRowsAndColumns; xIndex++)
             {
-                this.m_CurrentSecretBoxXCoordinate++;
+                if (!this.m_SecretBoxesMatrix[xIndex][this.m_CurrentSecretBoxYCoordinate].IsSecretBoxRevealed)
+                {
+                    this.m_CurrentSecretBoxXCoordinate = xIndex;
+                    isNewBoxFound = true;
+                    break;
+                }
+            }
+
+            if (!isNewBoxFound)
+            {
+                for (int yIndex = this.m_CurrentSecretBoxYCoordinate + 1; yIndex < this.m_NumberOfRowsAndColumns; yIndex++)
+                {
+                    for (int xIndex = this.m_CurrentSecretBoxXCoordinate + 1; xIndex < this.m_NumberOfRowsAndColumns; xIndex++)
+                    {
+                        if (!this.m_SecretBoxesMatrix[xIndex][this.m_CurrentSecretBoxYCoordinate].IsSecretBoxRevealed)
+                        {
+                            this.m_CurrentSecretBoxXCoordinate = xIndex;
+                            isNewBoxFound = true;
+                            break;
+                        }
+                    }
+
+                    if (isNewBoxFound)
+                    {
+                        break;
+                    }
+                }
+
+                if (!isNewBoxFound)
+                {
+                    for (int yIndex = this.m_CurrentSecretBoxYCoordinate - 1; yIndex >=0; yIndex--)
+                    {
+                        for (int xIndex = this.m_CurrentSecretBoxXCoordinate + 1; xIndex < this.m_NumberOfRowsAndColumns; xIndex++)
+                        {
+                            if (!this.m_SecretBoxesMatrix[xIndex][this.m_CurrentSecretBoxYCoordinate].IsSecretBoxRevealed)
+                            {
+                                this.m_CurrentSecretBoxXCoordinate = xIndex;
+                                isNewBoxFound = true;
+                                break;
+                            }
+                        }
+
+                        if (isNewBoxFound)
+                        {
+                            break;
+                        }
+                    }
+                }
             }
         }
 
         private void moveRightInSecretBoxMatrix()
         {
-            if (this.m_CurrentSecretBoxXCoordinate - 1 >= 0)
+            bool isNewBoxFound = false;
+
+            for (int xIndex = this.m_CurrentSecretBoxXCoordinate - 1; xIndex >= 0; xIndex--)
             {
-                this.m_CurrentSecretBoxXCoordinate--;
+                if (!this.m_SecretBoxesMatrix[xIndex][this.m_CurrentSecretBoxYCoordinate].IsSecretBoxRevealed)
+                {
+                    this.m_CurrentSecretBoxXCoordinate = xIndex;
+                    isNewBoxFound = true;
+                    break;
+                }
             }
+
+            if (!isNewBoxFound)
+            {
+                for (int yIndex = this.m_CurrentSecretBoxYCoordinate - 1; yIndex >= 0; yIndex--)
+                {
+                    for (int xIndex = this.m_CurrentSecretBoxXCoordinate - 1; xIndex >= 0; xIndex--)
+                    {
+                        if (!this.m_SecretBoxesMatrix[xIndex][this.m_CurrentSecretBoxYCoordinate].IsSecretBoxRevealed)
+                        {
+                            this.m_CurrentSecretBoxXCoordinate = xIndex;
+                            isNewBoxFound = true;
+                            break;
+                        }
+                    }
+
+                    if (isNewBoxFound)
+                    {
+                        break;
+                    }
+                }
+
+                if (!isNewBoxFound)
+                {
+                    for (int yIndex = this.m_CurrentSecretBoxYCoordinate + 1; yIndex < this.m_NumberOfRowsAndColumns; yIndex++)
+                    {
+                        for (int xIndex = this.m_CurrentSecretBoxXCoordinate - 1; xIndex >= 0; xIndex--)
+                        {
+                            if (!this.m_SecretBoxesMatrix[xIndex][this.m_CurrentSecretBoxYCoordinate].IsSecretBoxRevealed)
+                            {
+                                this.m_CurrentSecretBoxXCoordinate = xIndex;
+                                isNewBoxFound = true;
+                                break;
+                            }
+                        }
+
+                        if (isNewBoxFound)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void setPlayerStepRevealed(PlayerStep i_PlayerStep)
+        {
+            this.m_SecretBoxesMatrix[i_PlayerStep.RowIndex][i_PlayerStep.ColumnIndex].IsSecretBoxRevealed = true;
         }
         #endregion
     }

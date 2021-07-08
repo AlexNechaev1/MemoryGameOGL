@@ -21,7 +21,7 @@ namespace myOpenGL.Classes
         public Point3D TranslatePoint { get; private set; }
         public Color HiddenObjectColor { get; set; }
         private GLUquadric m_GLUquadricObject;
-        public bool m_IsSecretBoxRevealed { get; set; }
+        public bool IsSecretBoxRevealed { get; set; }
         #endregion
 
         #region Box state members
@@ -50,7 +50,7 @@ namespace myOpenGL.Classes
             this.IsSecretBoxVisible = true;
             this.IsSelectedSecretBox = false;
             this.m_GLUquadricObject = GLU.gluNewQuadric();
-            this.m_IsSecretBoxRevealed = false;
+            this.IsSecretBoxRevealed = false;
 
             this.SecretBoxDrawState = eSecretBoxDrawState.None;
             this.IsBoxOpen = false;
@@ -64,7 +64,7 @@ namespace myOpenGL.Classes
         #region Drawing methods
         public void drawSecretBoxWithItsContent(bool i_DrawShadowFlag)
         {
-            if (!m_IsSecretBoxRevealed)
+            if (!IsSecretBoxRevealed)
             {
                 this.drawSecretBox(i_DrawShadowFlag);
                 this.drawHiddenObject(i_DrawShadowFlag);
