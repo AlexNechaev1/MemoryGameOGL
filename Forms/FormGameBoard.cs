@@ -486,6 +486,7 @@ namespace myOpenGL.Forms
             if (isGameFinished)
             {
                 string messageToShow = getWinnerMessage();
+                this.cGL.SecretBoxMatrixInstance.DrawSelectedSecretBoxArrowFlag = false;
                 messageToShow = string.Format("{0}{1}{2}", messageToShow, Environment.NewLine, "Would you like to play another game?");
                 DialogResult dialogResult = MessageBox.Show(messageToShow, "Game Over", MessageBoxButtons.YesNo);
 
