@@ -63,7 +63,7 @@ namespace myOpenGL.Classes
             {
                 this.m_SecretBoxesMatrix.Add(new List<SecretBox>(this.m_NumberOfRowsAndColumns));
                 fillCurrentSecretBoxesList(this.m_SecretBoxesMatrix[i], heightValue);
-                heightValue += 2.0f;
+                heightValue += 3.0f;
             }
         }
 
@@ -73,7 +73,7 @@ namespace myOpenGL.Classes
 
             for (int i = 0; i < this.m_NumberOfRowsAndColumns; i++)
             {
-                secretBoxPointer = new SecretBox(new Point3D(0.0f + i * 2, 0.0f, 0.0f + i_HeightOffsetValue));
+                secretBoxPointer = new SecretBox(new Point3D(0.0f + i * 3, 0.0f, 0.0f + i_HeightOffsetValue));
                 secretBoxPointer.CheckIfPlayerStepsAreCorrectAction = this.m_MainForm.CheckIfPlayerStepsAreCorrect;
                 i_SecretBoxListToFill.Add(secretBoxPointer);
             }

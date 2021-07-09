@@ -236,7 +236,7 @@ namespace OpenGL
             double[] ModelVievMatrixBeforeSpecificTransforms = new double[16];
             double[] CurrentRotationTraslation = new double[16];
 
-            GLU.gluLookAt(30, 10, 4, 1, 5, 4, 0, 1, 0);
+            GLU.gluLookAt(30, 10, 5, 1, 5, 6, 0, 1, 0);
 
             if (this.m_DrawAxisFlag)
             {
@@ -364,8 +364,8 @@ namespace OpenGL
             GL.glBegin(GL.GL_QUADS);
 
             GL.glVertex3d(-5.01f, -3, -5);
-            GL.glVertex3d(-5.01f, -3, 12);
-            GL.glVertex3d(-5.01f, 12, 12);
+            GL.glVertex3d(-5.01f, -3, 18);
+            GL.glVertex3d(-5.01f, 12, 18);
             GL.glVertex3d(-5.01f, 12, -5);
 
             GL.glEnd();
