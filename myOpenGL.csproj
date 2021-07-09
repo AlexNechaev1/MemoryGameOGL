@@ -130,6 +130,24 @@
   <ItemGroup>
     <None Include="Resources\drawSound.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bottomTexture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\firstTextureFromLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\forthTextureFromLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\secondTextureFromLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\thirdTextureFromLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\topTexture.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
