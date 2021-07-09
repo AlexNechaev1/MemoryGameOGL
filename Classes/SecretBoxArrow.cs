@@ -21,6 +21,13 @@ namespace myOpenGL.Classes
             GLU.gluDeleteQuadric(this.m_GLUquadricObject);
         }
 
+        public void ResetSecretBoxArrow()
+        {
+            this.DrawSecretBoxArrowFlag = true;
+            this.m_SecretBoxMatrixInstance.CountUserTurnCounter();
+            this.DrawSelectedSecretBoxArrow();
+        }
+
         public void DrawSelectedSecretBoxArrow(bool i_DrawShadowFlag = false)
         {
             if (DrawSecretBoxArrowFlag)

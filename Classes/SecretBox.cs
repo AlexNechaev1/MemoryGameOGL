@@ -42,7 +42,7 @@ namespace myOpenGL.Classes
         private float m_AngleDelta = 1.0f;
         private float m_BoxRotateAngle = 0.0f;
         #endregion
-                      
+
         public SecretBox(Point3D i_TranslatePoint)
         {
             this.HiddenObjectColor = new Color(1, 1, 1);
@@ -59,6 +59,33 @@ namespace myOpenGL.Classes
         ~SecretBox()
         {
             GLU.gluDeleteQuadric(this.m_GLUquadricObject);
+        }
+
+        public void ResetSecretBoxParams()
+        {
+            this.m_CurrentElevationValue = 0;
+            this.m_AddToCurrentElevationValueFlag = true;
+            this.m_HasReachedMaxHeight = false;
+            this.IsSecretBoxVisible = true;
+            this.IsSelectedSecretBox = false;
+            this.IsSecretBoxRevealed = false;
+            this.m_ElevationDeltaValue = 0.01f;
+            this.IsBoxOpen = false;
+
+            this.m_MaxElevationValue = 1;
+            this.m_MinElevationValue = 0;
+
+            this.m_TopCaseAngle = 0;
+            this.m_RightCaseAngle = 0;
+            this.m_LeftCaseAngle = 0;
+            this.m_FrontCaseAngle = 0;
+            this.m_BackCaseAngle = 0;
+
+            this.m_CurrentAngle = 0.0f;
+            this.m_AngleDelta = 1.0f;
+            this.m_BoxRotateAngle = 0.0f;
+
+            this.SecretBoxDrawState = eSecretBoxDrawState.None;
         }
 
         #region Drawing methods

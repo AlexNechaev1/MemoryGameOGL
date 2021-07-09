@@ -33,6 +33,27 @@ namespace myOpenGL.Classes
         }
 
         #region initialize, fill and set methods
+        public void ResetSecretBoxMatrix()
+        {
+            this.m_UserTurnCounter = -1;//test
+            this.CurrentSecretBoxPointer = this.m_SecretBoxesMatrix[0][0];
+            this.resetAllDiscoveredSecretBoxes();
+            this.m_CurrentSecretBoxXCoordinate = 0;
+            this.m_CurrentSecretBoxYCoordinate = 0;
+            this.DrawSelectedSecretBoxArrowFlag = true;
+        }
+
+        private void resetAllDiscoveredSecretBoxes()
+        {
+            foreach (var secretBoxesList in this.m_SecretBoxesMatrix)
+            {
+                foreach (var secretBox in secretBoxesList)
+                {
+                    secretBox.ResetSecretBoxParams();
+                }
+            }
+        }
+
         private void fillSecretBoxesMatrix()
         {
             float heightValue = 0;
@@ -77,19 +98,14 @@ namespace myOpenGL.Classes
         private void initializeColorsList()
         {
             this.m_ColorsList = new List<Color>();
-
-            // alex, please pick better colors
-            // note that for some reason there are some colors that dont work
-            // like blue (0,0,1) that will show as black
-            // and white (1,1,1) that will show as yellow
-            this.m_ColorsList.Add(new Color(1, 0, 0));//1
-            this.m_ColorsList.Add(new Color(0, 1, 0));//2
-            this.m_ColorsList.Add(new Color(1, 0.5f, 1));//3
-            this.m_ColorsList.Add(new Color(0.5f, 1, 1));//4
-            this.m_ColorsList.Add(new Color(1, 0.3f, 1));//5
-            this.m_ColorsList.Add(new Color(0, 0.5f, 0.8f));//6
-            this.m_ColorsList.Add(new Color(1, 1, 1));//7
-            this.m_ColorsList.Add(new Color(0.5f, 0, 0));//8
+            this.m_ColorsList.Add(new Color(1, 0, 0));
+            this.m_ColorsList.Add(new Color(0, 1, 0));
+            this.m_ColorsList.Add(new Color(1, 0.5f, 1));
+            this.m_ColorsList.Add(new Color(0.5f, 1, 1));
+            this.m_ColorsList.Add(new Color(1, 0.3f, 1));
+            this.m_ColorsList.Add(new Color(0, 0.5f, 0.8f));
+            this.m_ColorsList.Add(new Color(1, 1, 1));
+            this.m_ColorsList.Add(new Color(0.5f, 0, 0));
         }
 
         public void SetXAndYValuesAsCurrentPlayerStep(Player i_CurrentPlayer, ePlayerStepsStates i_PlayerStepsState)
@@ -134,7 +150,7 @@ namespace myOpenGL.Classes
                 this.CurrentSecretBoxPointer.SecretBoxDrawState = eSecretBoxDrawState.OpenSecretBox;
             }
 
-            this.drawSelectedSecretBoxArrowIfNeeded();
+            this.CountUserTurnCounter();
         }
 
         public void ForgetSecretBoxByGivenPlayerStep(PlayerStep i_PlayerStep)
@@ -169,7 +185,7 @@ namespace myOpenGL.Classes
             this.CurrentSecretBoxPointer = this.m_SecretBoxesMatrix[m_CurrentSecretBoxXCoordinate][m_CurrentSecretBoxYCoordinate];
         }
 
-        private void drawSelectedSecretBoxArrowIfNeeded()
+        public void CountUserTurnCounter()
         {
             this.m_UserTurnCounter++;
             DrawSelectedSecretBoxArrowFlag = this.m_UserTurnCounter != 2;
