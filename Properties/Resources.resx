@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="bottomTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bottomTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="computerTurnSound" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\computerTurnSound.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -127,14 +130,29 @@
   <data name="drawSound" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\drawSound.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="firstTextureFromLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\firstTextureFromLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="forthTextureFromLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\forthTextureFromLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="gameOverSound" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\gameOverSound.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="humanTurnSound" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\humanTurnSound.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="secondTextureFromLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\secondTextureFromLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="successSound" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\successSound.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="thirdTextureFromLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\thirdTextureFromLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="topTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\topTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="winSound" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\winSound.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
