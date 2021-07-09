@@ -393,12 +393,6 @@ namespace myOpenGL.Forms
             }
 
             this.checkIfGameFinished();
-
-            // delete???
-            //if (this.checkIfGameFinished())
-            //{
-            //    // reset the game???
-            //}
         }
 
         private void checkIfHumanPlayerStepsAreCorrect()
@@ -507,8 +501,6 @@ namespace myOpenGL.Forms
                     this.Close();
                 }
             }
-
-            //return isGameFinished;
         }
 
         private string getWinnerMessage()

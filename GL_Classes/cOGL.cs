@@ -308,7 +308,6 @@ namespace OpenGL
             //multiply it by KeyCode defined AccumulatedRotationsTraslations matrix
             GL.glMultMatrixd(AccumulatedRotationsTraslations);
 
-            // work with alex & avital
             GL.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, this.m_LightFloatArr);
             GL.glColor3f(1, 0, 0);
             GL.glTranslatef(m_LightFloatArr[0], m_LightFloatArr[1], m_LightFloatArr[2]);
@@ -335,9 +334,9 @@ namespace OpenGL
             GL.glDisable(GL.GL_LIGHTING);
 
             GL.glTranslatef(0, 0.1f, 0);
-            this.MakeShadowMatrix(this.m_FloorPointsMatrix); // nodelman code
-            GL.glMultMatrixf(cubeXform); // nodelman code
-            GL.glTranslatef(0, -0.1f, 0); // test
+            this.MakeShadowMatrix(this.m_FloorPointsMatrix);
+            GL.glMultMatrixf(cubeXform);
+            GL.glTranslatef(0, -0.1f, 0);
 
             // draw shadow objects
             this.SecretBoxMatrixInstance.DrawSecretBoxMatrix(true);
