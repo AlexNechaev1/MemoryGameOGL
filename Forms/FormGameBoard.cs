@@ -392,10 +392,13 @@ namespace myOpenGL.Forms
                 checkIfComputerPlayerStepsAreCorrect();
             }
 
-            if (this.checkIfGameFinished())
-            {
-                // reset the game???
-            }
+            this.checkIfGameFinished();
+
+            // delete???
+            //if (this.checkIfGameFinished())
+            //{
+            //    // reset the game???
+            //}
         }
 
         private void checkIfHumanPlayerStepsAreCorrect()
@@ -404,7 +407,6 @@ namespace myOpenGL.Forms
             if (this.m_FirstPlayerStepsCounter == 2)
             {
                 this.m_FirstPlayerStepsCounter = 0;
-                // alex - put here animation
                 if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
                 {
                     this.m_GameLogicComponent.AddPoint();
@@ -426,7 +428,6 @@ namespace myOpenGL.Forms
         {
             if (this.m_SecondPlayerStepsCounter == 0)
             {
-                // alex - put here animation
                 if (this.m_GameLogicComponent.CheckCardMatch(this.m_CurrentPlayerPointer.FirstStep, this.m_CurrentPlayerPointer.SecondStep))
                 {
                     this.m_GameLogicComponent.AddPoint();
@@ -479,7 +480,7 @@ namespace myOpenGL.Forms
         #endregion
 
         #region End game methods
-        private bool checkIfGameFinished()
+        private void checkIfGameFinished()
         {
             bool isGameFinished = this.m_GameLogicComponent.CheckIfGameIsFinished();
 
@@ -492,13 +493,13 @@ namespace myOpenGL.Forms
 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    /*this.m_GameLogicComponent.ResetGameSettings();
+                    this.m_GameLogicComponent.ResetGameSettings();
                     this.m_GameLogicComponent.CreateAndFillMemoryBoard();
-                    setMatchingPicturesInIndexPictureBoxesMatrix();
-                    resetGameBoard();
-                    setTextInLables();*/
-                    this.Dispose();
-                    this.Close();
+                    this.cGL.SecretBoxMatrixInstance.ColorHiddenObjectsInSecretBoxesMatrix(this.m_GameLogicComponent);
+                    this.cGL.SecretBoxMatrixInstance.ResetSecretBoxMatrix();
+                    this.setStringsInPointsLabels();
+                    this.m_CurrentPlayerPointer = this.m_PlayerOne;
+                    this.cGL.SecretBoxArrowInstance.ResetSecretBoxArrow();
                 }
                 else if (dialogResult == DialogResult.No)
                 {
@@ -507,7 +508,7 @@ namespace myOpenGL.Forms
                 }
             }
 
-            return isGameFinished;
+            //return isGameFinished;
         }
 
         private string getWinnerMessage()

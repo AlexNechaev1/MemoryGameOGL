@@ -182,7 +182,6 @@ namespace OpenGL
         private Axis3D m_DynamicAxis3D;
         private Reflector m_Reflector;
 
-        //work with avital
         private CubeMap m_CubeMapInstance;
         private GLUquadric m_GLUquadricObject;
 
