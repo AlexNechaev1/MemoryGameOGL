@@ -50,6 +50,7 @@ namespace myOpenGL.Forms
             #endregion
 
             this.CenterToScreen();
+            this.Icon = Resources.questionMarkIcon;
             this.i_SoundPlayerInstance = new SoundPlayer();
             this.m_ComputerThinkingTimer = new Timer();
             this.m_ComputerThinkingTimer.Interval = k_ComputerThinkingTimerInterval;
@@ -509,8 +510,6 @@ namespace myOpenGL.Forms
             Player winningPlayerPointer = null;
 
             this.m_GameLogicComponent.DecideWinningPlayer(ref winningPlayerPointer);
-
-
 
             if (winningPlayerPointer == null)
             {

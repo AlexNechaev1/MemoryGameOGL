@@ -1,4 +1,5 @@
 ﻿using myOpenGL.Enums;
+using myOpenGL.Properties;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -12,6 +13,7 @@ namespace myOpenGL.Forms
 
         public FormGameSettings()
         {
+            this.Icon = Resources.questionMarkIcon;
             this.CenterToScreen();
             InitializeComponent();
             this.m_GameMode = eGameModes.GameMode;
