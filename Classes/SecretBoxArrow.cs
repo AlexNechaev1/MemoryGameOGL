@@ -45,7 +45,7 @@ namespace myOpenGL.Classes
 
                 if (i_DrawShadowFlag)
                 {
-                    GL.glColor3f(0.6f, 0.6f, 0.6f);
+                    GL.glColor3f(0.3f, 0.0f, 0.0f);
                 }
                 else
                 {

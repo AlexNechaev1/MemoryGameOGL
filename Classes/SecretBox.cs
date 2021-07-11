@@ -107,7 +107,7 @@ namespace myOpenGL.Classes
             }
             else
             {
-                GL.glColor3f(0.6f, 0.6f, 0.6f);
+                GL.glColor3f(0.3f, 0.0f, 0.0f);
                 GL.glDisable(GL.GL_TEXTURE_2D);
             }
 
@@ -165,7 +165,7 @@ namespace myOpenGL.Classes
             }
             else
             {
-                GL.glColor3f(0.6f, 0.6f, 0.6f);
+                GL.glColor3f(0.3f, 0.0f, 0.0f);
             }
 
             GLU.gluSphere(this.m_GLUquadricObject, 0.4, 10, 10);
