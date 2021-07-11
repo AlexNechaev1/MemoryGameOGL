@@ -68,6 +68,7 @@
             this.sceneModeBtn.TabIndex = 8;
             this.sceneModeBtn.Text = "Scene Mode";
             this.sceneModeBtn.UseVisualStyleBackColor = true;
+            this.sceneModeBtn.Visible = false;
             this.sceneModeBtn.Click += new System.EventHandler(this.sceneModeBtn_Click);
             // 
             // FormGameSettings
