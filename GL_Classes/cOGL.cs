@@ -236,7 +236,7 @@ namespace OpenGL
             double[] ModelVievMatrixBeforeSpecificTransforms = new double[16];
             double[] CurrentRotationTraslation = new double[16];
 
-            GLU.gluLookAt(30, 10, 5, 1, 5, 6, 0, 1, 0);
+            GLU.gluLookAt(30, 10, 5.6f, 1, 5, 5f, 0, 1, 0);
 
             if (this.m_DrawAxisFlag)
             {
