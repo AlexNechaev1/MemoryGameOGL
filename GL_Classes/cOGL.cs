@@ -362,11 +362,11 @@ namespace OpenGL
         { 
             GL.glColor3f(1,0,0);
             GL.glBegin(GL.GL_QUADS);
-
+            
             GL.glVertex3d(-5.01f, 0, -7);
             GL.glVertex3d(-5.01f, 0, 17);
-            GL.glVertex3d(-5.01f, 7, 17);
-            GL.glVertex3d(-5.01f, 7, -7);
+            GL.glVertex3d(-5.01f, 9, 17);
+            GL.glVertex3d(-5.01f, 9, -7);
 
             GL.glEnd();
         }
