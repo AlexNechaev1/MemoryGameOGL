@@ -48,10 +48,10 @@ namespace myOpenGL.Classes
 
             //!!! for blended REFLECTION 
             GL.glColor4d(0, 0, 1, 0.5);
-            GL.glVertex3d(-1, 0, -1);
+            GL.glVertex3d(-5, 0, -7);
             GL.glVertex3d(11, 0, -1);
             GL.glVertex3d(11, 0, 11);
-            GL.glVertex3d(-1, 0, 11);
+            GL.glVertex3d(-5, 0, 17); //BACK RIGHT
             GL.glEnd();
         }
     }

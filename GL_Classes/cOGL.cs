@@ -15,7 +15,7 @@ namespace OpenGL
         private int m_WidthValue;
         int m_HeightValue;
 
-        private float[] m_LightFloatArr = new float[] { 25, 0.5f, 3, 1 };
+        private float[] m_LightFloatArr = new float[] { 35, -0.3f, 5, 1 };
         public float[] ScrollValue = new float[10];
         public float zShift = 0.0f;
         public float yShift = 0.0f;
@@ -362,11 +362,11 @@ namespace OpenGL
         { 
             GL.glColor3f(1,0,0);
             GL.glBegin(GL.GL_QUADS);
-
-            GL.glVertex3d(-5.01f, -3, -5);
-            GL.glVertex3d(-5.01f, -3, 18);
-            GL.glVertex3d(-5.01f, 12, 18);
-            GL.glVertex3d(-5.01f, 12, -5);
+            
+            GL.glVertex3d(-5.01f, 0, -7);
+            GL.glVertex3d(-5.01f, 0, 17);
+            GL.glVertex3d(-5.01f, 9, 17);
+            GL.glVertex3d(-5.01f, 9, -7);
 
             GL.glEnd();
         }
