@@ -37,16 +37,14 @@ namespace myOpenGL.Classes
             GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
             GL.glGenTextures(6, Textures);
 
-            string[] imageName ={   "secondTextureFromLeft.png","forthTextureFromLeft.png",
-                                    "firstTextureFromLeft.png","thirdTextureFromLeft.png",
-                                    "topTexture.png","bottomTexture.png",};
-
+            Bitmap[] images = { Resources.secondTextureFromLeft, Resources.forthTextureFromLeft,
+                                Resources.firstTextureFromLeft, Resources.thirdTextureFromLeft,
+                                Resources.topTexture, Resources.bottomTexture};
 
 
             for (int i = 0; i < 6; i++)
             {
-                string filePath = Path.GetFullPath(imageName[i]);
-                Bitmap image = new Bitmap(filePath);
+                Bitmap image = images[i];
                 
                 image.RotateFlip(RotateFlipType.RotateNoneFlipY); //Y axis in Windows is directed downwards, while in OpenGL-upwards
                 System.Drawing.Imaging.BitmapData bitmapdata;
@@ -72,14 +70,12 @@ namespace myOpenGL.Classes
 
             GL.glEnable(GL.GL_TEXTURE_2D);
 
-
             drawTopCase();
             drawFrontCase();
             drawLeftCase();
             drawBackCase();
             drawRightCase();
             drawBottomCase();
-
 
             GL.glDisable(GL.GL_TEXTURE_2D);
 
