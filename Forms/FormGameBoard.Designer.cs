@@ -32,15 +32,6 @@ namespace myOpenGL.Forms
             this.panel1 = new System.Windows.Forms.Panel();
             this.secondPlayerInfoLabel = new System.Windows.Forms.Label();
             this.firstPlayerInfoLabel = new System.Windows.Forms.Label();
-            this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
-            this.hScrollBar2 = new System.Windows.Forms.HScrollBar();
-            this.hScrollBar3 = new System.Windows.Forms.HScrollBar();
-            this.hScrollBar4 = new System.Windows.Forms.HScrollBar();
-            this.hScrollBar5 = new System.Windows.Forms.HScrollBar();
-            this.hScrollBar6 = new System.Windows.Forms.HScrollBar();
-            this.hScrollBar9 = new System.Windows.Forms.HScrollBar();
-            this.hScrollBar8 = new System.Windows.Forms.HScrollBar();
-            this.hScrollBar7 = new System.Windows.Forms.HScrollBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -80,7 +71,7 @@ namespace myOpenGL.Forms
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.panel1.Location = new System.Drawing.Point(12, 16);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(490, 491);
+            this.panel1.Size = new System.Drawing.Size(503, 491);
             this.panel1.TabIndex = 6;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.Resize += new System.EventHandler(this.panel1_Resize);
@@ -105,96 +96,6 @@ namespace myOpenGL.Forms
             this.firstPlayerInfoLabel.TabIndex = 21;
             this.firstPlayerInfoLabel.Text = "a";
             // 
-            // hScrollBar1
-            // 
-            this.hScrollBar1.Location = new System.Drawing.Point(522, 16);
-            this.hScrollBar1.Maximum = 200;
-            this.hScrollBar1.Name = "hScrollBar1";
-            this.hScrollBar1.Size = new System.Drawing.Size(119, 17);
-            this.hScrollBar1.TabIndex = 7;
-            this.hScrollBar1.Value = 100;
-            this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
-            // 
-            // hScrollBar2
-            // 
-            this.hScrollBar2.Location = new System.Drawing.Point(522, 37);
-            this.hScrollBar2.Maximum = 200;
-            this.hScrollBar2.Name = "hScrollBar2";
-            this.hScrollBar2.Size = new System.Drawing.Size(119, 17);
-            this.hScrollBar2.TabIndex = 8;
-            this.hScrollBar2.Value = 100;
-            this.hScrollBar2.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
-            // 
-            // hScrollBar3
-            // 
-            this.hScrollBar3.Location = new System.Drawing.Point(522, 58);
-            this.hScrollBar3.Maximum = 200;
-            this.hScrollBar3.Name = "hScrollBar3";
-            this.hScrollBar3.Size = new System.Drawing.Size(119, 17);
-            this.hScrollBar3.TabIndex = 9;
-            this.hScrollBar3.Value = 200;
-            this.hScrollBar3.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
-            // 
-            // hScrollBar4
-            // 
-            this.hScrollBar4.Location = new System.Drawing.Point(522, 88);
-            this.hScrollBar4.Maximum = 200;
-            this.hScrollBar4.Name = "hScrollBar4";
-            this.hScrollBar4.Size = new System.Drawing.Size(119, 17);
-            this.hScrollBar4.TabIndex = 10;
-            this.hScrollBar4.Value = 100;
-            this.hScrollBar4.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
-            // 
-            // hScrollBar5
-            // 
-            this.hScrollBar5.Location = new System.Drawing.Point(522, 110);
-            this.hScrollBar5.Maximum = 200;
-            this.hScrollBar5.Name = "hScrollBar5";
-            this.hScrollBar5.Size = new System.Drawing.Size(119, 17);
-            this.hScrollBar5.TabIndex = 8;
-            this.hScrollBar5.Value = 100;
-            this.hScrollBar5.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
-            // 
-            // hScrollBar6
-            // 
-            this.hScrollBar6.Location = new System.Drawing.Point(522, 132);
-            this.hScrollBar6.Maximum = 200;
-            this.hScrollBar6.Name = "hScrollBar6";
-            this.hScrollBar6.Size = new System.Drawing.Size(119, 17);
-            this.hScrollBar6.TabIndex = 11;
-            this.hScrollBar6.Value = 100;
-            this.hScrollBar6.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
-            // 
-            // hScrollBar9
-            // 
-            this.hScrollBar9.Location = new System.Drawing.Point(521, 208);
-            this.hScrollBar9.Maximum = 200;
-            this.hScrollBar9.Name = "hScrollBar9";
-            this.hScrollBar9.Size = new System.Drawing.Size(119, 17);
-            this.hScrollBar9.TabIndex = 14;
-            this.hScrollBar9.Value = 100;
-            this.hScrollBar9.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
-            // 
-            // hScrollBar8
-            // 
-            this.hScrollBar8.Location = new System.Drawing.Point(522, 186);
-            this.hScrollBar8.Maximum = 200;
-            this.hScrollBar8.Name = "hScrollBar8";
-            this.hScrollBar8.Size = new System.Drawing.Size(119, 17);
-            this.hScrollBar8.TabIndex = 12;
-            this.hScrollBar8.Value = 110;
-            this.hScrollBar8.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
-            // 
-            // hScrollBar7
-            // 
-            this.hScrollBar7.Location = new System.Drawing.Point(522, 164);
-            this.hScrollBar7.Maximum = 200;
-            this.hScrollBar7.Name = "hScrollBar7";
-            this.hScrollBar7.Size = new System.Drawing.Size(119, 17);
-            this.hScrollBar7.TabIndex = 13;
-            this.hScrollBar7.Value = 100;
-            this.hScrollBar7.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarScroll);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label3);
@@ -203,7 +104,7 @@ namespace myOpenGL.Forms
             this.groupBox1.Controls.Add(this.numericUpDown3);
             this.groupBox1.Controls.Add(this.numericUpDown2);
             this.groupBox1.Controls.Add(this.numericUpDown1);
-            this.groupBox1.Location = new System.Drawing.Point(521, 245);
+            this.groupBox1.Location = new System.Drawing.Point(521, 11);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(118, 66);
             this.groupBox1.TabIndex = 15;
@@ -299,7 +200,7 @@ namespace myOpenGL.Forms
             this.groupBox2.Controls.Add(this.numericUpDown4);
             this.groupBox2.Controls.Add(this.numericUpDown5);
             this.groupBox2.Controls.Add(this.numericUpDown6);
-            this.groupBox2.Location = new System.Drawing.Point(521, 327);
+            this.groupBox2.Location = new System.Drawing.Point(521, 93);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(118, 66);
             this.groupBox2.TabIndex = 16;
@@ -451,15 +352,6 @@ namespace myOpenGL.Forms
             this.Controls.Add(this.bottomPanel);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.hScrollBar9);
-            this.Controls.Add(this.hScrollBar8);
-            this.Controls.Add(this.hScrollBar7);
-            this.Controls.Add(this.hScrollBar6);
-            this.Controls.Add(this.hScrollBar5);
-            this.Controls.Add(this.hScrollBar4);
-            this.Controls.Add(this.hScrollBar3);
-            this.Controls.Add(this.hScrollBar2);
-            this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.panel1);
             this.KeyPreview = true;
             this.Name = "FormGameBoard";
@@ -491,15 +383,6 @@ namespace myOpenGL.Forms
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.HScrollBar hScrollBar1;
-        private System.Windows.Forms.HScrollBar hScrollBar2;
-        private System.Windows.Forms.HScrollBar hScrollBar3;
-        private System.Windows.Forms.HScrollBar hScrollBar4;
-        private System.Windows.Forms.HScrollBar hScrollBar5;
-        private System.Windows.Forms.HScrollBar hScrollBar6;
-        private System.Windows.Forms.HScrollBar hScrollBar9;
-        private System.Windows.Forms.HScrollBar hScrollBar8;
-        private System.Windows.Forms.HScrollBar hScrollBar7;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;

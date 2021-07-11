@@ -35,18 +35,6 @@ namespace myOpenGL.Forms
             cGL = new cOGL(panel1, this, i_DrawAxisFlag);
             //apply the bars values as cGL.ScrollValue[..] properties 
             //!!!
-
-            hScrollBarScroll(hScrollBar1, null);
-            hScrollBarScroll(hScrollBar2, null);
-            hScrollBarScroll(hScrollBar3, null);
-            hScrollBarScroll(hScrollBar4, null);
-            hScrollBarScroll(hScrollBar5, null);
-            hScrollBarScroll(hScrollBar6, null);
-            hScrollBarScroll(hScrollBar7, null);
-            hScrollBarScroll(hScrollBar8, null);
-            hScrollBarScroll(hScrollBar9, null);
-
-
             #endregion
 
             this.CenterToScreen();
@@ -124,17 +112,6 @@ namespace myOpenGL.Forms
         #region Game modes switch methods
         private void setControlsVisibility()
         {
-            hScrollBar1.Visible = this.m_GameMode == eGameModes.SceneMode;
-            hScrollBar2.Visible = this.m_GameMode == eGameModes.SceneMode;
-            hScrollBar3.Visible = this.m_GameMode == eGameModes.SceneMode;
-            hScrollBar4.Visible = this.m_GameMode == eGameModes.SceneMode;
-            hScrollBar5.Visible = this.m_GameMode == eGameModes.SceneMode;
-            hScrollBar6.Visible = this.m_GameMode == eGameModes.SceneMode;
-            hScrollBar7.Visible = this.m_GameMode == eGameModes.SceneMode;
-            hScrollBar8.Visible = this.m_GameMode == eGameModes.SceneMode;
-            hScrollBar9.Visible = this.m_GameMode == eGameModes.SceneMode;
-
-
             groupBox1.Visible = this.m_GameMode == eGameModes.SceneMode;
             groupBox2.Visible = this.m_GameMode == eGameModes.SceneMode;
         }
